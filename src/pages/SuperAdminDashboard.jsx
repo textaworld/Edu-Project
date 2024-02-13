@@ -20,7 +20,7 @@
 import { useState } from "react";
 import InstituteDetails from "../components/InstituteDetails";
 import InstituteCreate from "../components/instituteCreate";
-import "../styles/superAdminDashboard.css"
+import "../styles/superAdminDashboard.css";
 
 export default function SuperAdminDashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
