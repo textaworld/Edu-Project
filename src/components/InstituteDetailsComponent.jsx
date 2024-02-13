@@ -56,7 +56,7 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/update/${instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${instituteId}`,
         {
           method: "PATCH",
           headers: {

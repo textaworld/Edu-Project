@@ -24,7 +24,7 @@ const AbsentStudents = () => {
     const getAllStudentsByClassName = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/students/getAllStudentsByClassID/${id}`,
+          `https://edu-project-backend.onrender.com/api/students/getAllStudentsByClassID/${id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -52,7 +52,7 @@ const AbsentStudents = () => {
   const fetchClasses = async (id) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/class/getClassDetailsByClassID/${id}`,
+        `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -73,7 +73,7 @@ const AbsentStudents = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/attendance/getAllAttendance",
+        "https://edu-project-backend.onrender.com/api/attendance/getAllAttendance",
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -137,7 +137,7 @@ const AbsentStudents = () => {
 
     const emailDetails = { email, subject, message };
 
-    const response = await fetch("https://edcuation-app.onrender.com/api/emails/sendEmail", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/emails/sendEmail", {
       method: "POST",
       body: JSON.stringify(emailDetails),
       headers: {

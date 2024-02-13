@@ -24,7 +24,7 @@ const Attendence = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -67,7 +67,7 @@ const Attendence = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -141,7 +141,7 @@ const Attendence = () => {
     const fetchAttendences = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/attendance/getAllAttendancesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/attendance/getAllAttendancesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }

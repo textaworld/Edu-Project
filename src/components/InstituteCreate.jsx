@@ -86,7 +86,7 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
 
   
 
-    const response = await fetch("https://edcuation-app.onrender.com/api/institute/create", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/institute/create", {
       method: "POST",
       body: JSON.stringify(institute),
       headers: {

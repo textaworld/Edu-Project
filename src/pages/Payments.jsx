@@ -62,7 +62,7 @@ const CreatePayment = () => {
     };
 
     const response = await fetch(
-      "https://edcuation-app.onrender.com/api/payments/createPayment",
+      "https://edu-project-backend.onrender.com/api/payments/createPayment",
       {
         method: "POST",
         body: JSON.stringify(payment),
@@ -94,7 +94,7 @@ const CreatePayment = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${instID}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${instID}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -126,7 +126,7 @@ const CreatePayment = () => {
     const fetchStudents = async () => {
       try {
         const response = await fetch(
-          "https://edcuation-app.onrender.com/api/students/getStudentById/" + id,
+          "https://edu-project-backend.onrender.com/api/students/getStudentById/" + id,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }

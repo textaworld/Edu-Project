@@ -19,7 +19,7 @@ const Payments = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -62,7 +62,7 @@ const Payments = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -134,7 +134,7 @@ const Payments = () => {
     const fetchPayments = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/payments/getAllPaymentsByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/payments/getAllPaymentsByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }

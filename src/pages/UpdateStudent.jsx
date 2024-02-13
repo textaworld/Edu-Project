@@ -33,7 +33,7 @@ const UpdateStudent = () => {
     const fetchStudents = async () => {
       try {
         const response = await fetch(
-          "https://edcuation-app.onrender.com/api/students/getStudentById/" + id,
+          "https://edu-project-backend.onrender.com/api/students/getStudentById/" + id,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -69,7 +69,7 @@ const UpdateStudent = () => {
     const fetchClassesBySite = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -100,7 +100,7 @@ const UpdateStudent = () => {
       );
 
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/students/updateStudent/${id}`,
+        `https://edu-project-backend.onrender.com/api/students/updateStudent/${id}`,
         {
           method: "PUT",
           headers: {

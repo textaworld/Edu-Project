@@ -17,7 +17,7 @@ const SuperAdminForgotPassword = () => {
 
     try {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/superAdmin/forgotpassword",
+        "https://edu-project-backend.onrender.com/api/superAdmin/forgotpassword",
         {
           method: "POST",
           headers: {

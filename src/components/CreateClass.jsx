@@ -42,7 +42,7 @@ const CreateClass = ({ onClose, onSuccess }) => {
     };
 
     const response = await fetch(
-      "https://edcuation-app.onrender.com/api/class/createClass",
+      "https://edu-project-backend.onrender.com/api/class/createClass",
       {
         method: "POST",
         body: JSON.stringify(classs),

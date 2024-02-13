@@ -14,7 +14,7 @@ const StartClass = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${user.instituteId}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${user.instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }

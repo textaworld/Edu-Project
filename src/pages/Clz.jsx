@@ -37,7 +37,7 @@ const Clz = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -80,7 +80,7 @@ const Clz = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -154,7 +154,7 @@ const Clz = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -184,7 +184,7 @@ const Clz = () => {
 
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/class/deleteClass/${classId}`,
+        `https://edu-project-backend.onrender.com/api/class/deleteClass/${classId}`,
         {
           method: "DELETE",
           headers: {

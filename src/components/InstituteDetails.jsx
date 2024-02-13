@@ -20,7 +20,7 @@ const InstituteDetails = () => {
   useEffect(() => {
     const fetchInstitutes = async () => {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/institute/getall",
+        "https://edu-project-backend.onrender.com/api/institute/getall",
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -46,7 +46,7 @@ const InstituteDetails = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/delete/${id}`,
+        `https://edu-project-backend.onrender.com/api/institute/delete/${id}`,
         {
           method: "DELETE",
           headers: {

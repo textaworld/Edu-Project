@@ -17,7 +17,7 @@ export default defineConfig({
 //   server: {
 //     proxy: {
 //       '/api': {
-//         target: 'https://edcuation-app.onrender.com',
+//         target: 'https://edu-project-backend.onrender.com',
 //         changeOrigin: true,
 //       },
 //     },

@@ -33,7 +33,7 @@ const QrScn = () => {
     const fetchSiteDetails = async () => {
       try {
         const siteDetailsResponse = await fetch(
-          `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -104,7 +104,7 @@ const QrScn = () => {
   const fetchStudentDetails = async (std_ID, id) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/students/getStudentByStd_Id/${std_ID}`,
+        `https://edu-project-backend.onrender.com/api/students/getStudentByStd_Id/${std_ID}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -195,7 +195,7 @@ const QrScn = () => {
     });
 
     const response = await fetch(
-      "https://edcuation-app.onrender.com/api/attendance/createAttendance",
+      "https://edu-project-backend.onrender.com/api/attendance/createAttendance",
       {
         method: "POST",
         body: JSON.stringify(stdAttendance),
@@ -234,7 +234,7 @@ const QrScn = () => {
 
     const emailDetails = { email, subject, message };
 
-    const response = await fetch("https://edcuation-app.onrender.com/api/emails/sendEmail", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/emails/sendEmail", {
       method: "POST",
       body: JSON.stringify(emailDetails),
       headers: {
@@ -266,7 +266,7 @@ const QrScn = () => {
       const encodedMonth = encodeURIComponent(currentMonth);
 
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/tutes/getTuteStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
+        `https://edu-project-backend.onrender.com/api/tutes/getTuteStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -303,7 +303,7 @@ const QrScn = () => {
 
       // Append current month to the URL
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
+        `https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -345,7 +345,7 @@ const QrScn = () => {
       status,
     };
 
-    const response = await fetch("https://edcuation-app.onrender.com/api/tutes/createTute", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/tutes/createTute", {
       method: "POST",
       body: JSON.stringify(tute),
       headers: {
@@ -370,7 +370,7 @@ const QrScn = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getClassDetailsByClassID/${id}`,
+          `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }

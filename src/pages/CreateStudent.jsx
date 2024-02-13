@@ -50,7 +50,7 @@ const CreateStudent = () => {
   useEffect(() => {
     const fetchSiteDetails = async () => {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -72,7 +72,7 @@ const CreateStudent = () => {
     const fetchClassesBySite = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -154,7 +154,7 @@ const CreateStudent = () => {
 
 
     const response = await fetch(
-      "https://edcuation-app.onrender.com/api/students/createStudent",
+      "https://edu-project-backend.onrender.com/api/students/createStudent",
       {
         method: "POST",
         body: JSON.stringify(student),
@@ -218,7 +218,7 @@ const CreateStudent = () => {
 
       const student = { std_ID };
 
-      const response = await fetch("https://edcuation-app.onrender.com/api/qr/qrGenerator", {
+      const response = await fetch("https://edu-project-backend.onrender.com/api/qr/qrGenerator", {
         method: "POST",
         body: JSON.stringify(student),
         headers: {
