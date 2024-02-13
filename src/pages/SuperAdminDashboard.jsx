@@ -18,8 +18,8 @@
 // SuperAdminDashboard.js
 
 import { useState } from "react";
-import InstituteDetails from "../components/InstituteDetails";
-import InstituteCreate from "../components/instituteCreate";
+import InstituteDetails from "../components/InstituteDetails"
+import InstituteCreate from "../components/InstituteCreate"
 import "../styles/superAdminDashboard.css";
 
 export default function SuperAdminDashboard() {
@@ -53,4 +53,3 @@ export default function SuperAdminDashboard() {
     </div>
   );
 }
-
