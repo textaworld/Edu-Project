@@ -1,0 +1,32 @@
+.superAdminDashboardContainer {
+  padding: 20px;
+  margin: 20px; /* Add padding for spacing */
+}
+
+.instituteAddButtonContainer {
+  text-align: right; /* Align button to the right */
+  margin-bottom: 10px; /* Add margin for spacing between button and other content */
+}
+
+.instituteAddButtonContainer button {
+  padding: 14px; /* Increase padding for button size */
+  border: 1px solid #0f172a;
+  font-size: 16px; /* Increase font size */
+  background-color: #0f172a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #fff;
+
+  border-radius: 6px; /* Increase border radius for rounded corners */
+  cursor: pointer;
+}
+
+.instituteAddButtonContainer button:hover {
+  background-color: #fff;
+  border: 1px solid #0f172a;
+  color: #0f172a;
+}
+
+
+
+
+/* You can adjust the colors, padding, border-radius, etc., based on your design preferences. */

@@ -1,0 +1,64 @@
+.instituteDetailsContainer {
+  padding: 20px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content vertically */
+}
+
+.detailsSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjust the column width as needed */
+  column-gap: 200px; /* Add gap between grid items */
+  row-gap: 50px;
+  justify-content: space-around; /* Space out the sections horizontally */
+  width: 90%;
+  
+}
+
+.detailsSectionPart {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content vertically */
+  text-align: center; /* Center text horizontally */
+  padding: 50px 20px 50px 20px;
+  border: 1px solid #0f172a;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.instituteDetailsContainer-topic {
+  width: 90%;
+  border: 1px solid #0f172a;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.instituteName {
+  color: #333; /* Set color for institute name */
+  margin-bottom: 10px; /* Add bottom margin for spacing */
+}
+
+.instituteDetailsContainer-image {
+  width: 200px;
+  height: 100px;
+}
+
+.instituteDetailsContainer-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Maintain aspect ratio while covering the container */
+}
+
+.instituteEmail {
+  font-size: 14px; /* Set the font size for the email */
+  color: #777; /* Set color for email */
+}

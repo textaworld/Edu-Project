@@ -1,0 +1,18 @@
+
+.create-popup .loginButton{
+    margin-top: 10px; /* Add some spacing between the buttons */
+    padding: 15px; /* Add padding for a cleaner look */
+    width: 200px; /* Set a fixed width for consistency */
+    cursor: pointer;
+   
+    border-radius: 4px;
+    font-size: 19px; /* Adjust font size */
+    border: 2px solid #0f172a;
+    background-color: #0f172a; /* Green background color for the "Add Institute" button */
+    color: #fff; /* White text color */
+}
+
+.create-popup .loginButton:hover {
+    background-color: #ffffff; /* Change background color on hover */
+    color: #0f172a
+  }

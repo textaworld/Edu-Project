@@ -1,0 +1,67 @@
+/* CSS */
+.superAdminNavBar {
+  position: sticky;
+  top: 0;
+  background-color: #0f172a;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-title {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1; /* This makes the title take up remaining space */
+}
+
+.superAdminNavBar h1 {
+  color: #fff;
+  margin: 0;
+}
+
+.navbar-user h4 {
+  color: #fff;
+  margin-right: 20px;
+}
+
+.superAdminNavBar .navbar-logoutbutton {
+  background: none;
+  color: #f8f8f8;
+  padding: 8px 15px;
+  border: 1px solid #0f172a;
+  font-size: 30px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center; /* Align icon and text vertically */
+}
+
+.superAdminNavBar .navbar-logoutbutton:hover {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #0f172a;
+}
+
+.navbar-backbutton {
+  border: 1px solid #0f172a;
+  background: none;
+  color: #f1f1f1;
+  /* Button text color */
+  padding: 10px;
+  /* Padding around the button content */
+  border-radius: 20px;
+  /* Rounded corners */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 30px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-backbutton:hover {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid #0f172a;
+}

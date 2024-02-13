@@ -1,0 +1,255 @@
+.createStudentMainContaner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.createStudentFormContaner {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: aquamarine;
+  background: #fff;
+  border: 1px solid #fff; /* Add white border */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding-bottom: 20px;
+}
+
+.createStudentFormContaner form {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.createStudentFormContanerTopic {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.createStudentFormContaner label {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  align-items: flex-start;
+}
+
+/* for input */
+.createStudentFormContaner input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease; /* Add smooth transition for border-color */
+}
+
+.createStudentFormContaner input:hover {
+  border-color: #666; /* Change border color on hover */
+}
+
+.createStudentFormContaner input.error {
+  border-color: #ff0000;
+}
+
+.createStudentIdCardContaner {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1%;
+  margin-left: 5%;
+  margin-right: 1%;
+}
+
+/* .createStudentIdCardContanerButton {
+    width: 100%;
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+  background-color: #ff7e5f;
+  align-items: flex-end;
+  
+} */
+
+.createStudentIdCardContanerButton button {
+    width: 50%;
+  display: inline-block;
+  margin-top: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #0f172a;
+  background-color: #0f172a; /* Green background color for the "Add Institute" button */
+  color: #fff; /* White text color */
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+.createStudentIdCardContanerButton .IdCardContanerdownicon {
+  margin-left: 8px;
+}
+
+.createStudentIdCardContanerButton button:hover {
+  background-color: #ffffff; /* Change background color on hover */
+  color: #0f172a;
+}
+
+.createstudentsubmitButton{
+  width: 20%;
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #0f172a;
+  background-color: #0f172a; /* Green background color for the "Add Institute" button */
+  color: #fff; /* White text color */
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+.createstudentsubmitButton:hover {
+  background-color: #ffffff; /* Change background color on hover */
+  color: #0f172a;
+}
+
+/* ---------------- card style ---------------- */
+
+.id-card-container {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    padding: 25px;
+    width: 450px;
+    height: 250px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .id-card {
+    background-color: #FFD977;
+    height: 30px;
+    border-radius: 0px 0px 10px 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  }
+  
+  .id-card-qr{
+    position: absolute;
+    top: 25px;
+    right: 20px;
+  }
+  
+  .id-card-details input {
+    border: none;
+    background-color: transparent;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+  }
+  .id-card-details p{
+    margin: 0;
+  }
+  
+  
+  
+  .id-card-image{
+    display: flex;
+  align-items: center;
+  justify-content: center;
+   
+    width: 150px;
+    height: 140px;
+    
+  }
+  .id-card-image img{
+    max-width: 145px;
+    max-height: 130px;
+  }
+  
+  
+
+  .id-card-logo{
+   
+    position: absolute;
+   bottom: 40px;
+    right: 20px;
+  }
+
+  .id-card-logo img{
+    max-height: 60px;
+    max-width: 150px;
+  }
+
+.classSelection label{
+    margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  width: 60%;
+  align-items: flex-start;
+  border: none;
+}
+  
+  
+  
+/* ---------- */
+
+
+.createStudentIdCardContanerButton {
+    display: flex;
+    flex-direction: column;
+align-items: center; 
+margin-top: 20px;
+
+ }
+  
+ .stepBox {
+    position: relative; /* Make the step box position relative */
+    flex: 1;
+    text-align: center;
+    border: 3px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    width: 90%;
+  }
+
+  .stepBox p{
+    margin: 0;
+  }
+  
+  .stepTitle {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  
+  .stepIconGreen {
+    position: absolute; /* Position the icon absolutely */
+    top: 10%; /* Adjust the top position */
+    right: 5%; /* Adjust the right position */
+    color: rgb(23, 211, 23);
+  }
+  
+  .stepDescription {
+    margin-top: 10px;
+  }

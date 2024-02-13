@@ -1,0 +1,22 @@
+/* 
+.App{
+  height: 100%;
+  width: 100%;
+}
+
+
+.search{
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content-search{
+  display: block;
+  position:absolute;
+  min-width: 160px;
+  padding: 12px 16px;
+  z-index: 1;
+}
+.content{
+  margin-top: 3rem;
+} */

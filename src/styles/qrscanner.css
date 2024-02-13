@@ -1,0 +1,58 @@
+/* Container for the two main sections */
+.qrcontainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Left section */
+  .left-section {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  /* Right section */
+  .right-section {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  /* Styling for the button */
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styling for QR scanner container */
+  #qr-scanner {
+    border: 2px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 100%;
+  }
+  
+  /* Styling for QR Code Result section */
+  h2 {
+    margin-bottom: 10px;
+  }
+  
+  p {
+    margin-bottom: 5px;
+  }
+  
+  /* Media query for mobile phones */
+  @media only screen and (max-width: 600px) {
+    .right-section {
+      padding-top: 20px;
+    }
+  }
+  
