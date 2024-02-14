@@ -106,8 +106,11 @@ const deleteClass = (req, res) => {
 const getClassDetailsByClassID = async (req, res) => {
   const classID = req.params.id;
 
+ 
+
   try {
-    const classs = await classModel.findOne({ classID });
+    const classs = await classModel.findOne({ _id: classID });
+   
 
     if (!classs) {
       return res.status(404).json({ message: "Class not found" });
@@ -115,7 +118,7 @@ const getClassDetailsByClassID = async (req, res) => {
 
     res.status(200).json({ classs });
   } catch (error) {
-    
+    console.error("Error finding class:", error);
     res.status(500).json({ message: "Server Error" });
   }
 };

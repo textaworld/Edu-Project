@@ -20,7 +20,7 @@ router.put("/updateClass/:id", classController.updateClass);
 // Delete a specific student by ID
 router.delete("/deleteClass/:id", classController.deleteClass);
 
-router.get('/getClassDetailsByClassID/:classID',classController.getClassDetailsByClassID);
+router.get('/getClassDetailsByClassID/:id',classController.getClassDetailsByClassID);
 
 router.get('/getAllClassesByInsId/:id',classController.getAllClassesByInsId);
 
