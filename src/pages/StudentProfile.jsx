@@ -13,21 +13,43 @@ const StudentProfile = () => {
   }
 
   return (
-    <div>
-      <h1>Student Profile Page</h1>
-      <p>Student ID: {studentdata._id}</p>
-      <p>{studentdata.inst_ID}</p>
-      <p>{studentdata.std_ID}</p>
-      <p>{studentdata.name}</p>
-      <p>{studentdata.email}</p>
-      <p>{studentdata.age}</p>
-      <p>{studentdata.address}</p>
-      <p>{studentdata.phone}</p>
-      {/* <p>{studentdata.imageUrl}</p> */}
-
-      
-      {/* Display the image using the imageUrl */}
-      {/* <img src={studentdata.imageUrl} alt={`Image of ${studentdata.name}`} /> */}
+    <div style={{ padding: "20px",  }}>
+      <h1 style={{ textAlign: "center", marginBottom: "20px" ,}}>
+        Student Profile 
+      </h1>
+      <div style={{marginLeft: "500px" }}>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Student ID:</strong> {studentdata._id}
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Institute ID:</strong> {studentdata.inst_ID}
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Student ID:</strong> {studentdata.std_ID}
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Name:</strong> {studentdata.name}
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Email:</strong> {studentdata.email}
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Age:</strong> {studentdata.age}
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Address:</strong> {studentdata.address}
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <strong>Phone:</strong> {studentdata.phone}
+      </div>
+      </div>
+      {/* 
+      Display the image using the imageUrl 
+      <img
+        src={studentdata.imageUrl}
+        alt={`Image of ${studentdata.name}`}
+        style={{ width: "100%", height: "auto", marginTop: "20px" }}
+      /> */}
     </div>
   );
 };

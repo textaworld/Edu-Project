@@ -176,8 +176,7 @@ const CreateStudent = () => {
 
     if (response.ok) {
       setInst_ID("");
-      generateStudentID();
-      
+      setStd_ID("");      
       setName("");
       setEmail("");
       setAge("");

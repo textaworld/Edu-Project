@@ -41,7 +41,7 @@ const AbsentStudents = () => {
           dispatch({ type: "SET_STUDENTS", payload: json });
         }
       } catch (error) {
-        
+        setError(error.message);
       }
     };
 
@@ -66,7 +66,7 @@ const AbsentStudents = () => {
         clz({ type: "SET_CLASS", payload: json });
       }
     } catch (error) {
-      
+      setError(error.message);
     }
   };
 
@@ -159,43 +159,39 @@ const AbsentStudents = () => {
   };
 
   return (
-    <div className="instituteTableContainer">
-      <div className="">
-        <table className="instituteTable">
-          <thead>
-            <tr className="test">
-              <th>SID</th>
-              <th>Name</th>
-              <th>EMail</th>
+    <div className="instituteTableContainer" style={{ padding: "20px" }}>
+      <table className="instituteTable" style={{ width: "100%" }}>
+        <thead>
+          <tr className="test">
+            <th>SID</th>
+            <th>Name</th>
+            <th>EMail</th>
+          </tr>
+        </thead>
+        <tbody>
+          {absntStudents.map((student, index) => (
+            <tr key={index}>
+              <td>{student.std_ID}</td>
+              <td>{student.name}</td>
+              <td>{student.email}</td>
             </tr>
-          </thead>
-          <tbody>
-            {absntStudents.map((student, index) => (
-              <tr key={index}>
-                <td>{student.std_ID}</td>
-                <td>{student.name}</td>
-                <td>{student.email}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div>
-          <button
-            onClick={submitEmail}
-            style={{
-              background: "#0f172a",
-              color: "white",
-              padding: "10px",
-              fontSize: "20px",
-              marginTop: "20px",
-              marginLeft: "600px",
-              borderRadius: "10px",
-              cursor: "pointer",
-            }}
-          >
-            Send to teacher
-          </button>
-        </div>
+          ))}
+        </tbody>
+      </table>
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+        <button
+          onClick={submitEmail}
+          style={{
+            background: "#0f172a",
+            color: "white",
+            padding: "10px 20px",
+            fontSize: "16px",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
+          Send to teacher
+        </button>
       </div>
     </div>
   );

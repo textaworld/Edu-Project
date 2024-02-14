@@ -20,6 +20,19 @@ const Clz = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSubmissionSuccessful, setSubmissionSuccessful] = useState(false);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredClasses = classs.filter(
+    (clz) =>
+      clz.class_ID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      clz.subject.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const openModal = () => {
     setModalOpen(true);
   };
@@ -214,13 +227,20 @@ const Clz = () => {
       <div className="superAdminDashboardContainer">
         {packageStatus !== "Yes" ? (
           <div>
-            <h1>You need to pay</h1>
+            <h1>Processing...!</h1>
           </div>
         ) : (
           <div className="instituteTableContainer">
             <div className="instituteAddButtonContainer">
               <button onClick={openModal}>Add New Class</button>
             </div>
+
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearch}
+              placeholder="Search by Class ID or Name"
+            />
 
             <table className="instituteTable">
               <thead>
@@ -236,8 +256,8 @@ const Clz = () => {
                 </tr>
               </thead>
               <tbody>
-                {classs.length > 0 ? (
-                  classs.map((clz, index) => (
+                {filteredClasses.length > 0 ? (
+                  filteredClasses.map((clz, index) => (
                     <tr key={index}>
                       <td>{clz.class_ID}</td>
                       <td>{clz.subject}</td>

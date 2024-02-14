@@ -133,32 +133,27 @@ const HomeSubAdmin = () => {
       }, [packageStatus]);
     
   return (
-  <div>
-
-{packageStatus !== "Yes" ? (
-        <div>
-          <h1>You need to pay</h1>
-        </div>
-      ) : (
-
+    <div>
+    {packageStatus !== "Yes" ? (
       <div>
-<div style={{ display: 'flex', alignItems: 'center' ,marginTop:'100px' }}>
-  <h1 style={{ marginLeft: '520px'}}>Welcome sub admin</h1>
-  <button onClick={handleClick} style={{marginLeft:'300px', cursor: 'pointer' , color: '#f8f8f8', 
-    padding: '8px',backgroundColor: '#0f172a',borderRadius:'5px',
-    border: '1px solid #0f172a'}}>Log out</button>
-</div>
+        <h1>Processing...!</h1>
+      </div>
+    ) : (
+      <div>
+        <div style={{ marginTop: '100px', textAlign: 'center' }}>
+          <h1>Welcome sub admin</h1>
+          <button onClick={handleClick} style={{ marginTop: '20px', cursor: 'pointer', color: '#f8f8f8', padding: '8px', backgroundColor: '#0f172a', borderRadius: '5px', border: '1px solid #0f172a' }}>Log out</button>
+        </div>
 
-
-<button style={{ marginLeft:'780px', marginTop:'100px',display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', backgroundColor: '#0f172a', color: 'white', border: 'none', cursor: 'pointer' , borderRadius:"7px" }}>
-  <Link to={"startClass"} style={{ textDecoration: 'none', color: 'inherit' }}>
-    <h1 style={{ margin: 0 }}>Start Class <FaArrowRight style={{ marginLeft: '5px' }} /></h1>
-  </Link>
-</button>
-
-      
-    </div>
-    )} 
+        <div style={{ marginTop: '100px', textAlign: 'center' }}>
+          <Link to={"startClass"} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <button style={{ padding: '20px', backgroundColor: '#0f172a', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '7px' }}>
+              <h1 style={{ margin: 0 }}>Start Class <FaArrowRight style={{ marginLeft: '5px' }} /></h1>
+            </button>
+          </Link>
+        </div>
+      </div>
+    )}
   </div>
   )
 }

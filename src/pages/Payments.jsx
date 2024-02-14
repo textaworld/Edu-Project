@@ -48,6 +48,8 @@ const CreatePayment = () => {
       return;
     }
 
+    const status = 'paid'
+
     const date = new Date();
     const payment = {
       inst_ID: instID,
@@ -74,6 +76,7 @@ const CreatePayment = () => {
     );
 
     const json = await response.json();
+    console.log("payment",json)
 
     if (!response.ok) {
       setError(json.error);

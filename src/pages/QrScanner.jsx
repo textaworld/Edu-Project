@@ -29,6 +29,8 @@ const QrScn = () => {
   const [qrResult, setQrResult] = useState(null);
   const [clzName, setClassName] = useState("");
 
+  console.log("cname ", clzName)
+
   useEffect(() => {
     const fetchSiteDetails = async () => {
       try {
@@ -43,6 +45,7 @@ const QrScn = () => {
         if (siteDetailsResponse.ok) {
           setInstNotification(siteDetailsJson.notification);
           institute({ type: "SET_SITE_DETAILS", payload: siteDetailsJson });
+          fetchClasses(id)
         }
       } catch (error) {
         
@@ -92,6 +95,7 @@ const QrScn = () => {
   useEffect(() => {
     if (qrResult !== null) {
       fetchStudentDetails(qrResult, id, clzName);
+      
       setScanning(false); // Stop scanning after fetching details
     }
   }, [qrResult, id]);
@@ -310,6 +314,7 @@ const QrScn = () => {
       );
 
       const data = await response.json();
+      console.log("data",data)
 
       if (!response.ok) {
         
@@ -366,9 +371,10 @@ const QrScn = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchClasses = async () => {
+  // useEffect(() => { 
+    const fetchClasses = async (id) => {
       try {
+        console.log("cID",id)
         const response = await fetch(
           `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id}`,
           {
@@ -376,12 +382,14 @@ const QrScn = () => {
           }
         );
         const json = await response.json();
+        console.log(json.classs)
 
         setClassName(json.classs.subject);
         // Log the API response
 
         if (response.ok) {
           //setClz(json.data);
+          console.log(json.classs)
           dispatch({ type: "SET_CLASS", payload: json.data });
         }
       } catch (error) {
@@ -389,46 +397,46 @@ const QrScn = () => {
       }
     };
 
-    if (user) {
-      fetchClasses();
-    }
-  }, [dispatch, user, id]);
+  //   if (user) {
+  //     fetchClasses();
+  //   }
+  // }, [dispatch, user, id]);
 
   return (
-    <div className="qrcontainer">
-  <div className="left-section">
-    <button onClick={handleButtonClick}>
+    <div className="qrcontainer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+  <div className="left-section" style={{ width: '100%', maxWidth: '600px', marginBottom: '20px', padding: '20px', backgroundColor: '#f0f0f0' }}>
+    <button onClick={handleButtonClick} style={{ padding: '10px 20px', fontSize: '16px', backgroundColor: '#007bff', color: '#ffffff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
       {scanning ? "Stop Scanner" : "Start Scanner"}
     </button>
-    <div id="qr-scanner"></div>
+    <div id="qr-scanner" style={{ width: '100%', height: '300px', marginTop: '20px', border: '1px solid #ccc' }}></div>
   </div>
 
-  <div className="right-section">
+  <div className="right-section" style={{ width: '100%', maxWidth: '600px', padding: '20px', backgroundColor: '#ffffff' }}>
     <h2>QR Code Result:</h2>
-    <h2>Class ID : {id}</h2>
-    {qrResult && <p>Std_id : {qrResult} </p>}
+    <h2>Class ID : {clzName}</h2>
+    {/* {qrResult && <p>Std_id : {qrResult} </p>} */}
 
     {studentDetails ? (
       <div>
-        <p>IID: {studentDetails.inst_ID}</p>
-        <p>SID: {studentDetails.std_ID}</p>
-        <p>Name: {studentDetails.name}</p>
-        <p>Email: {studentDetails.email}</p>
-        <p>Age: {studentDetails.age}</p>
-        <p>Address: {studentDetails.address}</p>
-        <p>Phone: {studentDetails.phone}</p>
-        <p>
-          Classes:{" "}
+        <p><span style={{color:'red' , fontWeight:'bold'}}>Student ID:</span> {studentDetails.std_ID}</p>
+        <p><span style={{color:'red' , fontWeight:'bold'}}>Student Name:</span> {studentDetails.name}</p>
+        <p><span style={{color:'red' , fontWeight:'bold'}}>Email:</span> {studentDetails.email}</p>
+        <p><span style={{color:'red' , fontWeight:'bold'}}>Age:</span> {studentDetails.age}</p>
+        <p><span style={{color:'red' , fontWeight:'bold'}}>Address:</span> {studentDetails.address}</p>
+        <p><span style={{color:'red' , fontWeight:'bold'}}>Phone:</span> {studentDetails.phone}</p>
+        <p> <span style={{color:'red' , fontWeight:'bold'}}>Classes:</span>
+          {" "}
           {studentDetails.classs.map((cls) => cls.subject).join(", ")}
         </p>
-        <p>Payment Status: {paymentStatus}</p>
-        <p>Tute Status:{tuteStatus}</p>
+        <p ><span style={{color:'red' , fontWeight:'bold'}}>Payment Status:</span> {paymentStatus}</p>
+        <p><span style={{color:'red' , fontWeight:'bold'}}>Tute Status:</span>{tuteStatus}</p>
       </div>
     ) : (
       <p>Unable to parse student details from QR code</p>
     )}
   </div>
 </div>
+
 
   );
 };
