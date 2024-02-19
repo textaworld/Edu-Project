@@ -54,6 +54,11 @@ const AdminLogin = () => {
           <button className="loginButton" disabled={isLoading}>
             Log in
           </button>
+          <div>
+        <a href="https://texta.world" target="_blank" rel="noopener noreferrer" style={{color:"red"}}>
+          powered by TExTA WORLD
+        </a>
+      </div>
         </form>
       </div>
    
