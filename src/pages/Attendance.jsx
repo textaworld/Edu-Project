@@ -19,12 +19,13 @@ const Attendence = () => {
 
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
+  const [searchDate, setSearchDate] = useState("");
 
   ////
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+      `http://localhost:3018/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -67,7 +68,7 @@ const Attendence = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
+        `http://localhost:3018/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -141,7 +142,7 @@ const Attendence = () => {
     const fetchAttendences = async () => {
       try {
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/attendance/getAllAttendancesByInsId/${sitedetail._id}`,
+          `http://localhost:3018/api/attendance/getAllAttendancesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -164,26 +165,96 @@ const Attendence = () => {
       fetchAttendences();
     }
   }, [dispatch, user, sitedetail._id]);
+  
+//   const formatDate = (dateString) => {
+//     const date = new Date(dateString);
+//     return (
+//       (date.getMonth() + 1).toString().padStart(2, '0') + '/' +
+//       date.getDate().toString().padStart(2, '0') + '/' +
+//       date.getFullYear()
+//     );
+//   };
+  
+  
+//   const formatDateInput = (dateInput) => {
+//     console.log(dateInput);
 
-  const filteredAttendance = attendance.filter((attendanc) =>
-    attendanc.std_ID.includes(searchTerm)
-  );
+//     if (!dateInput) return ""; // Return an empty string if dateInput is empty or undefined
+    
+//     const [month, day, year] = dateInput.split('/');
+//     return (
+//       month.padStart(2, '0') + '/' +
+//       day.padStart(2, '0') + '/' +
+//       year
+//     );
+//   };
+  
+//   const filteredAttendance = attendance.filter((attendanc) =>
+//   (attendanc.std_ID.includes(searchTerm) ||
+//   attendanc.clzName.includes(searchTerm)) && 
+//   (!searchDate || formatDate(attendanc.date) === formatDateInput(searchDate))
+// );
+
+const filterAttendance = (attendances, searchTerm, searchDate) => {
+  let filteredAttendance = attendances;
+
+  if (searchTerm) {
+    filteredAttendance = filteredAttendance.filter((attendance) =>
+      attendance.std_ID.includes(searchTerm) ||
+       attendance.clzName.includes(searchTerm)
+    );
+  }
+
+  if (searchDate) {
+    filteredAttendance = filteredAttendance.filter((attendance) => {
+      const attendanceDate = new Date(attendance.date).toDateString();
+      const searchDateFormatted = new Date(searchDate).toDateString();
+      return attendanceDate === searchDateFormatted;
+    });
+  }
+
+  return filteredAttendance;
+};
+
+const filteredAttendance = filterAttendance(
+  attendance,
+  searchTerm,
+  searchDate
+);
+
+console.log(searchDate);
+
+
+
+
+
 
   return (
     <div>
       <div className="superAdminDashboardContainer">
-        {packageStatus !== "Yes" ? (
+        {/* {packageStatus !== "Yes" ? (
           <div>
-            <h1>Processing...!</h1>
+            <h1>You need to pay</h1>
           </div>
-        ) : (
+        ) : ( */}
           <div className="instituteTableContainer">
             <input
               type="text"
-              placeholder="Search by std_ID"
+              style={{width: '250px' ,marginRight:'10px'}}
+              placeholder="Search by Student ID & Class Name"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
+             <input
+            type="text"
+            placeholder="Search by Date (MM/DD/YYYY)"
+            value={searchDate}
+            onChange={(e) => setSearchDate(e.target.value)}
+          />
+          
+          
+          
+
 
             <table className="instituteTable">
               <thead>
@@ -222,7 +293,7 @@ const Attendence = () => {
               </tbody>
             </table>
           </div>
-        )} 
+        {/* )}  */}
       </div>
     </div>
   );
