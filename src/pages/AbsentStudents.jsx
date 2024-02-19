@@ -19,6 +19,8 @@ const AbsentStudents = () => {
   const [absentStudentsNames, setAbsentStudentsName] = useState([]);
   const [absentCount, setAbsetCount] = useState();
   const [fullStdCount, setFullStdCount] = useState();
+  const [submissionSuccess, setSubmissionSuccess] = useState(false); // State for tracking submission success
+
 
   useEffect(() => {
     const getAllStudentsByClassName = async () => {
@@ -91,22 +93,38 @@ const AbsentStudents = () => {
   }, [attendanceDispatch, user]);
 
   // Function to determine if a student is absent based on attendance data and current date
+  // const isAbsent = (studentID, id) => {
+  //   const studentAttendance = attendances.find(
+  //     (attendance) =>
+  //       attendance.std_ID === studentID && attendance.classID === id
+  //   );
+
+  //   // Get the current date in the format YYYY-MM-DD
+  //   const currentDate = new Date().toISOString().split("T")[0];
+
+  //   // Check if attendance is for the current date and status is 'absent'
+  //   return (
+  //     !studentAttendance ||
+  //     (studentAttendance.status === "absent" &&
+  //       studentAttendance.date === currentDate)
+  //   );
+  // };
+
   const isAbsent = (studentID, id) => {
+    const currentDate = new Date(); // Get the current date and time
+    const fiveHoursAgo = new Date(currentDate.getTime() - 5 * 60 * 60 * 1000); // Subtract 5 hours
+
     const studentAttendance = attendances.find(
-      (attendance) =>
-        attendance.std_ID === studentID && attendance.classID === id
+        (attendance) =>
+            attendance.std_ID === studentID &&
+            attendance.classID === id &&
+            new Date(attendance.date) >= fiveHoursAgo && // Check if attendance date is after 5 hours ago
+            new Date(attendance.date) <= currentDate // Check if attendance date is before current date
     );
 
-    // Get the current date in the format YYYY-MM-DD
-    const currentDate = new Date().toISOString().split("T")[0];
-
-    // Check if attendance is for the current date and status is 'absent'
-    return (
-      !studentAttendance ||
-      (studentAttendance.status === "absent" &&
-        studentAttendance.date === currentDate)
-    );
-  };
+    // Check if no attendance was recorded or if the student was absent within the past 5 hours
+    return !studentAttendance || studentAttendance.status === "absent";
+};
 
   useEffect(() => {
     // Filter out absent students for the specific class and current date
@@ -154,6 +172,8 @@ const AbsentStudents = () => {
 
     if (response.ok) {
       setError(null);
+      setSubmissionSuccess(true); // Set submission success to true
+
       dispatch({ type: "CREATE_EMAIL", payload: json });
     }
   };
@@ -192,6 +212,10 @@ const AbsentStudents = () => {
         >
           Send to teacher
         </button>
+        {error && <div className="error">{error}</div>}
+          {submissionSuccess && (
+            <div className="success"> Email Sent successfully!</div>
+          )}{" "}
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useClassContext } from "../hooks/useClassContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash , FaEdit} from "react-icons/fa";
 import CreateClass from "../components/CreateClass";
 
 const Clz = () => {
@@ -12,20 +12,14 @@ const Clz = () => {
   const { user } = useAuthContext();
   const { sitedetail, dispatch: sitedispatch } = useSiteDetailsContext();
   const [clzs, setClz] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState("");
+ 
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
   const navigate = useNavigate();
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSubmissionSuccessful, setSubmissionSuccessful] = useState(false);
-
-  const [searchQuery, setSearchQuery] = useState("");
-
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
 
   const filteredClasses = classs.filter(
     (clz) =>
@@ -218,8 +212,11 @@ const Clz = () => {
       
     }
   };
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
-  return (
+  return(
     <div>
       {isModalOpen && (
         <CreateClass onClose={closeModal} onSuccess={handleSubmissionSuccess} />
@@ -227,7 +224,7 @@ const Clz = () => {
       <div className="superAdminDashboardContainer">
         {packageStatus !== "Yes" ? (
           <div>
-            <h1>Processing...!</h1>
+            <h1>Processing ...!</h1>
           </div>
         ) : (
           <div className="instituteTableContainer">
@@ -252,6 +249,7 @@ const Clz = () => {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Fees</th>
+                  <th>Edit</th>
                   <th>Delete</th>
                 </tr>
               </thead>
@@ -266,6 +264,14 @@ const Clz = () => {
                       <td>{clz.teacherEmail}</td>
                       <td>{clz.teacherPhone}</td>
                       <td>{clz.classFees}</td>
+                      <td>
+                      <Link
+                        to={`/updateClz/${clz._id}`}
+                        className="btn btn-success"
+                      >
+                        <FaEdit />
+                      </Link>
+                    </td>
                       <td>
                         <Link
                           to="#"

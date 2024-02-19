@@ -41,6 +41,7 @@ import SuperAdminResetPassword from "./pages/SuperAdminResetPassword.jsx";
 
 // Styling imports
 import "./components/NavBar/NavBar.css";
+import UpdateClass from "./pages/UpdateClass.jsx";
 
 
 function App() {
@@ -168,6 +169,7 @@ function App() {
                 element={<StudentProfile />}
               />
               <Route path="/updateStd/:id" element={<UpdateStudent />} />
+              <Route path ="/updateClz/:id" element={<UpdateClass />} />
 
               <Route path="/absent" element={<AbsentStudents />} />
               <Route path="/startClass" element={<StartClass />} />

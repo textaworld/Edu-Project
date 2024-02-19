@@ -26,7 +26,7 @@ const Students = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `http://localhost:3018/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -73,7 +73,7 @@ const Students = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `http://localhost:3018/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -149,7 +149,7 @@ const Students = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3018/api/students/deleteStudent/${studentId}`,
+        `https://edu-project-backend.onrender.com/api/students/deleteStudent/${studentId}`,
         {
           method: "DELETE",
           headers: {
@@ -175,7 +175,7 @@ const Students = () => {
     const fetchStudents = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3018/api/students/getAllStudentsByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/students/getAllStudentsByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -209,7 +209,7 @@ const Students = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3018/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
