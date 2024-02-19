@@ -9,6 +9,14 @@ const createToken = (_id, exptime) => {
   return jwt.sign({ _id }, process.env.SECRETKEY, { expiresIn: exptime });
 };
 
+// --------- Create exp adte
+const getCurrentDatePlusOneDay = () => {
+  const currentDate = new Date();
+  const oneDayInMillis = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+  const tomorrowTimestamp = currentDate.getTime() + oneDayInMillis; // Timestamp for tomorrow
+  return tomorrowTimestamp;
+};
+
 const adminRegister = async (req, res) => {
   const { email, password, role, instituteId } = req.body;
 
@@ -142,13 +150,15 @@ const adminLogin = async (req, res) => {
       return res.status(400).json({ error: "Incorrect password" });
     }
     const exptime = "1d";
+    const tokenExpDate = getCurrentDatePlusOneDay();
+
     // create a token
     const token = createToken(admin._id, exptime);
     const role = admin.role;
 
     res
       .status(200)
-      .json({ email, role, instituteId: admin.instituteId, token });
+      .json({ email, role, instituteId: admin.instituteId, tokenExpDate, token});
   } catch (error) {
     
     res.status(500).json({ error: "An error occurred during login." });

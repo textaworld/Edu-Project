@@ -11,6 +11,14 @@ const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRETKEY, { expiresIn: "1d" });
 };
 
+// --------- Create exp adte
+const getCurrentDatePlusOneDay = () => {
+  const currentDate = new Date();
+  const oneDayInMillis = 24 * 60 * 60 * 1000; // 1 day in milliseconds
+  const tomorrowTimestamp = currentDate.getTime() + oneDayInMillis; // Timestamp for tomorrow
+  return tomorrowTimestamp;
+};
+
 // --------- Encode a OTP secret to base32
 function encodeToBase32() {
   const inputString = process.env.OTP_SECRET_KEY;
@@ -190,9 +198,9 @@ const verifyLogin = async (req, res) => {
     if (verified) {
       // OTP is valid, user is successfully authenticated
       const token = createToken(superadmin._id);
-
+      const tokenExpDate = getCurrentDatePlusOneDay();
       const role = superadmin.role;
-      res.status(200).json({ email, role, token });
+      res.status(200).json({ email, role, tokenExpDate, token });
     } else {
       // Invalid OTP
       res.status(401).json({ error: "Invalid OTP" });
