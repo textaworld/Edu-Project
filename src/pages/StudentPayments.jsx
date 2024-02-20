@@ -16,6 +16,9 @@ const Payments = () => {
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0); // Add state to store scroll position
+  const [searchTermID, setSearchTermID] = useState("");
+  const [searchTermMonth, setSearchTermMonth] = useState("");
+  const [searchTermClassName, setSearchTermClassName] = useState("");
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
@@ -158,15 +161,23 @@ const Payments = () => {
     }
   }, [dispatch, user, sitedetail._id]);
 
-  const filteredAttendance = paymentss.filter((payment) => {
+  // const filteredAttendance = paymentss.filter((payment) => {
+  //   return (
+  //     payment.std_ID.includes(searchTerm) ||
+  //     (payment.className &&
+  //       payment.className.toLowerCase().includes(searchTerm.toLowerCase())) ||
+  //     (payment.month &&
+  //       payment.month.toLowerCase().includes(searchTerm.toLowerCase())) ||
+  //     (payment.name &&
+  //       payment.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  //   );
+  // });
+
+  const filteredPayments = paymentss.filter((payment) => {
     return (
-      payment.std_ID.includes(searchTerm) ||
-      (payment.className &&
-        payment.className.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (payment.month &&
-        payment.month.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (payment.name &&
-        payment.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      payment.std_ID.includes(searchTermID) &&
+      payment.className.toLowerCase().includes(searchTermClassName.toLowerCase()) &&
+      payment.month.toLowerCase().includes(searchTermMonth.toLowerCase())
     );
   });
 
@@ -198,13 +209,28 @@ const Payments = () => {
             <p>
               You can Filter by Student_ID,Student name , Class name & Month and{" "}
             </p>
-            <input
-              type="text"
-              placeholder="Search by Student_ID , Student name, month & Class name"
-              value={searchTerm}
-              size={100}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <div>
+              <input
+                type="text"
+                placeholder="Search by Student ID"
+                value={searchTermID}
+                onChange={(e) => setSearchTermID(e.target.value)}
+                style={{marginRight:'10px'}}
+              />
+              <input
+                type="text"
+                placeholder="Search by Month"
+                value={searchTermMonth}
+                onChange={(e) => setSearchTermMonth(e.target.value)}
+                style={{marginRight:'10px'}}
+              />
+              <input
+                type="text"
+                placeholder="Search by Class Name"
+                value={searchTermClassName}
+                onChange={(e) => setSearchTermClassName(e.target.value)}
+              />
+            </div>
 
             <table className="instituteTable">
               <thead>
@@ -219,8 +245,8 @@ const Payments = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredAttendance.length > 0 ? (
-                  filteredAttendance.map((payment, index) => {
+                {filteredPayments.length > 0 ? (
+                  filteredPayments.map((payment, index) => {
                     const colomboTime = new Date(payment.date).toLocaleString(
                       "en-US",
                       { timeZone: "Asia/Colombo" }
@@ -239,7 +265,7 @@ const Payments = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="8">No Attendences found</td>
+                    <td colSpan="8">No Payments found</td>
                   </tr>
                 )}
               </tbody>

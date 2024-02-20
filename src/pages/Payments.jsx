@@ -23,6 +23,7 @@ const CreatePayment = () => {
   const [amount, setAmount] = useState("");
   const [month, setMonth] = useState("");
   const [className, setClassName] = useState("");
+  const [email , setEmail] = useState("")
   const [selectedClassId, setSelectedClassId] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState(null);
@@ -83,15 +84,62 @@ const CreatePayment = () => {
       return;
     }
 
-    setStd_ID("");
-    setName("");
-    setAmount("");
-    setSelectedClassId("");
-    setClassName("");
+    // setStd_ID("");
+    // setName("");
+    // setAmount("");
+    // setSelectedClassId("");
+    // setClassName("");
+    console.log(email)
+
     setError(null);
     setSubmissionSuccess(true); // Set submission success to true
+    submitEmail(email , name, amount , className);
     dispatch({ type: "CREATE_PAYMENT", payload: json });
   };
+
+
+  ///
+  console.log(email)
+
+  const submitEmail = async (email, name, amount ,className ) => {
+    console.log(email)
+
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+
+    //const email = stdEmail;
+    const subject = "Inform about your child's class payments";
+    const colomboTime = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Colombo",
+    });
+
+    const message = `Dear parent , \n your child:${name} was paid the ${className} class fees Rs.${amount} at ${colomboTime} `;
+
+    const emailDetails = { email, subject, message };
+
+    const response = await fetch("https://edu-project-backend.onrender.com/api/emails/sendEmail", {
+      method: "POST",
+      body: JSON.stringify(emailDetails),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+      // navigate("/");
+    }
+    if (response.ok) {
+      setError(null);
+      dispatch({ type: "CREATE_EMAIL", payload: json });
+    }
+  };
+
+  ///
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -139,6 +187,7 @@ const CreatePayment = () => {
         if (response.ok) {
           setStd_ID(json.std_ID);
           setName(json.name);
+          setEmail(json.email)
 
           student({ type: "SET_STUDENTS", payload: json });
         }
