@@ -38,7 +38,17 @@ const instituteSchema = new Schema({
   },
   expireTime: {
     type: Date,
+  }, 
+  smsCount: {
+    type: Number,
+    default: 0
   },
+  topUpPrice:{
+    type:Number
+  },
+  smsPrice:{
+    type:Number
+  }
 });
 
 module.exports = mongoose.model("Institute", instituteSchema);

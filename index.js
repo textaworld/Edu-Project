@@ -16,6 +16,8 @@ const PaymentRouter = require("./routes/paymentRoutes");
 const TuteRouter = require("./routes/tuteRoutes");
 const ClassRouter = require("./routes/classRoutes");
 const EmailRouter = require("./routes/emailRoute");
+const SmsRouter = require("./routes/smsRoutes");
+
 
 
 dotenv.config();
@@ -47,6 +49,7 @@ app.use("/api/payments",PaymentRouter);
 app.use("/api/tutes",TuteRouter);
 app.use("/api/class",ClassRouter);
 app.use("/api/emails",EmailRouter);
+app.use("/api/sms",SmsRouter);
 
 
 // connect to db

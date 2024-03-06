@@ -13,6 +13,8 @@ const createInstritute = async (req, res) => {
     packageStatus,
     currentTime,
     expireTime,
+    topUpPrice,
+    smsPrice
   } = req.body;
 
   let emptyFields = [];
@@ -56,6 +58,8 @@ const createInstritute = async (req, res) => {
       packageStatus,
       currentTime,
       expireTime,
+      topUpPrice,
+      smsPrice
     });
     res.status(200).json(institute);
   } catch (error) {
