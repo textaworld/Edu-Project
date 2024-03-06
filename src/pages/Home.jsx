@@ -7,7 +7,6 @@ import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 const Home = () => {
   const { logout } = useLogout();
   const { sitedetail, dispatch } = useSiteDetailsContext();
-  const {sms , dispatch:smsDis} = useSMSContext();
   const { user } = useAuthContext();
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
