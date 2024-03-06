@@ -3,7 +3,6 @@ import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
-import { useSMSContext } from "../hooks/useSMScontext";
 
 const Home = () => {
   const { logout } = useLogout();
