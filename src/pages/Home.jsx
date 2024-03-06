@@ -201,7 +201,7 @@ const Home = () => {
     <div>
       {packageStatus !== "Yes" ? (
         <div>
-          <h1>You need to pay</h1>
+          <h1>Processing ...!</h1>
         </div>
       ) : (
         <div>

@@ -50,7 +50,7 @@ const CreateStudent = () => {
   useEffect(() => {
     const fetchSiteDetails = async () => {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+        `http://localhost:3018/api/site/getone/${user.instituteId}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -72,7 +72,7 @@ const CreateStudent = () => {
     const fetchClassesBySite = async () => {
       try {
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `http://localhost:3018/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -115,7 +115,7 @@ const CreateStudent = () => {
         currentDay +
         currentTime;
 
-      setStd_ID(studentID);
+      //setStd_ID(studentID);
     };
     if (user && sitedetail && sitedetail._id) {
       fetchClassesBySite();
@@ -154,7 +154,7 @@ const CreateStudent = () => {
 
 
     const response = await fetch(
-      "https://edu-project-backend.onrender.com/api/students/createStudent",
+      "http://localhost:3018/api/students/createStudent",
       {
         method: "POST",
         body: JSON.stringify(student),
@@ -217,7 +217,7 @@ const CreateStudent = () => {
 
       const student = { std_ID };
 
-      const response = await fetch("https://edu-project-backend.onrender.com/api/qr/qrGenerator", {
+      const response = await fetch("http://localhost:3018/api/qr/qrGenerator", {
         method: "POST",
         body: JSON.stringify(student),
         headers: {
@@ -293,7 +293,7 @@ const CreateStudent = () => {
 
               <label>
                 Student ID
-                <input value={std_ID} type="text" required disabled />
+                <input value={std_ID} type="text" placeholder="Enter Student ID" required onChange={(e)=> setStd_ID(e.target.value)} />
               </label>
 
               <label>
