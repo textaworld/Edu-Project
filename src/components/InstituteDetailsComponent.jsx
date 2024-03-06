@@ -11,6 +11,8 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
 
  // State variables for managing popup visibility
  const [showCountPopup, setShowCountPopup] = useState(false);
+ const [showSMSPricePopup, setShowSMSPricePopup] = useState(false);
+ const [showTopUpPopup , setShowTopupPopUp] = useState(false);
  const [showEditInstituteDetailsPopup, setShowEditInstituteDetailsPopup] = useState(false);
  const [showNotificationPopup, setShowNotificationPopup] = useState(false);
  const [showPackagePopup, setShowPackagePopup] = useState(false);
@@ -21,6 +23,8 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
  const [newEmail, setNewEmail] = useState("");
  const [newImage, setNewImage] = useState(null);
  const [newCount, setNewCount] = useState("");
+ const [newTopUP , setNewTopup] = useState("");
+ const [newSMS , setNewSMSPrice] =useState("");
  const [newNotification, setNewNotification] = useState("");
  const [instituteDetails, setInstituteDetails] = useState(null);
  const [error, setError] = useState(null);
@@ -36,6 +40,8 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
     const insdetails = getInstituteDetails(instituteId);
     setInstituteDetails(insdetails);
     setNewCount(insdetails.count);
+    setNewTopup(insdetails.topUpPrice);
+    setNewSMSPrice(insdetails.smsPrice);
     setNewName(insdetails.name);
     setNewEmail(insdetails.email);
     setNewNotification(insdetails.notification);
@@ -99,6 +105,33 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
     }
   };
 
+  const handleTopUpUpdate = () => {
+
+    if (newTopUP == "") {
+      setError("please fill TOPUP amount");
+    } else {
+
+      console.log("newTopUp", newTopUP)
+      updateDetails({ topUpPrice: newTopUP });
+      setShowTopupPopUp(false);
+      // Reset error if it was previously set
+      setError(null);
+    }
+  };
+
+  const handleSMSUpdate = () => {
+
+    if (newSMS == "") {
+      setError("please fill sms price");
+    } else {
+
+      console.log("newTopUp", newSMS)
+      updateDetails({ smsPrice: newSMS });
+      setShowSMSPricePopup(false);
+      // Reset error if it was previously set
+      setError(null);
+    }
+  };
   const handleNotificationUpdate = () => {
     if (newNotification == "") {
       setError("please select a value");
@@ -191,7 +224,7 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
             </div>
 
             <div className="detailsSectionPart">
-              <h2>Notification Service </h2>
+              <h2>SMS Service </h2>
               <p> {instituteDetails.notification}</p>
               <div className="instituteAddButtonContainer">
                 <button onClick={() => setShowNotificationPopup(true)}>
@@ -216,6 +249,26 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
               <div className="instituteAddButtonContainer">
                 <button onClick={() => setShowPackagePopup(true)}>
                   Action
+                </button>
+              </div>
+            </div>
+
+            <div className="detailsSectionPart">
+              <h2>SMS TopUp Price </h2>
+              <p> {instituteDetails.topUpPrice}</p>
+              <div className="instituteAddButtonContainer">
+                <button onClick={() => setShowTopupPopUp(true)}>
+                  Update
+                </button>
+              </div>
+            </div>
+
+            <div className="detailsSectionPart">
+              <h2>One SMS Price </h2>
+              <p> {instituteDetails.smsPrice}</p>
+              <div className="instituteAddButtonContainer">
+                <button onClick={() => setShowSMSPricePopup(true)}>
+                Update
                 </button>
               </div>
             </div>
@@ -286,6 +339,105 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
                   className="cancelButton"
                   onClick={() => {
                     setShowCountPopup(false), setError(null);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )} 
+
+{showTopUpPopup && (
+        <div>
+          <div
+            className="overlay"
+            onClick={() => {
+              setShowTopupPopUp(false), setError(null);
+            }}
+          ></div>
+          <div className="create-popup">
+            <div className="popup_topic">
+              <h3>Update TopUp Amount</h3>
+            </div>
+            <div className="create-popup-box">
+              <p>
+                Adjust the topUp amount for your institution by entering the
+                new amount below.
+              </p>
+              <label>
+                <input
+                  type="text"
+                  placeholder="Enter new count"
+                  value={newTopUP}
+                  onChange={(e) => setNewTopup(e.target.value)}
+                  min="0"
+                  title="Enter a valid number"
+                />
+              </label>
+              <div className="errorContainer">
+                {error && <div className="error">{error}</div>}
+              </div>
+
+              <div className="buttonContainer">
+                <button className="addButton" onClick={handleTopUpUpdate}>
+                  Apply Changes
+                </button>
+                <button
+                  className="cancelButton"
+                  onClick={() => {
+                    setShowTopupPopUp(false), setError(null);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+{showSMSPricePopup && (
+        <div>
+          <div
+            className="overlay"
+            onClick={() => {
+              setShowSMSPricePopup(false), setError(null);
+            }}
+          ></div>
+          <div className="create-popup">
+            <div className="popup_topic">
+              <h3>Update TopUp Amount</h3>
+            </div>
+            <div className="create-popup-box">
+              <p>
+                Adjust the SMS price for your institution by entering the
+                new price below.
+              </p>
+              <label>
+                <input
+                  type="text"
+                  placeholder="Enter new count"
+                  value={newSMS}
+                  onChange={(e) => setNewSMSPrice(e.target.value)}
+                  min="0"
+                  title="Enter a valid number"
+                />
+              </label>
+              <div className="errorContainer">
+                {error && <div className="error">{error}</div>}
+              </div>
+
+              <div className="buttonContainer">
+                <button className="addButton" onClick={handleSMSUpdate}>
+                  Apply Changes
+                </button>
+                <button
+                  className="cancelButton"
+                  onClick={() => {
+                    setShowSMSPricePopup(false), setError(null);
                   }}
                 >
                   Cancel

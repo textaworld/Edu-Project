@@ -193,7 +193,8 @@ const QrScn = () => {
     setInstNotification((prevNotification) => {
       if (prevNotification === "Yes") {
         // If instNotification is 'Yes', submit the email
-        submitEmail(studentDetails.email, studentDetails.name, clzName);
+        //submitEmail(studentDetails.email, studentDetails.name, clzName);
+        sendSMS(studentDetails.phone, studentDetails.name, clzName);
       }
       return prevNotification; // Return the current state
     });
@@ -219,6 +220,42 @@ const QrScn = () => {
       alert(`${name}'s Attendance has been recorded!`);
       setError(null);
       dispatch({ type: "CREATE_ATTENDANCE", payload: json });
+    }
+  };
+  const sendSMS = async (phone, stdName, clzName) => {
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+
+    console.log(phone)
+    const to = phone;
+    const colomboTime = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Colombo",
+    });
+
+    const message = `Dear parent , \n your child:${stdName} was attend to the ${clzName} class at ${colomboTime} `;
+
+    const emailDetails = { to, message,instID };
+    console.log(instID)
+
+    const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
+      method: "POST",
+      body: JSON.stringify(emailDetails),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+      navigate("/");
+    }
+    if (response.ok) {
+      setError(null);
+      dispatch({ type: "CREATE_EMAIL", payload: json });
     }
   };
 

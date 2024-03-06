@@ -39,9 +39,13 @@ const InstituteDetails = () => {
     }
   }, [dispatch, adDispatch, user]);
 
+  // const filteredInstitutes = institutes.filter((institute) =>
+  //   institute.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
   const filteredInstitutes = institutes.filter((institute) =>
-    institute.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  institute.name && typeof institute.name === 'string' && institute.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
 
   const handleDelete = async (id) => {
     try {

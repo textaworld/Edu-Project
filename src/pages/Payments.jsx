@@ -4,6 +4,8 @@ import { usePaymentContext } from "../hooks/usePaymentContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useClassContext } from "../hooks/useClassContext";
 import { useStudentContext } from "../hooks/useStudentContext";
+import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
+
 import "../styles/payment.css";
 
 const CreatePayment = () => {
@@ -14,9 +16,9 @@ const CreatePayment = () => {
   const { dispatch } = usePaymentContext();
   const { user } = useAuthContext();
   const { students, dispatch: student } = useStudentContext();
-
+  const { sitedetail, dispatch: institute } = useSiteDetailsContext();
+  const [instNotification, setInstNotification] = useState("");
   const instID = user.instituteId;
-
   const [inst_ID, setInst_ID] = useState();
   const [name, setName] = useState("");
   const [std_ID, setStd_ID] = useState("");
@@ -24,6 +26,7 @@ const CreatePayment = () => {
   const [month, setMonth] = useState("");
   const [className, setClassName] = useState("");
   const [email , setEmail] = useState("")
+  const [phone ,setPhone] = useState("")
   const [selectedClassId, setSelectedClassId] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState(null);
@@ -34,6 +37,34 @@ const CreatePayment = () => {
     const monthName = currentDate.toLocaleString("en-US", { month: "long" });
     setMonth(monthName);
   }, []);
+
+  useEffect(() => {
+    const fetchSiteDetails = async () => {
+      try {
+        const siteDetailsResponse = await fetch(
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
+        const siteDetailsJson = await siteDetailsResponse.json();
+
+        if (siteDetailsResponse.ok) {
+          setInstNotification(siteDetailsJson.notification);
+          institute({ type: "SET_SITE_DETAILS", payload: siteDetailsJson });
+          
+        }
+      } catch (error) {
+        
+      }
+    };
+
+    if (user) {
+      fetchSiteDetails();
+    }
+  }, [user, id, institute]);
+
+  console.log(instNotification)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,11 +124,60 @@ const CreatePayment = () => {
 
     setError(null);
     setSubmissionSuccess(true); // Set submission success to true
-    submitEmail(email , name, amount , className);
+    submitEmail(email, name, amount ,className);
+
+    setInstNotification((prevNotification,) => {
+      if (prevNotification === "Yes") {
+        // If instNotification is 'Yes', submit the email
+        //
+        // sendSMS(studentDetails.phone, studentDetails.name, clzName);
+
+             sendSMS(phone , name, amount , className);
+
+      }
+      return prevNotification; // Return the current state
+    });
+    
+    // sendSMS(phone , name, amount , className);
     dispatch({ type: "CREATE_PAYMENT", payload: json });
   };
 
+  const sendSMS = async (phone, name, amount ,className) => {
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
 
+    console.log(phone)
+    const to = phone;
+    const colomboTime = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Colombo",
+    });
+
+    const message = `Dear parent , \n your child:${name} was paid the ${className} class fees Rs.${amount} at ${colomboTime} `;
+
+    const emailDetails = { to, message,instID };
+    console.log(instID)
+
+    const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
+      method: "POST",
+      body: JSON.stringify(emailDetails),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+      //navigate("/");
+    }
+    if (response.ok) {
+      setError(null);
+      dispatch({ type: "CREATE_EMAIL", payload: json });
+    }
+  };
   ///
   console.log(email)
 
@@ -110,7 +190,7 @@ const CreatePayment = () => {
     }
 
     //const email = stdEmail;
-    const subject = "Inform about your child's class payments";
+    const subject = "Inform about your child's class Attendance";
     const colomboTime = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Colombo",
     });
@@ -188,6 +268,7 @@ const CreatePayment = () => {
           setStd_ID(json.std_ID);
           setName(json.name);
           setEmail(json.email)
+          setPhone(json.phone);
 
           student({ type: "SET_STUDENTS", payload: json });
         }
