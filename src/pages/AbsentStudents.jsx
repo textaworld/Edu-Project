@@ -30,6 +30,25 @@ const AbsentStudents = () => {
   const [instNotification, setInstNotification] = useState("");
   const instID = user.instituteId;
 
+
+  const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
+
+  useEffect(() => {
+
+    const TopP = sitedetail.topUpPrice
+    const SMSP = sitedetail.smsPrice
+
+    // console.log(TopP)
+    // console.log(SMSP)
+
+    console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
+
+    const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
+    setRemainingSMSCount(remSmsCount);
+  }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
+
+  console.log(remainingSMSCount)
+
   useEffect(() => {
     // Function to hide button for 2 hours
     const hideButtonForTwoHours = () => {
@@ -177,18 +196,23 @@ const AbsentStudents = () => {
 
   const sendSMSs = async () => {
     try {
-
-      setInstNotification((prevNotification) => {
-        if (prevNotification === "Yes") {
-          // If instNotification is 'Yes', submit the email
-          //submitEmail(studentDetails.email, studentDetails.name, clzName);
-          // sendSMS(studentDetails.phone, studentDetails.name, clzName);
-
-           sendSMSToTeacher();
-       sendParentSmss();
-        }
-        return prevNotification; // Return the current state
-      });
+      
+      if(remainingSMSCount >= 10) {
+        setInstNotification((prevNotification) => {
+          if (prevNotification === "Yes") {
+            // If instNotification is 'Yes', submit the email
+            //submitEmail(studentDetails.email, studentDetails.name, clzName);
+            // sendSMS(studentDetails.phone, studentDetails.name, clzName);
+  
+             sendSMSToTeacher();
+         sendParentSmss();
+          }
+          return prevNotification; // Return the current state
+        });
+      }else {
+        alert("Your SMS account balance is low. Please topUp")
+      }
+      
       // await sendSMSToTeacher();
       // await sendParentSmss();
       await submitEmail();
@@ -204,6 +228,7 @@ const AbsentStudents = () => {
   const sendSMSToParents = async (stdPhone, stdName, className) => {
     const to = stdPhone;
     const message = `Dear parent, your child ${stdName} was absent from today's ${className} class.`;
+    //const message = `ඔබේ දරුවා:${stdName} අද දින ${className} පන්තියට පැමිණ නැත`
     const emailDetails = { to, message, instID };
 
     const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {

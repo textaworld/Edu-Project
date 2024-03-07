@@ -28,8 +28,25 @@ const QrScn = () => {
   const [scanning, setScanning] = useState(false);
   const [qrResult, setQrResult] = useState(null);
   const [clzName, setClassName] = useState("");
+  
 
-  console.log("cname ", clzName)
+  const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
+
+  useEffect(() => {
+
+    const TopP = sitedetail.topUpPrice
+    const SMSP = sitedetail.smsPrice
+
+    console.log(TopP)
+    console.log(SMSP)
+
+    console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
+
+    const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
+    setRemainingSMSCount(remSmsCount);
+  }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
+
+  console.log(remainingSMSCount)
 
   useEffect(() => {
     const fetchSiteDetails = async () => {
@@ -190,14 +207,19 @@ const QrScn = () => {
       clzName,
     };
 
-    setInstNotification((prevNotification) => {
-      if (prevNotification === "Yes") {
-        // If instNotification is 'Yes', submit the email
-        //submitEmail(studentDetails.email, studentDetails.name, clzName);
-        sendSMS(studentDetails.phone, studentDetails.name, clzName);
-      }
-      return prevNotification; // Return the current state
-    });
+    if(remainingSMSCount >= 10){
+      setInstNotification((prevNotification) => {
+        if (prevNotification === "Yes") {
+          // If instNotification is 'Yes', submit the email
+          //submitEmail(studentDetails.email, studentDetails.name, clzName);
+          sendSMS(studentDetails.phone, studentDetails.name, clzName);
+        }
+        return prevNotification; // Return the current state
+      });
+    }else{
+      alert("your SMS Account balance is low. please topup!")
+    }
+    
 
     const response = await fetch(
       "https://edu-project-backend.onrender.com/api/attendance/createAttendance",

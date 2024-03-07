@@ -27,10 +27,29 @@ const CreatePayment = () => {
   const [className, setClassName] = useState("");
   const [email , setEmail] = useState("")
   const [phone ,setPhone] = useState("")
+  const [clzzz , setClz] = useState("");
   const [selectedClassId, setSelectedClassId] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState(null);
   const [submissionSuccess, setSubmissionSuccess] = useState(false); // State for tracking submission success
+
+  const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
+
+  useEffect(() => {
+
+    const TopP = sitedetail.topUpPrice
+    const SMSP = sitedetail.smsPrice
+
+    console.log(TopP)
+    console.log(SMSP)
+
+    console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
+
+    const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
+    setRemainingSMSCount(remSmsCount);
+  }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
+
+  console.log(remainingSMSCount)
 
   useEffect(() => {
     const currentDate = new Date();
@@ -125,18 +144,24 @@ const CreatePayment = () => {
     setError(null);
     setSubmissionSuccess(true); // Set submission success to true
     submitEmail(email, name, amount ,className);
+    
 
-    setInstNotification((prevNotification,) => {
-      if (prevNotification === "Yes") {
-        // If instNotification is 'Yes', submit the email
-        //
-        // sendSMS(studentDetails.phone, studentDetails.name, clzName);
-
-             sendSMS(phone , name, amount , className);
-
-      }
-      return prevNotification; // Return the current state
-    });
+    if(remainingSMSCount >= 10){
+      setInstNotification((prevNotification,) => {
+        if (prevNotification === "Yes") {
+          // If instNotification is 'Yes', submit the email
+          //
+          // sendSMS(studentDetails.phone, studentDetails.name, clzName);
+  
+               sendSMS(phone , name, amount , className);
+  
+        }
+        return prevNotification; // Return the current state
+      });
+    }else{
+      alert("Your SMS account balance is low. Please Topup")
+    }
+    
     
     // sendSMS(phone , name, amount , className);
     dispatch({ type: "CREATE_PAYMENT", payload: json });
@@ -269,6 +294,7 @@ const CreatePayment = () => {
           setName(json.name);
           setEmail(json.email)
           setPhone(json.phone);
+          setClz(json.classs)
 
           student({ type: "SET_STUDENTS", payload: json });
         }
@@ -283,11 +309,15 @@ const CreatePayment = () => {
     }
   }, [student, user, id]);
 
+  console.log("clz",clzzz)
+
   return (
     <div className="container">
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
           <h2>Make Payments</h2>
+
+      
           <div className="form-group">
             <label htmlFor="std_ID">Student ID</label>
             <input
@@ -357,6 +387,15 @@ const CreatePayment = () => {
          
         </form>
       </div>
+      <div className="enrolled-classes">
+      <h4>Student's Enrolled Classes</h4>
+      <ul>
+        {Array.isArray(clzzz) &&
+          clzzz.map((classObj) => (
+            <li key={classObj._id}>{classObj.subject}</li>
+          ))}
+      </ul>
+    </div>
     </div>
   );
 };
