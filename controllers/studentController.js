@@ -162,6 +162,44 @@ const getAllStudentsByInsId = async (req, res) => {
   }
 };
 
+
+
+
+const getAllStudentsBySubject = async (req, res) => {
+  const { id } = req.params;
+  const { subject } = req.query;
+
+  try {
+
+    
+    const students = await studentModel.find({
+      inst_ID: id,
+      "classs.subject": subject
+    });
+
+    if (!students || students.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No students found for the given subject",
+        data: null
+      });
+    }
+
+    // Extract phone numbers of students
+    const phoneNumbers = students.map(student => student.phone);
+
+    res.status(200).json({
+      success: true,
+      message: "Phone numbers of students for the given subject fetched successfully",
+      data: phoneNumbers
+    });
+  } catch (error) {
+    console.error("Error fetching students by subject:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
+
 module.exports = {
   createStudent,
   getAllStudents,
@@ -171,4 +209,5 @@ module.exports = {
   getStudentDetailsBySTD_ID,
   getAllStudentsByClassID,
   getAllStudentsByInsId,
+  getAllStudentsBySubject
 };

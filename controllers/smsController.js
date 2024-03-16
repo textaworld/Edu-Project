@@ -5,7 +5,7 @@ const instituteModel = require('../models/instituteModel');
 const sendSMS = async (req, res) => {
     try {
         const { to, message,instID } = req.body;
-        console.log(to)
+        console.log(message)
 
         const user_id = "26730";
         const api_key = "tmGnA2446kmhvuUHjyHl";
@@ -13,6 +13,7 @@ const sendSMS = async (req, res) => {
        // const _id = id
 
        console.log("id",instID)
+       console.log("to",to)
 
         // Make sure required fields are present
         if (!user_id || !api_key || !sender_id || !to || !message) {
