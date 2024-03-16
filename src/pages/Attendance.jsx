@@ -28,7 +28,7 @@ const Attendence = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `http://localhost:3018/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -71,7 +71,7 @@ const Attendence = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `http://localhost:3018/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -145,7 +145,7 @@ const Attendence = () => {
     const fetchAttendences = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3018/api/attendance/getAllAttendancesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/attendance/getAllAttendancesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -259,11 +259,11 @@ const downloadExcel = () => {
   return (
     <div>
       <div className="superAdminDashboardContainer">
-        {/* {packageStatus !== "Yes" ? (
+        {packageStatus !== "Yes" ? (
           <div>
-            <h1>You need to pay</h1>
+            <h1>Processing...!</h1>
           </div>
-        ) : ( */}
+        ) : (
           <div className="instituteTableContainer">
             <input
               type="text"
@@ -320,7 +320,7 @@ const downloadExcel = () => {
               </tbody>
             </table>
           </div>
-        {/* )}  */}
+        )}  
       </div>
     </div>
   );

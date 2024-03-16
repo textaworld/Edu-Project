@@ -21,7 +21,7 @@ const HomeSclAdmin = () => {
 
       const fetchSiteDetails = async () => {
         const response = await fetch(
-          `http://localhost:3018/api/site/getone/${user.instituteId}`,
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -64,7 +64,7 @@ const HomeSclAdmin = () => {
       const updateDetails = async (data) => {
         try {
           const response = await fetch(
-            `http://localhost:3018/api/institute/update/${user.instituteId}`,
+            `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
             {
               method: "PATCH",
               headers: {

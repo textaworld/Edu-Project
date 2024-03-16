@@ -30,7 +30,7 @@ const NavBar = () => {
   // useEffect(() => {
   //   const fetchSiteDetails = async () => {
   //     try {
-  //       const response = await fetch(`http://localhost:3018/api/site/getone/${user.instituteId}`, {
+  //       const response = await fetch(`https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`, {
   //         headers: { Authorization: `Bearer ${user.token}` },
   //       });
 

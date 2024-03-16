@@ -25,7 +25,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
 
     const admin = { email, password, role, instituteId };
 
-    const response = await fetch("http://localhost:3018/api/admin/register", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/admin/register", {
       method: "POST",
       body: JSON.stringify(admin),
       headers: {

@@ -55,7 +55,7 @@ const StartSchool = () => {
     const fetchSiteDetails = async () => {
       try {
         const siteDetailsResponse = await fetch(
-          `http://localhost:3018/api/site/getone/${user.instituteId}`,
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -211,7 +211,7 @@ useEffect(() => {
   const fetchStudentDetails = async (std_ID, id) => {
     try {
       const response = await fetch(
-        `http://localhost:3018/api/students/getStudentByStd_Id/${std_ID}`,
+        `https://edu-project-backend.onrender.com/api/students/getStudentByStd_Id/${std_ID}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -283,7 +283,7 @@ useEffect(() => {
     
 
     const response = await fetch(
-      "http://localhost:3018/api/attendance/createAttendance",
+      "https://edu-project-backend.onrender.com/api/attendance/createAttendance",
       {
         method: "POST",
         body: JSON.stringify(stdAttendance),
@@ -330,7 +330,7 @@ useEffect(() => {
     const emailDetails = { to, message,instID };
     //console.log(instID)
 
-    const response = await fetch("http://localhost:3018/api/sms/send-message", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
       method: "POST",
       body: JSON.stringify(emailDetails),
       headers: {
@@ -367,7 +367,7 @@ useEffect(() => {
 
     const emailDetails = { email, subject, message };
 
-    const response = await fetch("http://localhost:3018/api/emails/sendEmail", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/emails/sendEmail", {
       method: "POST",
       body: JSON.stringify(emailDetails),
       headers: {
@@ -393,7 +393,7 @@ useEffect(() => {
       try {
         console.log("cID",id)
         const response = await fetch(
-          `http://localhost:3018/api/class/getClassDetailsByClassID/${id}`,
+          `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }

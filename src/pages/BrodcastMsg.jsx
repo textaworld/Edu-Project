@@ -32,7 +32,7 @@ const BrodcastMsg = () => {
           try {
             console.log(sitedetail._id)
             const response = await fetch(
-              `http://localhost:3018/api/class/getAllClassesByInsId/${sitedetail._id}`,
+              `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
               {
                 headers: { Authorization: `Bearer ${user.token}` },
               }
@@ -66,7 +66,7 @@ const BrodcastMsg = () => {
         const fetchStudentsBySubject = async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3018/api/students/getAllStudentsBySubject/${sitedetail._id}/subject?subject=${selectedClass}`,
+                    `https://edu-project-backend.onrender.com/api/students/getAllStudentsBySubject/${sitedetail._id}/subject?subject=${selectedClass}`,
                     {
                         headers: { Authorization: `Bearer ${user.token}` },
                     }
@@ -105,7 +105,7 @@ const sendSMSToParent = async (phoneNumber) => {
         const messageText = message;
         const instID = sitedetail._id;
         const emailDetails = { to: phoneNumber, message: messageText, instID };
-        const response = await fetch("http://localhost:3018/api/sms/send-message", {
+        const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
             method: "POST",
             body: JSON.stringify(emailDetails),
             headers: {

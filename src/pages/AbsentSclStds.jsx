@@ -70,7 +70,7 @@ const AbsentSclStds = () => {
     const fetchSiteDetails = async () => {
       try {
         const siteDetailsResponse = await fetch(
-          `http://localhost:3018/api/site/getone/${user.instituteId}`,
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -99,7 +99,7 @@ const AbsentSclStds = () => {
     const getAllStudentsByClassName = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3018/api/students/getAllStudentsByInsId/${user.instituteId}`,
+          `https://edu-project-backend.onrender.com/api/students/getAllStudentsByInsId/${user.instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -149,7 +149,7 @@ const AbsentSclStds = () => {
 //     const getAllStudentsByClassName = async () => {
 //       try {
 //         const response = await fetch(
-//           `http://localhost:3018/api/students/getAllStudentsByClassID/${id}`,
+//           `https://edu-project-backend.onrender.com/api/students/getAllStudentsByClassID/${id}`,
 //           {
 //             headers: { Authorization: `Bearer ${user.token}` },
 //           }
@@ -173,7 +173,7 @@ const AbsentSclStds = () => {
   const fetchClasses = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:3018/api/class/getClassDetailsByClassID/${id}`,
+        `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -206,7 +206,7 @@ const AbsentSclStds = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       const response = await fetch(
-        "http://localhost:3018/api/attendance/getAllAttendance",
+        "https://edu-project-backend.onrender.com/api/attendance/getAllAttendance",
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -348,7 +348,7 @@ useEffect(() => {
           };
 
           // Send SMS via API
-          const response = await fetch("http://localhost:3018/api/sms/send-message", {
+          const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -435,7 +435,7 @@ useEffect(() => {
   //   //const message = `ඔබේ දරුවා:${stdName} අද දින ${className} පන්තියට පැමිණ නැත`
   //   const emailDetails = { to, message, instID };
 
-  //   const response = await fetch("http://localhost:3018/api/sms/send-message", {
+  //   const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
   //     method: "POST",
   //     body: JSON.stringify(emailDetails),
   //     headers: {
@@ -463,7 +463,7 @@ useEffect(() => {
      // const message = `Hello sir,\nFull Student Count: ${fullStdCount}\nAbsent Students: ${absentCount}\nAbsent Students' Names: ${absentStudentsNames.join("\n")}`;
       const emailDetails = { to, message, instID };
   
-      const response = await fetch("http://localhost:3018/api/sms/send-message", {
+      const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
         method: "POST",
         body: JSON.stringify(emailDetails),
         headers: {
@@ -490,7 +490,7 @@ useEffect(() => {
         try {
           // Fetch class details including teacher information
           const response = await fetch(
-            `http://localhost:3018/api/class/getClassDetailsByClassID/${classId}`,
+            `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${classId}`,
             {
               headers: { Authorization: `Bearer ${user.token}` },
             }
@@ -564,7 +564,7 @@ useEffect(() => {
   
   //     const emailDetails = { email, subject, message };
   
-  //     const response = await fetch("http://localhost:3018/api/emails/sendEmail", {
+  //     const response = await fetch("https://edu-project-backend.onrender.com/api/emails/sendEmail", {
   //       method: "POST",
   //       body: JSON.stringify(emailDetails),
   //       headers: {
