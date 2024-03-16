@@ -125,18 +125,18 @@
 
 .id-card-container {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    background: linear-gradient(to right, #1e90ff, white);
     padding: 25px;
     width: 450px;
-    height: 250px;
+    height: 260px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
   }
   
   .id-card {
-    background-color: #FFD977;
-    height: 30px;
+    background-color: #1e90ff ;
+    height: 40px;
     border-radius: 0px 0px 10px 10px;
     position: absolute;
     bottom: 0;
