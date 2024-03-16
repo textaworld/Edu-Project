@@ -42,7 +42,7 @@ import SuperAdminResetPassword from "./pages/SuperAdminResetPassword.jsx";
 // Styling imports
 import "./components/NavBar/NavBar.css";
 import UpdateClass from "./pages/UpdateClass.jsx";
-import { SmsContextProvider } from "./context/SmsContext.jsx";
+
 import HomeSclAdmin from "./pages/HomeSclAdmin.jsx";
 import StartSchool from "./pages/StartSchool.jsx";
 import BrodcastMsg from "./pages/BrodcastMsg.jsx";
