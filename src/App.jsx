@@ -152,14 +152,14 @@ function App() {
                       <TuteContextProvider>
                         <PaymentsContextProvider>
                           <EmailContextProvider>
-                            <SmsContextProvider>
+                            
                               {/* <React.Fragment> */}
                               <div className="navbar-wrapper">
                                 <NavBar />
                               </div>
                               <UserRoleAuth userRole={"ADMIN"} />
                               {/* </React.Fragment> */}
-                            </SmsContextProvider>
+                            
                           </EmailContextProvider>
                         </PaymentsContextProvider>
                       </TuteContextProvider>
