@@ -161,7 +161,7 @@ const handleClassSelect = (event) => {
                 <form style={{ display: 'inline-block', textAlign: 'left' }}>
 
                     <div>
-                    <label htmlFor="grade">Grade: <br /></label>
+                    <label htmlFor="grade">Grade & Class: <br /></label>
     
     <select style={{ margin: '10px auto', height: '30px' }} value={selectedClass} onChange={handleClassSelect}>
         <option value="">Select a class</option>
