@@ -18,8 +18,163 @@ const BrodcastMsg = () => {
     const [classSubject,setClassSubject] = useState([]);
     const [selectedClass, setSelectedClass] = useState("");
     const [classes, setClasses] = useState([]);
+   
+  const [packageStatus, setPackageStatus] = useState("");
+  const [newPackageStatus, setNewPackageStatus] = useState("");
+  const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
+  const [instNotification, setInstNotification] = useState("");
+  const [buttonClicked, setButtonClicked] = useState(false); // State to track button click
+  const [hideButton, setHideButton] = useState(false);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
     const instID = sitedetail._id;
+
+    useEffect(() => {
+        // Function to hide button for 2 hours
+        const hideButtonForTwoHours = () => {
+          setHideButton(true);
+          setTimeout(() => {
+            setHideButton(false);
+          }, 2 * 60 * 60 * 1000); // 2 hours in milliseconds
+        };
+      
+        if (buttonClicked) {
+          hideButtonForTwoHours(); // Call the function to hide button after click
+        }
+      }, [buttonClicked]);
+
+    const fetchSiteDetails = async () => {
+        const response = await fetch(
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
+        const json = await response.json();
+    
+        if (response.ok) {
+          setNewPackageStatus(json.packageStatus);
+          setInstNotification(json.notification);
+    
+          dispatch({ type: "SET_SITE_DETAILS", payload: json });
+    
+          // Check if expiration check has already been performed
+          const expirationCheckPerformed = localStorage.getItem(
+            "expirationCheckPerformed"
+          );
+    
+          if (!expirationCheckPerformed) {
+            const interval = setInterval(() => {
+              // Convert string representations to Date objects
+              const currentTime = new Date();
+              const expireTime = new Date(json.expireTime);
+              //console.log(expireTime)
+              if (currentTime > expireTime) {
+                const status = "Deactivate";
+                updateDetails({ packageStatus: status });
+                setPackageStatus("No");
+                clearInterval(interval);
+                localStorage.setItem("expirationCheckPerformed", "true");
+              } else {
+                setPackageStatus("Yes");
+              }
+            }, 1000);
+            // Check every second (adjust as needed)
+          } else {
+            setPackageStatus("No"); // Set 'No' if expiration check already performed
+          }
+        }
+      };
+    
+    
+      
+    
+      const updateDetails = async (data) => {
+        try {
+          const response = await fetch(
+            `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
+            {
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+              },
+              body: JSON.stringify(data),
+            }
+          );
+    
+          if (!response.ok) {
+            throw new Error(`Failed to update details: ${response.status}`);
+          }
+    
+          dispatch({
+            type: "UPDATE_INSTITUTE",
+            payload: { _id: sitedetail._id, data },
+          });
+    
+          //setInstituteDetails(getInstituteDetails(instituteId));
+        } catch (error) {
+          
+          // Handle error (e.g., display an error message)
+        }
+      };
+    
+      const handleRestartProcess = async () => {
+        if (newPackageStatus === "Active") {
+          // Clear the expiration check flag in localStorage
+          localStorage.removeItem("expirationCheckPerformed");
+    
+          // Update newPackageStatus to 'Deactive' call the API and update
+        }
+    
+        // Call fetchSiteDetails to restart the process
+        await fetchSiteDetails();
+      };
+    
+      useEffect(() => {
+        let expirationCheckPerformed;
+    
+        if (user) {
+          fetchSiteDetails();
+        }
+    
+        if (expirationCheckPerformed && packageStatus === "No") {
+          // Restart the process if expiration check performed and package status is 'No'
+          handleRestartProcess();
+        }
+    
+        return () => {
+          // Cleanup logic if needed
+        };
+      }, [dispatch, user, packageStatus]);
+    
+      useEffect(() => {
+        // Check if expiration check has already been performed
+        const expirationCheckPerformed = localStorage.getItem(
+          "expirationCheckPerformed"
+        );
+    
+        if (expirationCheckPerformed && packageStatus === "No") {
+          // Restart the process if expiration check performed and package status is 'No'
+          handleRestartProcess();
+        }
+      }, [packageStatus]);
+    
+      
+
+      useEffect(() => {
+
+        const TopP = sitedetail.topUpPrice
+        const SMSP = sitedetail.smsPrice
+    
+        //console.log(TopP)
+        //console.log(SMSP)
+    
+        //console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
+    
+        const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
+        setRemainingSMSCount(remSmsCount);
+      }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
 
     // const handleSubmit = (event) => {
     //     event.preventDefault(); // Prevents the default form submission behavior
@@ -142,7 +297,20 @@ const sendSMSToParent = async (phoneNumber) => {
 const sendParentSmss = async () => {
     try {
         for (const phoneNumber of phoneNumbers) {
-            await sendSMSToParent(phoneNumber);
+
+            if(remainingSMSCount >= 10) {
+                setInstNotification((prevNotification) => {
+                  if (prevNotification === "Yes") {
+                     sendSMSToParent(phoneNumber);
+                  }
+                  return prevNotification; // Return the current state
+                });
+              }else {
+                alert("Your SMS account balance is low. Please topUp")
+              }
+              setButtonClicked(true);
+              setSubmissionSuccess(true);
+            
         }
     } catch (error) {
         console.error(`Error sending SMS:`, error);
@@ -156,6 +324,11 @@ const handleClassSelect = (event) => {
 
     
     return (
+        <div>{packageStatus !== "Yes" ? (
+            <div>
+              <h1>Processing</h1>
+            </div>
+          ) : (
         
             <div style={{ textAlign: 'center' ,marginTop:'50px'}}>
                 <form style={{ display: 'inline-block', textAlign: 'left' }}>
@@ -198,11 +371,18 @@ const handleClassSelect = (event) => {
                             borderRadius: "5px",
                             cursor: "pointer",
                             marginLeft: "0px",
+                            display: hideButton ? "none" : "block"
                         }}
                     >
                         Send SMS
                     </button>
+                    {error && <div className="error">{error}</div>}
+        {submissionSuccess && (
+          <div className="success">SMS sent successfully!</div>
+        )}
                 </form>
+            </div>
+             )} 
             </div>
     );
 };
