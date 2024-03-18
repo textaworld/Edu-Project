@@ -330,36 +330,35 @@ const handleClassSelect = (event) => {
             </div>
           ) : (
         
-            <div style={{ textAlign: 'center' ,marginTop:'50px'}}>
-                <form style={{ display: 'inline-block', textAlign: 'left' }}>
-
-                    <div>
-                    <label htmlFor="grade">Grade & Class: <br /></label>
-    
-    <select style={{ margin: '10px auto', height: '30px' }} value={selectedClass} onChange={handleClassSelect}>
-        <option value="">Select a class</option>
-        {classes.map((classObj) => (
-            <option key={classObj._id} value={classObj.subject}>
-                {classObj.subject}
-            </option>
-        ))}
-    </select>
-    <br />
+            <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ textAlign: 'left', marginRight: '20px' }}>
+                    <div style={{ marginBottom: '50px' , marginLeft:'400px' }}>
+                        <label htmlFor="grade">Grade & Class: <br /></label>
+                        <select style={{ margin: '10px auto', height: '30px' }} value={selectedClass} onChange={handleClassSelect}>
+                            <option value="">Select a class</option>
+                            {classes.map((classObj) => (
+                                <option key={classObj._id} value={classObj.subject}>
+                                    {classObj.subject}
+                                </option>
+                            ))}
+                        </select>
+                        <br />
                     </div>
-
-
+                </div>
+        
+                <div style={{ textAlign: 'right' , marginRight:'400px'}}>
                     <div>
-                    <label htmlFor="message">Message: <br /></label>
-                    <textarea
-                        id="message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        style={{ margin: '10px auto', width: '300px', height: '100px' }}
-                    />
-                    <br />
+                        <label htmlFor="message" style={{marginRight:'230px'}}>Message: <br /></label>
+                        <textarea
+                            id="message"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                            style={{ margin: '10px auto', width: '300px', height: '100px' }}
+                        />
+                        <br />
                     </div>
-                    
-                    
+        
                     <button
                         type="button"
                         onClick={sendParentSmss}
@@ -377,11 +376,15 @@ const handleClassSelect = (event) => {
                         Send SMS
                     </button>
                     {error && <div className="error">{error}</div>}
-        {submissionSuccess && (
-          <div className="success">SMS sent successfully!</div>
-        )}
-                </form>
+                    {submissionSuccess && (
+                        <div className="success">SMS sent successfully!</div>
+                    )}
+                </div>
             </div>
+        </div>
+        
+
+
              )} 
             </div>
     );
