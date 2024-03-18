@@ -304,6 +304,7 @@ useEffect(() => {
 
       const absentStudents = students.filter((student) => isAbsent(student.std_ID));
       setAbsentStudents(absentStudents);
+      setAbsentCount(absentStudents.length);
     }
   };
 
@@ -508,8 +509,18 @@ useEffect(() => {
                 .map(student => student.name)
                 .join(", ");
               //console.log(absentStudentsForClass);
+              const absentStudentsCountForClass = absentStudents.filter(student => {
+                return student.classs.some(cls => cls._id === classId);
+              });
+
+             // const fullStudentCountForClass = classJson.students.length ;
+
+              const absentStudentCountForClass = absentStudentsCountForClass.length;
+
+              //console.log("ab",absentStudentCountForClass)
+
               
-              const message = `Dear teacher, the following students were absent today in ${className} class: ${absentStudentsForClass}`;
+              const message = `Dear teacher, ${absentStudentCountForClass} students were absent today in ${className} class. Following students were absent today ${absentStudentsForClass}`;
               
               // Send SMS to teacher
               await sendSMSToTeacher(teacherPhone, message);
@@ -595,6 +606,7 @@ useEffect(() => {
           <tr className="test">
             <th>SID</th>
             <th>Name</th>
+            <th>Class</th>
             <th>Email</th>
           </tr>
         </thead>
@@ -603,7 +615,16 @@ useEffect(() => {
             <tr key={index}>
               <td>{student.std_ID}</td>
               <td>{student.name}</td>
+              <td>
+              {student.classs.map((classObj, index) => (
+                <span key={index}>
+                  {classObj.subject}
+                  {index !== student.classs.length - 1 && ", "}
+                </span>
+              ))}
+            </td>
               <td>{student.email}</td>
+              
             </tr>
           ))}
         </tbody>
@@ -623,6 +644,7 @@ useEffect(() => {
         >
           Send Emails
         </button> */}
+        <h3 style={{marginRight:'30px'}}> Today Absent Student Count: {absentCount}</h3>
         <button
   onClick={handleButtonClick}
   style={{

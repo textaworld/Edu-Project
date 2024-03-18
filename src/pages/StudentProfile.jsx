@@ -40,8 +40,19 @@ const StudentProfile = () => {
         <strong>Address:</strong> {studentdata.address}
       </div>
       <div style={{ marginBottom: "10px" }}>
-        <strong>Phone:</strong> {studentdata.phone}
+        <strong>Phoned:</strong> {studentdata.phone}
       </div>
+
+      <div style={{ marginBottom: "10px" }}>
+          <strong>Class:</strong>{" "}
+          {studentdata.classs.map((classObj, index) => (
+            <span key={index}>
+              {classObj.subject}
+              {index !== studentdata.classs.length - 1 && ", "}
+            </span>
+          ))}
+        </div>
+      
       </div>
       {/* 
       Display the image using the imageUrl 

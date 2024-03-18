@@ -160,7 +160,7 @@ useEffect(() => {
             // Restart scanning after 30 seconds
             setTimeout(() => {
               scanningActive = true;
-            }, 10000);
+            }, 5000);
           }
         });
       } catch (error) {
