@@ -231,7 +231,7 @@ const adminForgotPassword = async (req, res) => {
               <h2>Reset password</h2>
               <p>Hello,</p>
               <p>You have requested to reset your password. Please click on the following link to reset your password:</p>
-              <p><a href="http://localhost:5173/resetpassword/${admin._id}/${token}" class="reset-link">Reset Password</a></p>
+              <p><a href="https://edu-project-frontend.onrender.com/resetpassword/${admin._id}/${token}" class="reset-link">Reset Password</a></p>
               <p>If you did not request this, please ignore this email.</p>
             </div>
           </body>
