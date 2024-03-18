@@ -30,7 +30,7 @@ const BrodcastMsg = () => {
     useEffect(() => {
         const fetchClasses = async () => {
           try {
-            console.log(sitedetail._id)
+           // console.log(sitedetail._id)
             const response = await fetch(
               `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
               {
@@ -38,7 +38,7 @@ const BrodcastMsg = () => {
               }
             );
             const json = await response.json();
-              console.log(json.data)
+             // console.log(json.data)
               const subjectsArray = json.data.map((classObj) => classObj.subject);
               setClassSubject(subjectsArray);
               setClasses(json.data);
@@ -62,43 +62,60 @@ const BrodcastMsg = () => {
      
   
 
-    useEffect(() => {
+      useEffect(() => {
         const fetchStudentsBySubject = async () => {
             try {
+                if (!selectedClass) return; // Return if no class is selected
+    
                 const response = await fetch(
-                    `https://edu-project-backend.onrender.com/api/students/getAllStudentsBySubject/${sitedetail._id}/subject?subject=${selectedClass}`,
+                    `https://edu-project-backend.onrender.com/api/students/getAllStudentsBySubject/${instID}/subject?subject=${selectedClass}`,
                     {
                         headers: { Authorization: `Bearer ${user.token}` },
                     }
                 );
                 const json = await response.json();
     
-                console.log("API Response:", json.data); // Log the entire response
+               // console.log("API Response:", json.data); // Log the entire response
     
                 if (response.ok) {
                     // Handle the response here
                     // For example, dispatch an action to set the students with phone numbers
                     dispatch({ type: "SET_STUDENTS_WITH_PHONE_NUMBERS", payload: json.data });
+                
+                    // Check if json.data is not empty
+                    if (json.data && json.data.length > 0) {
+                        // Log the structure of json.data
+                       // console.log("Data Structure:", json.data);
+                
+                        // Directly use the array of phone numbers as phoneNumbers
+                        const phonesArray = Array.isArray(json.data) ? json.data : [json.data];
 
-                    const phonesArray = json.data
-                    console.log(phonesArray)
-                    setPhoneNumbers(phonesArray); 
+                        //console.log("Phone Numbers:", phonesArray);
+                        setPhoneNumbers(phonesArray);
+                    } else {
+                        console.error("Empty data returned");
+                    }
                 }
+                
+                
+                
             } catch (error) {
                 console.error("Error fetching students by subject:", error);
             }
         };
     
         // Check if a subject is selected before fetching students
-        if (classSubject && user) {
+        if (selectedClass && user) {
             fetchStudentsBySubject();
         }
-    }, [dispatch, sitedetail._id, classSubject, user.token]);
+    }, [dispatch, instID, selectedClass, user.token]);
+    
 
 
-console.log("phoneNumbers",phoneNumbers)
+//console.log(classSubject)
+//console.log("phoneNumbers",phoneNumbers)
 
-console.log("selectedClz",selectedClass)
+//console.log("selectedClz",selectedClass)
 
 const sendSMSToParent = async (phoneNumber) => {
     try {
