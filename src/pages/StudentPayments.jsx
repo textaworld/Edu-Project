@@ -4,6 +4,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { usePaymentContext } from "../hooks/usePaymentContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 import { FaTrash } from "react-icons/fa";
+import * as XLSX from "xlsx";
 
 const Payments = () => {
   const { id } = useParams();
@@ -19,6 +20,22 @@ const Payments = () => {
   const [searchTermID, setSearchTermID] = useState("");
   const [searchTermMonth, setSearchTermMonth] = useState("");
   const [searchTermClassName, setSearchTermClassName] = useState("");
+
+  const generateExcel = () => {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(filteredPayments.map(payment => ({
+      "Student ID": payment.std_ID,
+      "Name": payment.name,
+      "Amount": payment.amount,
+      "Month": payment.month,
+      "Class Name": payment.className,
+      "Date": new Date(payment.date).toLocaleString("en-US", { timeZone: "Asia/Colombo" }),
+      "Status": payment.status
+    })));
+
+    XLSX.utils.book_append_sheet(wb, ws, "Payments");
+    XLSX.writeFile(wb, "payments.xlsx");
+  };
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
@@ -231,6 +248,7 @@ const Payments = () => {
                 onChange={(e) => setSearchTermClassName(e.target.value)}
               />
             </div>
+            <button onClick={generateExcel}>Generate Excel</button> {/* Button to generate Excel */}
 
             <table className="instituteTable">
               <thead>

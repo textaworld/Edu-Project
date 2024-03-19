@@ -601,6 +601,28 @@ useEffect(() => {
 
   return (
     <div className="instituteTableContainer" style={{ padding: "20px" }}>
+
+<h3 style={{marginRight:'30px'}}> Today Absent Student Count: {absentCount}</h3>
+        <button
+  onClick={handleButtonClick}
+  style={{
+    background: "#0f172a",
+    color: "white",
+    padding: "10px 20px",
+    fontSize: "16px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginLeft: "10px",
+    display: hideButton ? "none" : "block" // Conditionally render based on hideButton state
+  }}
+>
+  Send SMS
+</button>
+        {error && <div className="error">{error}</div>}
+        {submissionSuccess && (
+          <div className="success">SMS sent successfully!</div>
+        )}
+
       <table className="instituteTable" style={{ width: "100%" }}>
         <thead>
           <tr className="test">
@@ -644,7 +666,7 @@ useEffect(() => {
         >
           Send Emails
         </button> */}
-        <h3 style={{marginRight:'30px'}}> Today Absent Student Count: {absentCount}</h3>
+        {/* <h3 style={{marginRight:'30px'}}> Today Absent Student Count: {absentCount}</h3>
         <button
   onClick={handleButtonClick}
   style={{
@@ -663,7 +685,7 @@ useEffect(() => {
         {error && <div className="error">{error}</div>}
         {submissionSuccess && (
           <div className="success">SMS sent successfully!</div>
-        )}
+        )} */}
       </div>
     </div>
   );
