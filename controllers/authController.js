@@ -36,6 +36,9 @@ const sendOtpByEmail = async (email, otp) => {
         user: process.env.SMTP_MAIL,
         pass: process.env.SMTP_PASSWORD,
       },
+      tls: {
+        rejectUnauthorized: false // Add this line to bypass SSL certificate validation
+      }
     });
 
     const mailOptions = {
@@ -46,39 +49,14 @@ const sendOtpByEmail = async (email, otp) => {
         <html>
           <head>
             <style>
-              body {
-                font-family: Arial, sans-serif;
-                line-height: 1.6;
-                background-color: #f9f9f9;
-                padding: 20px;
-              }
-              .container {
-                max-width: 600px;
-                margin: 0 auto;
-                background-color: #fff;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-              }
-              h2 {
-                color: #333;
-                margin-bottom: 20px;
-              }
-              p {
-                margin-bottom: 10px;
-              }
-              .otp {
-                font-size: 20px;
-                font-weight: bold;
-                color: #007bff;
-              }
+              /* Email styles */
             </style>
           </head>
           <body>
-            <div class="container">
+            <div>
               <h2>Your OTP for Login</h2>
               <p>Hello,</p>
-              <p>Your OTP for login is: <span class="otp">${otp}</span></p>
+              <p>Your OTP for login is: <span>${otp}</span></p>
               <p>If you did not request this OTP, please ignore this email.</p>
             </div>
           </body>
@@ -90,10 +68,10 @@ const sendOtpByEmail = async (email, otp) => {
 
     return { success: true, message: "OTP email sent successfully" };
   } catch (error) {
-    
-    throw error; // You may want to handle this error in your application
+    throw error;
   }
 };
+
 
 // --------- Register a super admin
 const signupSuperAdmin = async (req, res) => {
@@ -138,25 +116,37 @@ const signupSuperAdmin = async (req, res) => {
 };
 
 // --------- Login a super admin step 1
+// --------- Login a super admin step 1
+// --------- Login a super admin step 1
 const loginSuperAdmin = async (req, res) => {
   const { email, password } = req.body;
-  //const secret = process.env.OTP_SECRET_KEY;
 
   try {
+    console.log("Received login request with email:", email);
+    console.log("Received login request with password:", password);
+
+    // Check if email and password are provided
     if (!email || !password) {
-      throw Error("All fields must be filled");
+      throw Error("Email and password are required fields");
     }
 
+    // Find the super admin in the database
     const superadmin = await SuperAdmin.findOne({ email });
+
+    // If super admin doesn't exist, return error
     if (!superadmin) {
-      throw Error("Incorrect email");
+      throw Error("Incorrect email or password");
     }
 
+    // Compare passwords
     const match = await bcrypt.compare(password, superadmin.password);
+
+    // If passwords don't match, return error
     if (!match) {
-      throw Error("Incorrect password");
+      throw Error("Incorrect email or password");
     }
 
+    // Passwords match, generate and send OTP
     const token = speakeasy.totp({
       secret: encodeToBase32(),
       encoding: "base32",
@@ -169,13 +159,16 @@ const loginSuperAdmin = async (req, res) => {
       throw Error("Failed to send OTP email");
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: otpEmailResult.message, email });
+    // OTP sent successfully
+    res.status(200).json({ success: true, message: otpEmailResult.message, email });
   } catch (error) {
+    console.error("Login error:", error.message);
+    // Return error response
     res.status(400).json({ error: error.message });
   }
 };
+
+
 
 // --------- Login a super admin step 2
 const verifyLogin = async (req, res) => {
