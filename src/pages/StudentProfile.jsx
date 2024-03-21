@@ -1,16 +1,54 @@
-import { useParams } from "react-router-dom";
-import React, { useContext } from "react";
+import { useParams, } from "react-router-dom";
+import React, { useContext ,useEffect,useState} from "react";
 import { useStudentContext } from "../hooks/useStudentContext";
+import { useAuthContext } from "../hooks/useAuthContext";
+
 
 const StudentProfile = () => {
   const { students } = useStudentContext();
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  const { user } = useAuthContext();
+
+  
 
   // Access the student ID from the URL
   const { studentId } = useParams();
+  const { std_ID } = useParams();
   const studentdata = students.find((student) => student._id === studentId);
+
+   useEffect(() => {
+    if (studentdata) {
+      // Fetch payment status for the student
+      const fetchPaymentStatus = async () => {
+        try {
+          const response = await fetch(`https://edu-project-backend.onrender.com/api/payments/getAllPaymentStatusBystdId/${studentdata.std_ID}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.token}`
+            }
+          });
+          if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            setPaymentStatus(data.lastMonthStatus);
+          } else {
+            throw new Error('Failed to fetch payment status');
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchPaymentStatus();
+    }
+  }, [studentdata]);
+  
   if (!studentdata) {
     return <div>Student not found</div>;
   }
+
+  
 
   return (
     <div style={{ padding: "20px",  }}>
@@ -40,9 +78,9 @@ const StudentProfile = () => {
         <strong>Address:</strong> {studentdata.address}
       </div>
       <div style={{ marginBottom: "10px" }}>
-        <strong>Phoned:</strong> {studentdata.phone}
+        <strong>Phone:</strong> {studentdata.phone}
       </div>
-
+      
       <div style={{ marginBottom: "10px" }}>
           <strong>Class:</strong>{" "}
           {studentdata.classs.map((classObj, index) => (
@@ -52,7 +90,11 @@ const StudentProfile = () => {
             </span>
           ))}
         </div>
-      
+        <div >
+          <strong>Last Month Payment Status:</strong> <span style={{ color: "red" }}>{paymentStatus || 'Not paid'}</span>
+        </div>
+        
+
       </div>
       {/* 
       Display the image using the imageUrl 
