@@ -83,9 +83,41 @@ const getAllPaymentsByInsId = async (req, res) => {
   }
 };
 
+;
+
+
+// Route to get last month's payment status for a student
+const getAllPaymentStatusBystdId = async (req, res) => {
+  const { std_ID } = req.params;
+
+  console.log("stdID", std_ID);
+
+  try {
+    // Find the last month's payment for the student
+    const lastMonthPayment = await PaymentModel.findOne({ std_ID }).sort({ date: -1 });
+
+    if (!lastMonthPayment) {
+      return res.status(404).json({ message: 'Payment record not found for the student' });
+    }
+
+    const lastMonth = lastMonthPayment.month;
+    const lastMonthStatus = lastMonthPayment.status;
+
+    res.json({ std_ID, lastMonth, lastMonthStatus });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+
+
+
+
 module.exports = {
   createPayment,
   getAllPayments,
   getPaymentStatus,
   getAllPaymentsByInsId,
+  getAllPaymentStatusBystdId
 };
