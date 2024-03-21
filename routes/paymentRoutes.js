@@ -9,5 +9,6 @@ router.post("/createPayment", paymentController.createPayment);
 router.get("/getAllPayments", paymentController.getAllPayments);
 router.get('/getPaymentStatus', paymentController.getPaymentStatus);
 router.get('/getAllPaymentsByInsId/:id',paymentController.getAllPaymentsByInsId);
+router.get('/getAllPaymentStatusBystdId/:std_ID',paymentController.getAllPaymentStatusBystdId);
 
 module.exports = router;
