@@ -4,7 +4,6 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { usePaymentContext } from "../hooks/usePaymentContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 import { FaTrash } from "react-icons/fa";
-import * as XLSX from "xlsx";
 
 const Payments = () => {
   const { id } = useParams();
@@ -20,22 +19,8 @@ const Payments = () => {
   const [searchTermID, setSearchTermID] = useState("");
   const [searchTermMonth, setSearchTermMonth] = useState("");
   const [searchTermClassName, setSearchTermClassName] = useState("");
-
-  const generateExcel = () => {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(filteredPayments.map(payment => ({
-      "Student ID": payment.std_ID,
-      "Name": payment.name,
-      "Amount": payment.amount,
-      "Month": payment.month,
-      "Class Name": payment.className,
-      "Date": new Date(payment.date).toLocaleString("en-US", { timeZone: "Asia/Colombo" }),
-      "Status": payment.status
-    })));
-
-    XLSX.utils.book_append_sheet(wb, ws, "Payments");
-    XLSX.writeFile(wb, "payments.xlsx");
-  };
+  const [lastPayments, setLastPayments] = useState([]);
+  const [lastMonth, setLastMonth] = useState("");
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
@@ -214,6 +199,68 @@ const Payments = () => {
     window.scrollTo(0, scrollPosition); // Restore scroll position on component mount
   }, []);
 
+
+
+//   useEffect(() => {
+//     filteredPayments.forEach(async (payment) => { // Iterate over filteredPayments
+//       try {
+//         const response = await fetch(`http://localhost:3018/api/payments/getAllPaymentStatusBystdId/${payment.std_ID}`, {
+//           method: 'GET',
+//           headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${user.token}`
+//           }
+//         });
+//         if (response.ok) {
+//   const data = await response.json();
+//   console.log("status", data);
+//   // Update lastPayments array with previousMonthStatus for each payment
+//   setLastPayments(prev => [...prev, data.previousMonthStatus]);
+// } else {
+//   throw new Error('Failed to fetch payment status');
+// }
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     });
+//   }, [filteredPayments, user.token]); // Add filteredPayments and user.token as dependencies
+
+
+// useEffect(() => {
+//   const currentDate = new Date();
+//   const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+//   const monthName = previousMonthDate.toLocaleString("en-US", { month: "long" });
+//   //console.log(monthName);
+//   setLastMonth(monthName);
+// }, []);
+// Get month name in "January", "February" forma
+
+const getLastMonthPayments = () => {
+  if (payments.length === 0) return [];
+
+  return payments.filter(payment => payment.month.toLowerCase() === lastMonth.toLowerCase());
+};
+
+useEffect(() => {
+  if (paymentss.length > 0) {
+    // Filter payments for last month
+    const lastMonthPayments = getLastMonthPayments();
+    // Update paymentss state with filtered payments for last month
+    setPayments(lastMonthPayments);
+  }
+}, [lastMonth, payments]);
+
+useEffect(() => {
+  const currentDate = new Date();
+  const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+  const monthName = previousMonthDate.toLocaleString("en-US", { month: "long" });
+  setLastMonth(monthName);
+}, []);
+
+      
+console.log(lastMonth)      
+  
+
   return (
     <div>
       <div className="superAdminDashboardContainer">
@@ -248,7 +295,6 @@ const Payments = () => {
                 onChange={(e) => setSearchTermClassName(e.target.value)}
               />
             </div>
-            <button onClick={generateExcel}>Generate Excel</button> {/* Button to generate Excel */}
 
             <table className="instituteTable">
               <thead>
@@ -260,6 +306,7 @@ const Payments = () => {
                   <th>Class Name</th>
                   <th>Date</th>
                   <th>Status</th>
+                  <th>LastMonth Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -278,6 +325,8 @@ const Payments = () => {
                         <td>{payment.className}</td>
                         <td>{colomboTime}</td>
                         <td>{payment.status}</td>
+                        <td>{payment.month.toLowerCase() === lastMonth.toLowerCase() ? payment.status : "not paid"}</td>
+
                       </tr>
                     );
                   })
