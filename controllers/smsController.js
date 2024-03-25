@@ -9,7 +9,7 @@ const sendSMS = async (req, res) => {
 
         const user_id = "26730";
         const api_key = "tmGnA2446kmhvuUHjyHl";
-        const sender_id = "NotifyDEMO";
+        const sender_id = "EDU TEXTA";
        // const _id = id
 
        console.log("id",instID)
