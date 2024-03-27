@@ -23,6 +23,8 @@ const Students = () => {
   const [newPackageStatus, setNewPackageStatus] = useState("");
   const navigate = useNavigate();
 
+
+
   const generateExcel = () => {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(filteredStudents.map(student => ({
@@ -43,7 +45,7 @@ const Students = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+      `http://localhost:3018/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -90,7 +92,7 @@ const Students = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
+        `http://localhost:3018/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -166,7 +168,7 @@ const Students = () => {
 
     try {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/students/deleteStudent/${studentId}`,
+        `http://localhost:3018/api/students/deleteStudent/${studentId}`,
         {
           method: "DELETE",
           headers: {
@@ -192,7 +194,7 @@ const Students = () => {
     const fetchStudents = async () => {
       try {
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/students/getAllStudentsByInsId/${sitedetail._id}`,
+          `http://localhost:3018/api/students/getAllStudentsByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -226,7 +228,7 @@ const Students = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `http://localhost:3018/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -255,7 +257,7 @@ const Students = () => {
       <div className="superAdminDashboardContainer">
         {packageStatus !== "Yes" ? (
         <div>
-          <h1>Processing ...!</h1>
+          <h1>You need to pay</h1>
         </div>
       ) : (
         <div className="instituteTableContainer">
@@ -267,7 +269,8 @@ const Students = () => {
             >
               Add New Student
             </button>
-            <button onClick={generateExcel}>Generate Excel</button>
+            <button onClick={generateExcel}>Generate Excel</button> {/* Button to generate Excel */}
+
           </div>
           <div className="filter-container">
             <input
@@ -284,7 +287,7 @@ const Students = () => {
                 className="filter-select"
                 onChange={(e) => setAgeFilter(e.target.value)}
               >
-                 <option value="">All</option>
+                <option value="">All</option>
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12">12</option>
@@ -296,44 +299,6 @@ const Students = () => {
                 <option value="18">18</option>
                 <option value="19">19</option>
                 <option value="20">20</option>
-    
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-               
-                <option value="31">31</option>
-                <option value="32">32</option>
-                <option value="33">33</option>
-                <option value="34">34</option>
-                <option value="35">35</option>
-                <option value="36">36</option>
-                <option value="37">37</option>
-                <option value="38">38</option>
-                <option value="39">39</option>
-                <option value="40">40</option>
-    
-                <option value="41">41</option>
-                <option value="42">42</option>
-                <option value="43">43</option>
-                <option value="44">44</option>
-                <option value="45">45</option>
-                <option value="46">46</option>
-                <option value="47">47</option>
-                <option value="48">48</option>
-                <option value="49">49</option>
-                <option value="50">50</option>
-                <option value="51">51</option>
-                <option value="52">52</option>
-                <option value="53">53</option>
-                <option value="54">54</option>
-                <option value="55">55</option>
                 {/* Add more age options as needed */}
               </select>
             </div>

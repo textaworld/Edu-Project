@@ -296,6 +296,12 @@ console.log(lastMonth)
               />
             </div>
 
+            <div>
+              <Link to="/instituteIncome">
+                <button>Go to Institute Income</button>
+              </Link>
+            </div> 
+
             <table className="instituteTable">
               <thead>
                 <tr className="test">

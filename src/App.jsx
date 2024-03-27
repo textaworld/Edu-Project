@@ -30,6 +30,7 @@ import StudentProfile from "./pages/StudentProfile.jsx";
 import AbsentStudents from "./pages/AbsentStudents.jsx";
 import StartClass from "./pages/StartClass.jsx";
 import StudentPayment from "./pages/StudentPayments.jsx";
+import TeachersIncome from "./pages/TeachersIncome.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import SuperAdminDashboardAdmins from "./pages/SuperAdminDashboardAdmins.jsx";
@@ -38,6 +39,7 @@ import NavBar from "./components/NavBar/NavBar.jsx";
 import UpdateStudent from "./pages/UpdateStudent.jsx";
 import SuperAdminForgotPassword from "./pages/SuperAdminForgotPassword.jsx";
 import SuperAdminResetPassword from "./pages/SuperAdminResetPassword.jsx";
+import InstituteIncome from "./pages/InstituteIncome.jsx";
 
 // Styling imports
 import "./components/NavBar/NavBar.css";
@@ -188,6 +190,8 @@ function App() {
               />
               <Route path="/updateStd/:id" element={<UpdateStudent />} />
               <Route path="/updateClz/:id" element={<UpdateClass />} />
+              <Route path="/teacherIncome/:id" element={<TeachersIncome />}/>
+              <Route path="/instituteIncome" element={<InstituteIncome />} />
 
               <Route path="/absent" element={<AbsentStudents />} />
               <Route path="/absentScl" element={<AbsentSclStds />} />
