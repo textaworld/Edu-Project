@@ -388,6 +388,22 @@ const BrodcastMsg = () => {
 
   //console.log(std_ID)
 
+  const handleChangeMessage = (e) => {
+    // Limit message to 160 characters
+    const inputValue = e.target.value;
+    if (inputValue.length <= 160) {
+      setMessage(inputValue);
+    }
+  };
+
+  const handleChangeStdMessage = (e) => {
+    // Limit stdMessage to 160 characters
+    const inputValue = e.target.value;
+    if (inputValue.length <= 160) {
+      setStdMessage(inputValue);
+    }
+  };
+
   return (
     <div>
     {packageStatus !== "Yes" ? (
@@ -400,7 +416,7 @@ const BrodcastMsg = () => {
         <h3>Send Messages for grade or class</h3>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ textAlign: "left", marginRight: "20px" }}>
-            <div style={{ marginBottom: "50px", marginLeft: "400px" }}>
+            <div style={{ marginBottom: "50px", marginLeft: "500px" }}>
               
               <label htmlFor="grade">
                 Grade & Class: <br />
@@ -427,15 +443,15 @@ const BrodcastMsg = () => {
                 Message: <br />
               </label>
               <textarea
-                id="message"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                style={{
-                  margin: "10px auto",
-                  width: "300px",
-                  height: "100px",
-                }}
-              />
+        id="message"
+        value={message}
+        onChange={handleChangeMessage}
+        style={{
+          margin: "10px auto",
+          width: "300px",
+          height: "100px",
+        }}
+      />
               <br />
             </div>
   
@@ -463,6 +479,8 @@ const BrodcastMsg = () => {
         </div>
   
         {/* Separate section for Search by std_ID */}
+        <hr style={{ margin: "20px 0", border: "none", borderTop: "1px solid black" }} />
+
         <h3>Send Messages for a student</h3>
         <div style={{marginTop:'20px'}}>
           <label style={{marginRight:'20px'}} htmlFor="std_ID">Search by std_ID:</label>
@@ -481,11 +499,15 @@ const BrodcastMsg = () => {
             Message: <br />
           </label>
           <textarea
-            id="message"
-            value={stdMessage}
-            onChange={(e) => setStdMessage(e.target.value)}
-            style={{ margin: "10px auto", width: "300px", height: "100px" }}
-          />
+        id="stdMessage"
+        value={stdMessage}
+        onChange={handleChangeStdMessage}
+        style={{
+          margin: "10px auto",
+          width: "300px",
+          height: "100px",
+        }}
+      />
           <br />
         </div>
   
