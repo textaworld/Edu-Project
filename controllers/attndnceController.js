@@ -54,8 +54,49 @@ const getAllAttendancesByInsId = async (req, res) => {
   }
 };
 
+const getAttendanceCountsByMonth = async (req, res) => {
+  const { std_ID } = req.query;
+
+ // console.log(std_ID)
+
+  try {
+    // Aggregate pipeline to group attendance records by month and count
+    const aggregationPipeline = [
+      {
+        $match: {
+          std_ID: std_ID
+        }
+      },
+      {
+        $group: {
+          _id: { $month: "$date" }, // Group by month
+          count: { $sum: 1 } // Count attendance records
+        }
+      }
+    ];
+
+    // Execute the aggregation pipeline
+    const attendanceCounts = await AttendanceModel.aggregate(aggregationPipeline);
+
+    // Format the results
+    const formattedAttendanceCounts = attendanceCounts.map(count => ({
+      month: count._id,
+      count: count.count
+    }));
+
+    // Send back the formatted attendance counts
+    res.status(200).json({ success: true, data: formattedAttendanceCounts });
+
+    //console.log(formattedAttendanceCounts)
+  } catch (error) {
+    console.error("Error fetching attendance counts by month:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createAttendance,
   getAllAttendances,
   getAllAttendancesByInsId,
+  getAttendanceCountsByMonth
 };
