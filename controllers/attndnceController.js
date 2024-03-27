@@ -94,9 +94,51 @@ const getAttendanceCountsByMonth = async (req, res) => {
   }
 };
 
+
+const getAttendanceCountByStartDateAndEndDate = async (req, res) => {
+  try {
+    const { std_ID, startDate, endDate } = req.query;
+
+    // Convert start and end dates to Date objects
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    // console.log("start date", start);
+    // console.log("end date", end);
+
+    // Fetch attendance records for the specified student ID
+    const attendanceRecords = await AttendanceModel.find({ std_ID: std_ID });
+
+    // Filter attendance records based on date range
+    const filteredRecords = attendanceRecords.filter(record => {
+      const recordDate = new Date(record.date);
+      console.log("recordDate", recordDate);
+      console.log("start", start);
+      console.log("end", end);
+      return recordDate >= start && recordDate <= end;
+    });
+
+    // Get the count of filtered attendance records
+    const attendanceCount = filteredRecords.length;
+
+    // console.log("attendanceRecords", attendanceRecords);
+    // console.log("attendance count", attendanceCount);
+
+    // Send back the attendance count
+    res.status(200).json({ success: true, attendanceCount });
+  } catch (error) {
+    console.error('Error while fetching attendance count:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+
+
+
 module.exports = {
   createAttendance,
   getAllAttendances,
   getAllAttendancesByInsId,
-  getAttendanceCountsByMonth
+  getAttendanceCountsByMonth,
+  getAttendanceCountByStartDateAndEndDate
 };

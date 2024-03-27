@@ -14,5 +14,7 @@ router.get(
 );
 
 router.get("/getAttendanceCountsByMonth",attendanceController.getAttendanceCountsByMonth);
+router.get("/getAttendanceCounth",attendanceController.getAttendanceCountByStartDateAndEndDate);
+
 
 module.exports = router;
