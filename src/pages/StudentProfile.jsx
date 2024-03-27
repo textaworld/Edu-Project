@@ -3,7 +3,8 @@ import React, { useContext ,useEffect,useState} from "react";
 import { useStudentContext } from "../hooks/useStudentContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useAttendanceContext } from "../hooks/useAttendanceContext";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const StudentProfile = () => {
@@ -15,6 +16,10 @@ const StudentProfile = () => {
   const [attendanceCounts, setAttendanceCounts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [attendanceCount,setAttendanceCount] = useState(null)
+
 
 
   
@@ -93,10 +98,65 @@ const StudentProfile = () => {
     return <div>Student not found</div>;
   }
 
-  
+  // const fetchAttendanceCountsBYSE = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://edu-project-backend.onrender.com/api/attendance/getAttendanceCountsByStartDateAndEndDate?std_ID=${studentId}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${user.token}` },
+  //       }
+  //     );
+  //     const json = await response.json();
+
+  //     if (response.ok) {
+  //       setAttendanceCounts(json.attendanceCount);
+  //       setIsLoading(false);
+  //     } else {
+  //       setError(json.error || "Failed to fetch attendance counts");
+  //       setIsLoading(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     setError("Failed to fetch attendance counts");
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const fetchAttendanceCountsBYSE = async () => {
+    try {
+      console.log(startDate)
+      console.log(endDate)
+      const response = await fetch(
+        `https://edu-project-backend.onrender.com/api/attendance/getAttendanceCounth?std_ID=${studentdata.std_ID}&startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`,
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
+      const data = await response.json();
+
+     // console.log(data.attendanceCount)
+      setAttendanceCount(data.attendanceCount)
+
+      if (response.ok) {
+       // setDailyIncome(data.totalIncome);
+      } else {
+        console.error("Failed to fetch daily income:", data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching daily income:", error);
+    }
+  };
+
  
   
-  
+  const handleButtonClick = () => {
+    if (startDate && endDate) {
+      fetchAttendanceCountsBYSE();
+    } else {
+      setError("Please select both start and end dates");
+    }
+  };
+
 
 
   return (
@@ -156,8 +216,41 @@ const StudentProfile = () => {
               ))}
             </ul>
           )}
-        </div>
+
+<div>
+        <label>Start Date: </label>
+        <DatePicker
+          selected={startDate}
+          onChange={(date) => setStartDate(date)}
+          selectsStart
+          startDate={startDate}
+          endDate={endDate}
+          dateFormat="yyyy-MM-dd"
+        />
       </div>
+      <div>
+        <label>End Date: </label>
+        <DatePicker
+          selected={endDate}
+          onChange={(date) => setEndDate(date)}
+          selectsEnd
+          startDate={startDate}
+          endDate={endDate}
+          minDate={startDate}
+          dateFormat="yyyy-MM-dd"
+        />
+      </div>
+      {/* Button to send dates */}
+      <button style={{marginTop:'10px'}} onClick={handleButtonClick}>Check Attendance Count</button>
+      <p>
+  Attendance Count: <strong><span style={{ color: 'red' }}>{attendanceCount}</span></strong>
+</p>
+        </div>
+        
+      </div>
+      
+      {/* Display attendance counts */}
+      
       {/* 
       Display the image using the imageUrl 
       <img
