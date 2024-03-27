@@ -200,6 +200,22 @@ const getAllStudentsBySubject = async (req, res) => {
 };
 
 
+const searchStudentByStd_ID = async (req, res) => {
+  const { std_ID } = req.query;
+
+  console.log(std_ID)
+
+  try {
+    const student = await studentModel.findOne({ std_ID });
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    res.json({ phone: student.phone });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   createStudent,
   getAllStudents,
@@ -209,5 +225,6 @@ module.exports = {
   getStudentDetailsBySTD_ID,
   getAllStudentsByClassID,
   getAllStudentsByInsId,
-  getAllStudentsBySubject
+  getAllStudentsBySubject,
+  searchStudentByStd_ID
 };

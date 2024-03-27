@@ -13,4 +13,6 @@ router.get(
   attendanceController.getAllAttendancesByInsId
 );
 
+router.get("/getAttendanceCountsByMonth",attendanceController.getAttendanceCountsByMonth);
+
 module.exports = router;
