@@ -302,8 +302,8 @@ const CreateStudent = () => {
                   value={name}
                   type="text"
                   placeholder="Enter Name"
-                  required
-                  pattern="[A-Za-z]+"
+                  
+                  
                   title="Name must contain only alphabets"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -316,7 +316,7 @@ const CreateStudent = () => {
                   type="email"
                   placeholder="Enter Email"
                   onChange={(e) => setEmail(e.target.value)}
-                  required
+                  
                   pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                   title="Enter a valid email address"
                 />
@@ -329,7 +329,7 @@ const CreateStudent = () => {
                   type="number"
                   placeholder="Enter Age"
                   onChange={(e) => setAge(e.target.value)}
-                  required
+                  
                   min="0"
                   max="100"
                 />
@@ -342,7 +342,7 @@ const CreateStudent = () => {
                   type="text"
                   placeholder="Enter Address"
                   onChange={(e) => setAddress(e.target.value)}
-                  required
+                  
                 />
               </label>
 
@@ -353,7 +353,7 @@ const CreateStudent = () => {
                   type="tel"
                   placeholder="Enter Phone Num"
                   onChange={(e) => setPhone(e.target.value)}
-                  required
+                  
                   
                   title="Enter a valid 10 digit phone number"
                 />
@@ -366,7 +366,7 @@ const CreateStudent = () => {
                   accept="image/*"
                   
                   onChange={handleImageChange}
-                  required
+                  
                 />
               </label>
 
@@ -502,12 +502,6 @@ const CreateStudent = () => {
                   Step 1
                 </h3>
                 {std_ID &&
-                name &&
-                email &&
-                age &&
-                phone &&
-                address &&
-                image &&
                 isAnyCheckboxChecked() ? (
                   <div className="stepIconGreen">
                     <FaCheck />
