@@ -354,7 +354,7 @@ const CreateStudent = () => {
                   placeholder="Enter Phone Num"
                   onChange={(e) => setPhone(e.target.value)}
                   required
-                  pattern="[0-9]{11}"
+                  
                   title="Enter a valid 10 digit phone number"
                 />
               </label>
