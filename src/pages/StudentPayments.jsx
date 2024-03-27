@@ -204,7 +204,7 @@ const Payments = () => {
 //   useEffect(() => {
 //     filteredPayments.forEach(async (payment) => { // Iterate over filteredPayments
 //       try {
-//         const response = await fetch(`https://edu-project-backend.onrender.com/api/payments/getAllPaymentStatusBystdId/${payment.std_ID}`, {
+//         const response = await fetch(`http://localhost:3018/api/payments/getAllPaymentStatusBystdId/${payment.std_ID}`, {
 //           method: 'GET',
 //           headers: {
 //             'Content-Type': 'application/json',

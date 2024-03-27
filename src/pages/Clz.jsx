@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useClassContext } from "../hooks/useClassContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
-import { FaTrash , FaEdit} from "react-icons/fa";
+import { FaTrash , FaEdit , FaMoneyBill} from "react-icons/fa";
 import CreateClass from "../components/CreateClass";
 
 const Clz = () => {
@@ -44,7 +44,7 @@ const Clz = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+      `http://localhost:3018/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -87,7 +87,7 @@ const Clz = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
+        `http://localhost:3018/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -161,7 +161,7 @@ const Clz = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `http://localhost:3018/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -191,7 +191,7 @@ const Clz = () => {
 
     try {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/class/deleteClass/${classId}`,
+        `http://localhost:3018/api/class/deleteClass/${classId}`,
         {
           method: "DELETE",
           headers: {
@@ -249,6 +249,7 @@ const Clz = () => {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Fees</th>
+                  <th>Income</th>
                   <th>Edit</th>
                   <th>Delete</th>
                 </tr>
@@ -264,6 +265,12 @@ const Clz = () => {
                       <td>{clz.teacherEmail}</td>
                       <td>{clz.teacherPhone}</td>
                       <td>{clz.classFees}</td>
+                      <td><Link
+                        to={`/teacherIncome/${clz._id}`}
+                        className="btn btn-success"
+                      >
+                        <FaMoneyBill />
+                      </Link></td>
                       <td>
                       <Link
                         to={`/updateClz/${clz._id}`}
