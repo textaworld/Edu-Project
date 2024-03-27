@@ -112,9 +112,9 @@ const getAttendanceCountByStartDateAndEndDate = async (req, res) => {
     // Filter attendance records based on date range
     const filteredRecords = attendanceRecords.filter(record => {
       const recordDate = new Date(record.date);
-      console.log("recordDate", recordDate);
-      console.log("start", start);
-      console.log("end", end);
+      // console.log("recordDate", recordDate);
+      // console.log("start", start);
+      // console.log("end", end);
       return recordDate >= start && recordDate <= end;
     });
 
