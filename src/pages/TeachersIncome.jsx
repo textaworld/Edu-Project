@@ -17,7 +17,7 @@ const TeachersIncome = () => {
   const fetchMonthlyIncome = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3018/api/payments/calculateMonthlyIncome?classID=${id}&month=${selectedMonth}`, 
+        `https://edu-project-backend.onrender.com/api/payments/calculateMonthlyIncome?classID=${id}&month=${selectedMonth}`, 
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -42,7 +42,7 @@ const TeachersIncome = () => {
 //   const handleCalculateDailyIncome = async () => {
 //     try {
 //       const response = await fetch(
-//         `http://localhost:3018/api/payments/calculateDailyIncome?classID=${id}`,
+//         `https://edu-project-backend.onrender.com/api/payments/calculateDailyIncome?classID=${id}`,
 //         {
 //           headers: { Authorization: `Bearer ${user.token}` },
 //         }
@@ -62,7 +62,7 @@ const TeachersIncome = () => {
 const handleCalculateDailyIncome = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3018/api/payments/calculateIncomeByDate?classID=${id}&date=${selectedDate.toISOString()}`,
+        `https://edu-project-backend.onrender.com/api/payments/calculateIncomeByDate?classID=${id}&date=${selectedDate.toISOString()}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }

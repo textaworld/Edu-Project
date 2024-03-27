@@ -29,7 +29,7 @@ const StudentProfile = () => {
       try {
         console.log(studentdata.std_ID);
         const response = await fetch(
-          `http://localhost:3018/api/attendance/getAttendanceCountsByMonth?std_ID=${studentdata.std_ID}`,
+          `https://edu-project-backend.onrender.com/api/attendance/getAttendanceCountsByMonth?std_ID=${studentdata.std_ID}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
