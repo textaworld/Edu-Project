@@ -293,7 +293,7 @@ const QrScn = () => {
       timeZone: "Asia/Colombo",
     });
 
-    const message = `Dear parent , \n your child:${stdName} was attend to the ${clzName} class at ${colomboTime} `;
+    const message = `Dear parent , \n your child:${stdName} was attend the ${clzName} class on ${colomboTime} `;
 
     const emailDetails = { email, subject, message };
 
@@ -424,7 +424,7 @@ const QrScn = () => {
       navigate("/");
     }
     if (response.ok) {
-      alert(`${name}'s Tute has been gave!`);
+      alert(`${name}'s Tute has been given!`);
       setError(null);
       dispatch({ type: "CREATE_TUTE", payload: json });
     }
