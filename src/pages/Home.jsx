@@ -4,9 +4,11 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 
+
 const Home = () => {
   const { logout } = useLogout();
   const { sitedetail, dispatch } = useSiteDetailsContext();
+ 
   const { user } = useAuthContext();
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
@@ -43,7 +45,7 @@ const Home = () => {
     }
   }, [dispatch, user]);
 
-  console.log(smsCount)
+  console.log(packageStatus)
 
   // useEffect(() => {
   //   const fetchSmsCount = async () => {
@@ -197,11 +199,13 @@ const Home = () => {
     setRemainingSMSCount(remSmsCount);
   }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
 
+  console.log(packageStatus)
+
   return (
     <div>
       {packageStatus !== "Yes" ? (
         <div>
-          <h1>Processing ...!</h1>
+          <h1>You need to pay</h1>
         </div>
       ) : (
         <div>
@@ -240,6 +244,7 @@ const Home = () => {
     <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
         <h2>Remaining SMS : <span style={{color:'red'}}>{remainingSMSCount}</span></h2>
     </div>
+   
 </div>
 
         </div>

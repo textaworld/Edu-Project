@@ -16,6 +16,7 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
  const [showEditInstituteDetailsPopup, setShowEditInstituteDetailsPopup] = useState(false);
  const [showNotificationPopup, setShowNotificationPopup] = useState(false);
  const [showPackagePopup, setShowPackagePopup] = useState(false);
+ const [showCardcardStatusPopup, setshowCardcardStatusPopup] = useState(false);
  const [showPackageTimePopup, setShowPackageTimePopup] = useState(false);
 
  // State variables for managing institute details
@@ -27,6 +28,7 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
  const [newSMS , setNewSMSPrice] =useState("");
  const [newNotification, setNewNotification] = useState("");
  const [instituteDetails, setInstituteDetails] = useState(null);
+ const [cardStatus,setNewCardStatus] =useState("")
  const [error, setError] = useState(null);
 
  // State variables for managing package details
@@ -194,7 +196,17 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
       setError(null);
     }
   };
-
+  
+  const handleCardStatusUpdate = () => {
+    if (cardStatus == "") {
+      setError("please select a value");
+    } else {
+      updateDetails({ stdCardcardStatus: cardStatus });
+      setShowPackagePopup(false);
+      // Reset error if it was previously set
+      setError(null);
+    }
+  };
   return (
     <div>
       <div className="instituteDetailsContainer">
@@ -285,6 +297,17 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
                 </button>
               </div>
             </div>
+
+            <div className="detailsSectionPart">
+              <h2>Student Card </h2>
+              <p> {instituteDetails.stdCardcardStatus}</p>
+              <div className="instituteAddButtonContainer">
+                <button onClick={() => setshowCardcardStatusPopup(true)}>
+                  Action
+                </button>
+              </div>
+            </div>
+
 
             <div className="detailsSectionPart">
               <h2>Add New Admin</h2>
@@ -539,6 +562,54 @@ const InstituteDetailsComponent = ({ instituteId, onOpen }) => {
                   className="cancelButton"
                   onClick={() => {
                     setShowPackagePopup(false), setError(null);
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+{showCardcardStatusPopup && (
+        <div>
+          <div
+            className="overlay"
+            onClick={() => {
+              setshowCardcardStatusPopup(false), setError(null);
+            }}
+          ></div>
+          <div className="create-popup">
+            <div className="popup_topic">
+              <h3>Update Student Card Creating Status</h3>
+            </div>
+            <div className="create-popup-box">
+              <p>Please select the new student card creating Status:</p>
+              <label>
+                <select
+                  value={cardStatus}
+                  onChange={(e) => setNewCardStatus(e.target.value)}
+                >
+                  <option value="" disabled hidden>
+                    Select an option
+                  </option>
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+              </label>
+
+              <div className="errorContainer">
+                {error && <div className="error">{error}</div>}
+              </div>
+              <div className="buttonContainer">
+                <button className="addButton" onClick={handleCardStatusUpdate}>
+                  Save Changes
+                </button>
+                <button
+                  className="cancelButton"
+                  onClick={() => {
+                    setshowCardcardStatusPopup(false), setError(null);
                   }}
                 >
                   Cancel

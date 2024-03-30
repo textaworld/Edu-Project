@@ -35,6 +35,9 @@ const CreateStudent = () => {
   const [isDownload, setIsDownload] = useState(false);
   const [error, setError] = useState(null);
   const idCardRef = useRef(null);
+  const cardStatus = sitedetail.stdCardcardStatus;
+
+  console.log(cardStatus)
 
   const isAnyCheckboxChecked = () => {
     return Object.values(classStates).some(
@@ -199,21 +202,7 @@ const CreateStudent = () => {
   const generateQrCode = async () => {
     try {
       // Check if any of the required fields are null or empty
-      if (
-        !std_ID ||
-        !name ||
-        !email ||
-        !age ||
-        !phone ||
-        !address ||
-        !image ||
-        !isAnyCheckboxChecked()
-      ) {
-        setError("Please fill all fields.");
-        
-        // Handle error appropriately
-        return;
-      }
+      
 
       const student = { std_ID };
 
@@ -229,6 +218,7 @@ const CreateStudent = () => {
       if (!response.ok) {
         
         // Handle error appropriately
+        
         return;
       }
 
@@ -302,8 +292,8 @@ const CreateStudent = () => {
                   value={name}
                   type="text"
                   placeholder="Enter Name"
-                  
-                  
+                  required
+                  pattern="[A-Za-z]+"
                   title="Name must contain only alphabets"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -316,7 +306,7 @@ const CreateStudent = () => {
                   type="email"
                   placeholder="Enter Email"
                   onChange={(e) => setEmail(e.target.value)}
-                  
+                  required
                   pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
                   title="Enter a valid email address"
                 />
@@ -329,7 +319,7 @@ const CreateStudent = () => {
                   type="number"
                   placeholder="Enter Age"
                   onChange={(e) => setAge(e.target.value)}
-                  
+                  required
                   min="0"
                   max="100"
                 />
@@ -342,7 +332,7 @@ const CreateStudent = () => {
                   type="text"
                   placeholder="Enter Address"
                   onChange={(e) => setAddress(e.target.value)}
-                  
+                  required
                 />
               </label>
 
@@ -353,8 +343,8 @@ const CreateStudent = () => {
                   type="tel"
                   placeholder="Enter Phone Num"
                   onChange={(e) => setPhone(e.target.value)}
-                  
-                  
+                  required
+                  pattern="[0-9]{11}"
                   title="Enter a valid 10 digit phone number"
                 />
               </label>
@@ -366,7 +356,7 @@ const CreateStudent = () => {
                   accept="image/*"
                   
                   onChange={handleImageChange}
-                  
+                  required
                 />
               </label>
 
@@ -401,12 +391,12 @@ const CreateStudent = () => {
             {error && <div className="error">{error}</div>}
           </div>
 
-              {isDownload ? (
+              
                  
                     <button type="submit" className="createstudentsubmitButton">Submit</button>
                    
                  
-                ) : null}
+              
 
              
 
@@ -472,12 +462,7 @@ const CreateStudent = () => {
                 style={{
                   borderColor:
                     std_ID &&
-                    name &&
-                    email &&
-                    age &&
-                    phone &&
-                    address &&
-                    image &&
+                    
                     isAnyCheckboxChecked()
                       ? "rgb(23,  211, 23)"
                       : "#ccc",
@@ -488,12 +473,7 @@ const CreateStudent = () => {
                   style={{
                     color:
                       std_ID &&
-                      name &&
-                      email &&
-                      age &&
-                      phone &&
-                      address &&
-                      image &&
+                      
                       isAnyCheckboxChecked()
                         ? "rgb(23, 211, 23)"
                         : "black",
@@ -501,12 +481,11 @@ const CreateStudent = () => {
                 >
                   Step 1
                 </h3>
-                {std_ID &&
-                isAnyCheckboxChecked() ? (
+                
                   <div className="stepIconGreen">
                     <FaCheck />
                   </div>
-                ) : null}
+                
                 <p className="stepDescription">
                   Please fill all fields. Make sure to provide accurate
                   information.
@@ -530,22 +509,13 @@ const CreateStudent = () => {
                     <FaCheck />
                   </div>
                 ) : null}
-                {std_ID &&
-                name &&
-                email &&
-                age &&
-                phone &&
-                address &&
-                image &&
-                isAnyCheckboxChecked() ? (
-                  <button
-                    type="button"
-                    onClick={generateQrCode}
-                    className="stepButton"
-                  >
-                    Generate QR Code
-                  </button>
-                ) : null}
+                
+               
+                {cardStatus === 'yes' && (
+    <button type="button" onClick={generateQrCode} className="stepButton">
+      Generate QR Code
+    </button>
+  )}
               </div>
 
               {/* Step 3 */}
