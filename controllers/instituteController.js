@@ -59,7 +59,9 @@ const createInstritute = async (req, res) => {
       currentTime,
       expireTime,
       topUpPrice,
-      smsPrice
+      smsPrice,
+      stdCardcardStatus
+
     });
     res.status(200).json(institute);
   } catch (error) {

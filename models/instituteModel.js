@@ -48,6 +48,9 @@ const instituteSchema = new Schema({
   },
   smsPrice:{
     type:Number
+  },
+  stdCardcardStatus: {
+    type: String,
   }
 });
 
