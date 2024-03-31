@@ -293,7 +293,7 @@ const CreateStudent = () => {
                   type="text"
                   placeholder="Enter Name"
                   required
-                  pattern="[A-Za-z]+"
+                  
                   title="Name must contain only alphabets"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -532,7 +532,7 @@ const CreateStudent = () => {
                   Step 3
                 </h3>
                 <p className="stepDescription">Download ID Card</p>
-                {qrImage && std_ID && name && address && image ? (
+                {qrImage && std_ID  ? (
                   <button
                     type="button"
                     onClick={handleDownload}
