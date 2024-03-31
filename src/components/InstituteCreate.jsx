@@ -11,6 +11,8 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
   const [count, setCount] = useState("");
   const [image, setImage] = useState(null);
   const [notification, setNotification] = useState("");
+  const [stdCardcardStatus, setCardSatus] = useState("");
+
   const [instPackage, setInstPackage] = useState("");
   const [smsPrice, setSmsPrice] = useState("");
   const [topUpPrice , setTopUpPrice] = useState("");
@@ -59,10 +61,11 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
       currentTime: currentDate,
       expireTime: expireTimeColombo,
       topUpPrice,
-      smsPrice
+      smsPrice,
+      stdCardcardStatus
     };
 
-    const response = await fetch("https://edu-project-backend.onrender.com/api/institute/create", {
+    const response = await fetch("http://localhost:3018/api/institute/create", {
       method: "POST",
       body: JSON.stringify(institute),
       headers: {
@@ -83,6 +86,7 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
       setEmail("");
       setCount("");
       setNotification("");
+      setCardSatus("")
       setError(null);
       setImage(null); // Reset image state
       setInstPackage("");
@@ -193,6 +197,21 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
               placeholder="Enter your One SMS Price"
               className={emptyFields.includes(" One SMS Price") ? "error" : ""}
             />
+          </label>
+
+          <label>
+            Card Creation:
+            <select
+              onChange={(e) => setCardSatus(e.target.value)}
+              value={stdCardcardStatus}
+              className={emptyFields.includes("Card Creation") ? "error" : ""}
+            >
+              <option value="" disabled hidden>
+                Select an option
+              </option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
           </label>
 
           <div className="errorContainer">
