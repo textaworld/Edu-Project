@@ -14,7 +14,8 @@ const createInstritute = async (req, res) => {
     currentTime,
     expireTime,
     topUpPrice,
-    smsPrice
+    smsPrice,
+    stdCardcardStatus
   } = req.body;
 
   let emptyFields = [];
