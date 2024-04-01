@@ -1,8 +1,6 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useInstitutesContext } from "../hooks/useInstitutesContext";
 import { useAuthContext } from "../hooks/useAuthContext";
-
-import "../styles/instituteCreate.css"; // Import the CSS file
 
 const InstituteCreate = ({ onClose, onSuccess }) => {
   const { dispatch } = useInstitutesContext();
@@ -13,7 +11,11 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
   const [count, setCount] = useState("");
   const [image, setImage] = useState(null);
   const [notification, setNotification] = useState("");
+  const [stdCardcardStatus, setCardSatus] = useState("");
+
   const [instPackage, setInstPackage] = useState("");
+  const [smsPrice, setSmsPrice] = useState("");
+  const [topUpPrice , setTopUpPrice] = useState("");
 
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
@@ -38,37 +40,13 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
     }
 
     const currentDate = new Date();
-    // // const expireTime = new Date(currentTime.getTime() + instPackage * 60000);
 
-    // const expirationTime = new Date(instPackage * 60000 + new Date().getTime());
+    const expirationDate = new Date(currentDate.getTime() + instPackage * 30 * 24 * 60 * 60 * 1000);
 
-  //   function calculateExpirationDate(months) {
-  //     const currentDate = new Date();
-  //     const year = currentDate.getFullYear() + Math.floor((currentDate.getMonth() + months) / 12);
-  //     const month = (currentDate.getMonth() + months) % 12;
-  //     const expirationDate = new Date(year, month, currentDate.getDate(), currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
-  //     return expirationDate;
-  // }
-  
-  // // Example usage:
-  // const instPackageMonths = 6; // Example: 6 months
-  // const expirationDate = calculateExpirationDate(instPackage);
-  // console.log("Expiration Date:", expirationDate);
-
-  const expirationDate = new Date(currentDate.getTime() + instPackage * 30 * 24 * 60 * 60 * 1000);
-
-  
-
-    // Set the time zone to Colombo (IST, UTC+5:30)
     const colomboTimeZone = "Asia/Colombo";
     const expireTimeColombo = expirationDate.toLocaleString("en-US", {
       timeZone: colomboTimeZone,
     });
-    // const currentTimeColombo = currentTime.toLocaleString("en-US", {
-    //   timeZone: colomboTimeZone,
-    // });
-
-   console.log(expireTimeColombo)
 
     const packageStatus = "Active";
 
@@ -82,11 +60,12 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
       packageStatus,
       currentTime: currentDate,
       expireTime: expireTimeColombo,
+      topUpPrice,
+      smsPrice,
+      stdCardcardStatus
     };
 
-  
-
-    const response = await fetch("https://edcuation-app.onrender.com/api/institute/create", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/institute/create", {
       method: "POST",
       body: JSON.stringify(institute),
       headers: {
@@ -107,9 +86,12 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
       setEmail("");
       setCount("");
       setNotification("");
+      setCardSatus("")
       setError(null);
       setImage(null); // Reset image state
       setInstPackage("");
+      setTopUpPrice("");
+      setSmsPrice("");
       setEmptyFields([]);
       dispatch({ type: "CREATE_INSTITUE", payload: json });
       onSuccess();
@@ -117,7 +99,7 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <div>
+    <div style={{ maxHeight: '400px', overflowY: 'auto', paddingRight: '17px' }}>
       <div className="overlay" onClick={onClose}></div>
       <div className="create-popup">
         <div className="popup_topic">
@@ -180,15 +162,6 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
             />
           </label>
 
-          {/* <label>
-           
-            <input
-              type="text"
-              onChange={(e) => setInstPackage(e.target.value)}
-              value={instPackage}
-            />
-          </label> */}
-
           <label>
             Package:
             <select
@@ -197,11 +170,47 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
               onChange={(e) => setInstPackage(e.target.value)}
             >
               <option value="" disabled hidden>
-                Select an package
+                Select a package
               </option>
               <option value="3">3 months</option>
               <option value="6">6 months</option>
               <option value="12">12 months</option>
+            </select>
+          </label>
+          <label>
+            SMS Top Price:
+            <input
+              type="number"
+              onChange={(e) => setTopUpPrice(e.target.value)}
+              value={topUpPrice}
+              placeholder="Enter your TopUp Price"
+              className={emptyFields.includes("TopUp Price") ? "error" : ""}
+            />
+          </label>
+
+          <label>
+            One SMS Price:
+            <input
+              type="number"
+              onChange={(e) => setSmsPrice(e.target.value)}
+              value={smsPrice}
+              placeholder="Enter your One SMS Price"
+              className={emptyFields.includes(" One SMS Price") ? "error" : ""}
+            />
+          </label>
+
+          <label>
+            Card Creation:
+            <select
+              onChange={(e) => setCardSatus(e.target.value)}
+              value={stdCardcardStatus}
+              className={emptyFields.includes("Card Creation") ? "error" : ""}
+            >
+              <option value="" disabled hidden>
+                Select an option
+              </option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
             </select>
           </label>
 

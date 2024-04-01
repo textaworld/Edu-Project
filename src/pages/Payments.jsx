@@ -4,6 +4,8 @@ import { usePaymentContext } from "../hooks/usePaymentContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useClassContext } from "../hooks/useClassContext";
 import { useStudentContext } from "../hooks/useStudentContext";
+import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
+
 import "../styles/payment.css";
 
 const CreatePayment = () => {
@@ -14,25 +16,74 @@ const CreatePayment = () => {
   const { dispatch } = usePaymentContext();
   const { user } = useAuthContext();
   const { students, dispatch: student } = useStudentContext();
-
+  const { sitedetail, dispatch: institute } = useSiteDetailsContext();
+  const [instNotification, setInstNotification] = useState("");
   const instID = user.instituteId;
-
   const [inst_ID, setInst_ID] = useState();
   const [name, setName] = useState("");
   const [std_ID, setStd_ID] = useState("");
   const [amount, setAmount] = useState("");
   const [month, setMonth] = useState("");
   const [className, setClassName] = useState("");
+  const [email , setEmail] = useState("")
+  const [phone ,setPhone] = useState("")
+  const [clzzz , setClz] = useState("");
   const [selectedClassId, setSelectedClassId] = useState("");
   const [status, setStatus] = useState("");
   const [error, setError] = useState(null);
   const [submissionSuccess, setSubmissionSuccess] = useState(false); // State for tracking submission success
+
+  const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
+
+  useEffect(() => {
+
+    const TopP = sitedetail.topUpPrice
+    const SMSP = sitedetail.smsPrice
+
+    console.log(TopP)
+    console.log(SMSP)
+
+    console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
+
+    const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
+    setRemainingSMSCount(remSmsCount);
+  }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
+
+  console.log(remainingSMSCount)
 
   useEffect(() => {
     const currentDate = new Date();
     const monthName = currentDate.toLocaleString("en-US", { month: "long" });
     setMonth(monthName);
   }, []);
+
+  useEffect(() => {
+    const fetchSiteDetails = async () => {
+      try {
+        const siteDetailsResponse = await fetch(
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+          {
+            headers: { Authorization: `Bearer ${user.token}` },
+          }
+        );
+        const siteDetailsJson = await siteDetailsResponse.json();
+
+        if (siteDetailsResponse.ok) {
+          setInstNotification(siteDetailsJson.notification);
+          institute({ type: "SET_SITE_DETAILS", payload: siteDetailsJson });
+          
+        }
+      } catch (error) {
+        
+      }
+    };
+
+    if (user) {
+      fetchSiteDetails();
+    }
+  }, [user, id, institute]);
+
+  console.log(instNotification)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,6 +99,8 @@ const CreatePayment = () => {
       return;
     }
 
+    const status = 'paid'
+
     const date = new Date();
     const payment = {
       inst_ID: instID,
@@ -62,7 +115,7 @@ const CreatePayment = () => {
     };
 
     const response = await fetch(
-      "https://edcuation-app.onrender.com/api/payments/createPayment",
+      "https://edu-project-backend.onrender.com/api/payments/createPayment",
       {
         method: "POST",
         body: JSON.stringify(payment),
@@ -74,27 +127,130 @@ const CreatePayment = () => {
     );
 
     const json = await response.json();
+    console.log("payment",json)
 
     if (!response.ok) {
       setError(json.error);
       return;
     }
 
-    setStd_ID("");
-    setName("");
-    setAmount("");
-    setSelectedClassId("");
-    setClassName("");
+    // setStd_ID("");
+    // setName("");
+    // setAmount("");
+    // setSelectedClassId("");
+    // setClassName("");
+    console.log(email)
+
     setError(null);
     setSubmissionSuccess(true); // Set submission success to true
+    submitEmail(email, name, amount ,className);
+    
+
+    if(remainingSMSCount >= 10){
+      setInstNotification((prevNotification,) => {
+        if (prevNotification === "Yes") {
+          // If instNotification is 'Yes', submit the email
+          //
+          // sendSMS(studentDetails.phone, studentDetails.name, clzName);
+  
+               sendSMS(phone , name, amount , className);
+  
+        }
+        return prevNotification; // Return the current state
+      });
+    }else{
+      alert("Your SMS account balance is low. Please Topup")
+    }
+    
+    
+    // sendSMS(phone , name, amount , className);
     dispatch({ type: "CREATE_PAYMENT", payload: json });
   };
+
+  const sendSMS = async (phone, name, amount ,className) => {
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+
+    console.log(phone)
+    const to = phone;
+    const colomboTime = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Colombo",
+    });
+
+    const message = `Dear parent , \n your child:${name} was paid the ${className} class fees Rs.${amount} at ${colomboTime} `;
+
+    const emailDetails = { to, message,instID };
+    console.log(instID)
+
+    const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
+      method: "POST",
+      body: JSON.stringify(emailDetails),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+      //navigate("/");
+    }
+    if (response.ok) {
+      setError(null);
+      dispatch({ type: "CREATE_EMAIL", payload: json });
+    }
+  };
+  ///
+  console.log(email)
+
+  const submitEmail = async (email, name, amount ,className ) => {
+    console.log(email)
+
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
+
+    //const email = stdEmail;
+    const subject = "Inform about your child's class Attendance";
+    const colomboTime = new Date().toLocaleString("en-US", {
+      timeZone: "Asia/Colombo",
+    });
+
+    const message = `Dear parent , \n your child:${name} was paid the ${className} class fees Rs.${amount} at ${colomboTime} `;
+
+    const emailDetails = { email, subject, message };
+
+    const response = await fetch("https://edu-project-backend.onrender.com/api/emails/sendEmail", {
+      method: "POST",
+      body: JSON.stringify(emailDetails),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+
+    if (!response.ok) {
+      setError(json.error);
+      // navigate("/");
+    }
+    if (response.ok) {
+      setError(null);
+      dispatch({ type: "CREATE_EMAIL", payload: json });
+    }
+  };
+
+  ///
 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${instID}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${instID}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -126,7 +282,7 @@ const CreatePayment = () => {
     const fetchStudents = async () => {
       try {
         const response = await fetch(
-          "https://edcuation-app.onrender.com/api/students/getStudentById/" + id,
+          "https://edu-project-backend.onrender.com/api/students/getStudentById/" + id,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -136,6 +292,9 @@ const CreatePayment = () => {
         if (response.ok) {
           setStd_ID(json.std_ID);
           setName(json.name);
+          setEmail(json.email)
+          setPhone(json.phone);
+          setClz(json.classs)
 
           student({ type: "SET_STUDENTS", payload: json });
         }
@@ -150,11 +309,15 @@ const CreatePayment = () => {
     }
   }, [student, user, id]);
 
+  console.log("clz",clzzz)
+
   return (
     <div className="container">
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
           <h2>Make Payments</h2>
+
+      
           <div className="form-group">
             <label htmlFor="std_ID">Student ID</label>
             <input
@@ -221,9 +384,18 @@ const CreatePayment = () => {
           {submissionSuccess && (
             <div className="success"> submitted successfully!</div>
           )}{" "}
-          {/* Render success message */}
+         
         </form>
       </div>
+      <div className="enrolled-classes">
+      <h4>Student's Enrolled Classes</h4>
+      <ul>
+        {Array.isArray(clzzz) &&
+          clzzz.map((classObj) => (
+            <li key={classObj._id}>{classObj.subject}</li>
+          ))}
+      </ul>
+    </div>
     </div>
   );
 };

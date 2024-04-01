@@ -17,7 +17,7 @@ const ForgotPassword = () => {
 
     try {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/admin/forgotpassword",
+        "https://edu-project-backend.onrender.com/api/admin/forgotpassword",
         {
           method: "POST",
           headers: {

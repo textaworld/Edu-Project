@@ -16,7 +16,7 @@ const AdminDetails = ({ instituteId }) => {
     const fetchAdmins = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/admin/getall/${instituteId}`,
+          `https://edu-project-backend.onrender.com/api/admin/getall/${instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -43,7 +43,7 @@ const AdminDetails = ({ instituteId }) => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/admin/delete/${id}`,
+        `https://edu-project-backend.onrender.com/api/admin/delete/${id}`,
         {
           method: "DELETE",
           headers: {

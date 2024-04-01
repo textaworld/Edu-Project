@@ -4,21 +4,26 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { Link } from "react-router-dom";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 
+
 const Home = () => {
   const { logout } = useLogout();
   const { sitedetail, dispatch } = useSiteDetailsContext();
+ 
   const { user } = useAuthContext();
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
 
   const [studentCount, setStudentCount] = useState(0);
-  const [remainingCount, setRemainingCount] = useState(0); // Initialize remaining count state
+  const [remainingCount, setRemainingCount] = useState(0); 
+  const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
+  const [smsCount, setSmsCount] = useState(0);
+  // Initialize remaining count state
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/students/getAllStudentsByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/students/getAllStudentsByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -40,9 +45,29 @@ const Home = () => {
     }
   }, [dispatch, user]);
 
+  console.log(packageStatus)
+
+  // useEffect(() => {
+  //   const fetchSmsCount = async () => {
+  //     try {
+  //       const response = await fetch('https://edu-project-backend.onrender.com/api/sms/count');
+  //       console.log(response.data) // Adjust the URL as per your backend route
+  //       setSmsCount(response.data.count);
+  //     } catch (error) {
+  //       console.error('Error fetching SMS count:', error);
+  //     }
+  //   };
+
+  //   if (user) {
+      
+      
+  //     fetchSmsCount(); // Fetch SMS count when the component mounts
+  //   }
+  // }, [sms , user]);
+
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -82,10 +107,13 @@ const Home = () => {
     }
   };
 
+
+  
+
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -157,6 +185,22 @@ const Home = () => {
     setRemainingCount(sitedetail.count - studentCount);
   }, [studentCount, sitedetail.count]);
 
+  useEffect(() => {
+
+    const TopP = sitedetail.topUpPrice
+    const SMSP = sitedetail.smsPrice
+
+    console.log(TopP)
+    console.log(SMSP)
+
+    console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
+
+    const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
+    setRemainingSMSCount(remSmsCount);
+  }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
+
+  console.log(packageStatus)
+
   return (
     <div>
       {packageStatus !== "Yes" ? (
@@ -188,6 +232,19 @@ const Home = () => {
     <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
         <h2>Package Duration: <span style={{color:'red'}}>{sitedetail.instPackage}</span></h2>
     </div>
+    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
+        <h2>TopUp Price: <span style={{color:'red'}}>{sitedetail.topUpPrice}</span></h2>
+    </div>
+    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
+        <h2>One SMS Price: <span style={{color:'red'}}>{sitedetail.smsPrice}</span></h2>
+    </div>
+    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
+        <h2>Sent SMS Count: <span style={{color:'red'}}>{sitedetail.smsCount}</span></h2>
+    </div>
+    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
+        <h2>Remaining SMS : <span style={{color:'red'}}>{remainingSMSCount}</span></h2>
+    </div>
+   
 </div>
 
         </div>

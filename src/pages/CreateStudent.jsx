@@ -35,6 +35,9 @@ const CreateStudent = () => {
   const [isDownload, setIsDownload] = useState(false);
   const [error, setError] = useState(null);
   const idCardRef = useRef(null);
+  const cardStatus = sitedetail.stdCardcardStatus;
+
+  console.log(cardStatus)
 
   const isAnyCheckboxChecked = () => {
     return Object.values(classStates).some(
@@ -50,7 +53,7 @@ const CreateStudent = () => {
   useEffect(() => {
     const fetchSiteDetails = async () => {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -72,7 +75,7 @@ const CreateStudent = () => {
     const fetchClassesBySite = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -115,7 +118,7 @@ const CreateStudent = () => {
         currentDay +
         currentTime;
 
-      setStd_ID(studentID);
+      //setStd_ID(studentID);
     };
     if (user && sitedetail && sitedetail._id) {
       fetchClassesBySite();
@@ -154,7 +157,7 @@ const CreateStudent = () => {
 
 
     const response = await fetch(
-      "https://edcuation-app.onrender.com/api/students/createStudent",
+      "https://edu-project-backend.onrender.com/api/students/createStudent",
       {
         method: "POST",
         body: JSON.stringify(student),
@@ -176,8 +179,7 @@ const CreateStudent = () => {
 
     if (response.ok) {
       setInst_ID("");
-      generateStudentID();
-      
+      setStd_ID("");      
       setName("");
       setEmail("");
       setAge("");
@@ -200,25 +202,11 @@ const CreateStudent = () => {
   const generateQrCode = async () => {
     try {
       // Check if any of the required fields are null or empty
-      if (
-        !std_ID ||
-        !name ||
-        !email ||
-        !age ||
-        !phone ||
-        !address ||
-        !image ||
-        !isAnyCheckboxChecked()
-      ) {
-        setError("Please fill all fields.");
-        
-        // Handle error appropriately
-        return;
-      }
+      
 
       const student = { std_ID };
 
-      const response = await fetch("https://edcuation-app.onrender.com/api/qr/qrGenerator", {
+      const response = await fetch("https://edu-project-backend.onrender.com/api/qr/qrGenerator", {
         method: "POST",
         body: JSON.stringify(student),
         headers: {
@@ -230,6 +218,7 @@ const CreateStudent = () => {
       if (!response.ok) {
         
         // Handle error appropriately
+        
         return;
       }
 
@@ -294,7 +283,7 @@ const CreateStudent = () => {
 
               <label>
                 Student ID
-                <input value={std_ID} type="text" required disabled />
+                <input value={std_ID} type="text" placeholder="Enter Student ID" required onChange={(e)=> setStd_ID(e.target.value)} />
               </label>
 
               <label>
@@ -304,7 +293,7 @@ const CreateStudent = () => {
                   type="text"
                   placeholder="Enter Name"
                   required
-                  pattern="[A-Za-z]+"
+                  
                   title="Name must contain only alphabets"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -355,7 +344,7 @@ const CreateStudent = () => {
                   placeholder="Enter Phone Num"
                   onChange={(e) => setPhone(e.target.value)}
                   required
-                  pattern="[0-9]{10}"
+                  pattern="[0-9]{11}"
                   title="Enter a valid 10 digit phone number"
                 />
               </label>
@@ -402,12 +391,12 @@ const CreateStudent = () => {
             {error && <div className="error">{error}</div>}
           </div>
 
-              {isDownload ? (
+              
                  
                     <button type="submit" className="createstudentsubmitButton">Submit</button>
                    
                  
-                ) : null}
+              
 
              
 
@@ -473,12 +462,7 @@ const CreateStudent = () => {
                 style={{
                   borderColor:
                     std_ID &&
-                    name &&
-                    email &&
-                    age &&
-                    phone &&
-                    address &&
-                    image &&
+                    
                     isAnyCheckboxChecked()
                       ? "rgb(23,  211, 23)"
                       : "#ccc",
@@ -489,12 +473,7 @@ const CreateStudent = () => {
                   style={{
                     color:
                       std_ID &&
-                      name &&
-                      email &&
-                      age &&
-                      phone &&
-                      address &&
-                      image &&
+                      
                       isAnyCheckboxChecked()
                         ? "rgb(23, 211, 23)"
                         : "black",
@@ -502,18 +481,11 @@ const CreateStudent = () => {
                 >
                   Step 1
                 </h3>
-                {std_ID &&
-                name &&
-                email &&
-                age &&
-                phone &&
-                address &&
-                image &&
-                isAnyCheckboxChecked() ? (
+                
                   <div className="stepIconGreen">
                     <FaCheck />
                   </div>
-                ) : null}
+                
                 <p className="stepDescription">
                   Please fill all fields. Make sure to provide accurate
                   information.
@@ -537,22 +509,13 @@ const CreateStudent = () => {
                     <FaCheck />
                   </div>
                 ) : null}
-                {std_ID &&
-                name &&
-                email &&
-                age &&
-                phone &&
-                address &&
-                image &&
-                isAnyCheckboxChecked() ? (
-                  <button
-                    type="button"
-                    onClick={generateQrCode}
-                    className="stepButton"
-                  >
-                    Generate QR Code
-                  </button>
-                ) : null}
+                
+               
+                {cardStatus === 'yes' && (
+    <button type="button" onClick={generateQrCode} className="stepButton">
+      Generate QR Code
+    </button>
+  )}
               </div>
 
               {/* Step 3 */}
@@ -569,7 +532,7 @@ const CreateStudent = () => {
                   Step 3
                 </h3>
                 <p className="stepDescription">Download ID Card</p>
-                {qrImage && std_ID && name && address && image ? (
+                {qrImage && std_ID  ? (
                   <button
                     type="button"
                     onClick={handleDownload}

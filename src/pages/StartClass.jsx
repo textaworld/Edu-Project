@@ -14,7 +14,7 @@ const StartClass = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${user.instituteId}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${user.instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -50,28 +50,27 @@ const StartClass = () => {
   };
 
   return (
-    <div>
-      <h2 style={{marginLeft:'610px', fontSize:'30px'}}>Start class</h2>
+    <div style={{ textAlign: 'center' }}>
+    <h2 style={{ fontSize: '30px' }}>Start class</h2>
 
-      <select style={{marginLeft:'635px', height:'30px'}} value={selectedClass} onChange={handleClassSelect}>
-        <option value="">Select a class</option>
-        {classes.map((classObj) => (
-          <option key={classObj._id} value={classObj._id}>
-            {classObj.subject}
-          </option>
-        ))}
-      </select>
+    <select style={{ margin: '10px auto', height: '30px' }} value={selectedClass} onChange={handleClassSelect}>
+      <option value="">Select a class</option>
+      {classes.map((classObj) => (
+        <option key={classObj._id} value={classObj._id}>
+          {classObj.subject}
+        </option>
+      ))}
+    </select>
 
-      <div style={{marginTop:'50px'}}>
-  <button onClick={handleStartClass} style={{ borderRadius:'10px',marginLeft:'480px',marginRight: '100px', padding: '30px', fontSize:'20px',backgroundColor: '#0f172a', color: 'white', border: 'none', cursor: 'pointer' }}>
-    Start Class
-  </button>
-  <button onClick={handleAbsentStudents} style={{ borderRadius:'10px',padding: '30px', backgroundColor: '#0f172a',fontSize:'20px' ,color: 'white', border: 'none', cursor: 'pointer' }}>
-    Absent Students
-  </button>
-</div>
-
+    <div style={{ marginTop: '50px' }}>
+      <button onClick={handleStartClass} style={{ margin: '0 auto', borderRadius: '10px', padding: '15px 30px', fontSize: '20px', backgroundColor: '#0f172a', color: 'white', border: 'none', cursor: 'pointer', display: 'block', marginBottom: '10px' }}>
+        Start Class
+      </button>
+      <button onClick={handleAbsentStudents} style={{ margin: '0 auto', borderRadius: '10px', padding: '15px 30px', fontSize: '20px', backgroundColor: '#0f172a', color: 'white', border: 'none', cursor: 'pointer', display: 'block' }}>
+        Absent Students
+      </button>
     </div>
+  </div>
   );
 };
 

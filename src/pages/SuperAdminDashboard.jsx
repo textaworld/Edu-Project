@@ -1,9 +1,26 @@
+// import InstituteDetails from "../components/InstituteDetails";
+// import InstituteCreate from "../components/instituteCreate";
 
+// export default function SuperAdminDashboard() {
+//   return (
+//     <div>
+//       <h1>home</h1>
+
+//       <div className="home">
+//         <InstituteDetails />
+//         <InstituteCreate />
+//       </div>
+//     </div>
+//   );
+// }
+
+
+// SuperAdminDashboard.js
 
 import { useState } from "react";
-import InstituteDetails from "../components/InstituteDetails";
-
-import "../styles/superAdminDashboard.css"
+import InstituteDetails from "../components/InstituteDetails"
+import InstituteCreate from "../components/InstituteCreate"
+import "../styles/superAdminDashboard.css";
 
 export default function SuperAdminDashboard() {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -36,4 +53,3 @@ export default function SuperAdminDashboard() {
     </div>
   );
 }
-

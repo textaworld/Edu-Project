@@ -16,10 +16,15 @@ const Payments = () => {
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
   const [scrollPosition, setScrollPosition] = useState(0); // Add state to store scroll position
+  const [searchTermID, setSearchTermID] = useState("");
+  const [searchTermMonth, setSearchTermMonth] = useState("");
+  const [searchTermClassName, setSearchTermClassName] = useState("");
+  const [lastPayments, setLastPayments] = useState([]);
+  const [lastMonth, setLastMonth] = useState("");
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -62,7 +67,7 @@ const Payments = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -134,7 +139,7 @@ const Payments = () => {
     const fetchPayments = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/payments/getAllPaymentsByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/payments/getAllPaymentsByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -158,15 +163,23 @@ const Payments = () => {
     }
   }, [dispatch, user, sitedetail._id]);
 
-  const filteredAttendance = paymentss.filter((payment) => {
+  // const filteredAttendance = paymentss.filter((payment) => {
+  //   return (
+  //     payment.std_ID.includes(searchTerm) ||
+  //     (payment.className &&
+  //       payment.className.toLowerCase().includes(searchTerm.toLowerCase())) ||
+  //     (payment.month &&
+  //       payment.month.toLowerCase().includes(searchTerm.toLowerCase())) ||
+  //     (payment.name &&
+  //       payment.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  //   );
+  // });
+
+  const filteredPayments = paymentss.filter((payment) => {
     return (
-      payment.std_ID.includes(searchTerm) ||
-      (payment.className &&
-        payment.className.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (payment.month &&
-        payment.month.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (payment.name &&
-        payment.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      payment.std_ID.includes(searchTermID) &&
+      payment.className.toLowerCase().includes(searchTermClassName.toLowerCase()) &&
+      payment.month.toLowerCase().includes(searchTermMonth.toLowerCase())
     );
   });
 
@@ -186,25 +199,108 @@ const Payments = () => {
     window.scrollTo(0, scrollPosition); // Restore scroll position on component mount
   }, []);
 
+
+
+//   useEffect(() => {
+//     filteredPayments.forEach(async (payment) => { // Iterate over filteredPayments
+//       try {
+//         const response = await fetch(`https://edu-project-backend.onrender.com/api/payments/getAllPaymentStatusBystdId/${payment.std_ID}`, {
+//           method: 'GET',
+//           headers: {
+//             'Content-Type': 'application/json',
+//             'Authorization': `Bearer ${user.token}`
+//           }
+//         });
+//         if (response.ok) {
+//   const data = await response.json();
+//   console.log("status", data);
+//   // Update lastPayments array with previousMonthStatus for each payment
+//   setLastPayments(prev => [...prev, data.previousMonthStatus]);
+// } else {
+//   throw new Error('Failed to fetch payment status');
+// }
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     });
+//   }, [filteredPayments, user.token]); // Add filteredPayments and user.token as dependencies
+
+
+// useEffect(() => {
+//   const currentDate = new Date();
+//   const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+//   const monthName = previousMonthDate.toLocaleString("en-US", { month: "long" });
+//   //console.log(monthName);
+//   setLastMonth(monthName);
+// }, []);
+// Get month name in "January", "February" forma
+
+const getLastMonthPayments = () => {
+  if (payments.length === 0) return [];
+
+  return payments.filter(payment => payment.month.toLowerCase() === lastMonth.toLowerCase());
+};
+
+useEffect(() => {
+  if (paymentss.length > 0) {
+    // Filter payments for last month
+    const lastMonthPayments = getLastMonthPayments();
+    // Update paymentss state with filtered payments for last month
+    setPayments(lastMonthPayments);
+  }
+}, [lastMonth, payments]);
+
+useEffect(() => {
+  const currentDate = new Date();
+  const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+  const monthName = previousMonthDate.toLocaleString("en-US", { month: "long" });
+  setLastMonth(monthName);
+}, []);
+
+      
+console.log(lastMonth)      
+  
+
   return (
     <div>
       <div className="superAdminDashboardContainer">
         {packageStatus !== "Yes" ? (
           <div>
-            <h1>You need to pay</h1>
+            <h1>Processing...!</h1>
           </div>
         ) : (
           <div className="instituteTableContainer">
             <p>
               You can Filter by Student_ID,Student name , Class name & Month and{" "}
             </p>
-            <input
-              type="text"
-              placeholder="Search by Student_ID , Student name, month & Class name"
-              value={searchTerm}
-              size={100}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            <div>
+              <input
+                type="text"
+                placeholder="Search by Student ID"
+                value={searchTermID}
+                onChange={(e) => setSearchTermID(e.target.value)}
+                style={{marginRight:'10px'}}
+              />
+              <input
+                type="text"
+                placeholder="Search by Month"
+                value={searchTermMonth}
+                onChange={(e) => setSearchTermMonth(e.target.value)}
+                style={{marginRight:'10px'}}
+              />
+              <input
+                type="text"
+                placeholder="Search by Class Name"
+                value={searchTermClassName}
+                onChange={(e) => setSearchTermClassName(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <Link to="/instituteIncome">
+                <button>Go to Institute Income</button>
+              </Link>
+            </div> 
 
             <table className="instituteTable">
               <thead>
@@ -216,11 +312,12 @@ const Payments = () => {
                   <th>Class Name</th>
                   <th>Date</th>
                   <th>Status</th>
+                  <th>LastMonth Status</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredAttendance.length > 0 ? (
-                  filteredAttendance.map((payment, index) => {
+                {filteredPayments.length > 0 ? (
+                  filteredPayments.map((payment, index) => {
                     const colomboTime = new Date(payment.date).toLocaleString(
                       "en-US",
                       { timeZone: "Asia/Colombo" }
@@ -234,12 +331,14 @@ const Payments = () => {
                         <td>{payment.className}</td>
                         <td>{colomboTime}</td>
                         <td>{payment.status}</td>
+                        <td>{payment.month.toLowerCase() === lastMonth.toLowerCase() ? payment.status : "not paid"}</td>
+
                       </tr>
                     );
                   })
                 ) : (
                   <tr>
-                    <td colSpan="8">No Attendences found</td>
+                    <td colSpan="8">No Payments found</td>
                   </tr>
                 )}
               </tbody>

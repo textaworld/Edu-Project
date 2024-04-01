@@ -20,7 +20,7 @@ const InstituteDetails = () => {
   useEffect(() => {
     const fetchInstitutes = async () => {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/institute/getall",
+        "https://edu-project-backend.onrender.com/api/institute/getall",
         {
           headers: { Authorization: `Bearer ${user.token}` },
         }
@@ -39,14 +39,18 @@ const InstituteDetails = () => {
     }
   }, [dispatch, adDispatch, user]);
 
+  // const filteredInstitutes = institutes.filter((institute) =>
+  //   institute.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
   const filteredInstitutes = institutes.filter((institute) =>
-    institute.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  institute.name && typeof institute.name === 'string' && institute.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
 
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/delete/${id}`,
+        `https://edu-project-backend.onrender.com/api/institute/delete/${id}`,
         {
           method: "DELETE",
           headers: {

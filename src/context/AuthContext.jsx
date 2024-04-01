@@ -22,7 +22,16 @@ export const AuthContextProvider = ({ children }) => {
     const user = JSON.parse(localStorage.getItem("user"));
 
     if (user) {
-      dispatch({ type: "LOGIN", payload: user });
+      const expiration = user.tokenExpDate;
+
+      const now = Date.now();
+
+      if (now > expiration) {
+        // Data has expired, clear local storage
+        localStorage.removeItem("user");
+      } else {
+        dispatch({ type: "LOGIN", payload: user });
+      }
     }
   }, []);
 

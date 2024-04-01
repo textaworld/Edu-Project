@@ -25,7 +25,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
 
     const admin = { email, password, role, instituteId };
 
-    const response = await fetch("https://edcuation-app.onrender.com/api/admin/register", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/admin/register", {
       method: "POST",
       body: JSON.stringify(admin),
       headers: {
@@ -99,6 +99,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
               </option>
               <option value="ADMIN">Admin</option>
               <option value="SUB_ADMIN">SubAdmin</option>
+              <option value="SCL_ADMIN">School Admin</option>
             </select>
           </label>
 

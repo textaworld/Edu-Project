@@ -6,7 +6,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 
 
-const HomeSubAdmin = () => {
+const HomeSclAdmin = () => {
   const { sitedetail, dispatch } = useSiteDetailsContext();
   const { user } = useAuthContext();
   const [packageStatus, setPackageStatus] = useState("");
@@ -141,14 +141,19 @@ const HomeSubAdmin = () => {
     ) : (
       <div>
         <div style={{ marginTop: '100px', textAlign: 'center' }}>
-          <h1>Welcome sub admin</h1>
+          <h1>Welcome Admin</h1>
           <button onClick={handleClick} style={{ marginTop: '20px', cursor: 'pointer', color: '#f8f8f8', padding: '8px', backgroundColor: '#0f172a', borderRadius: '5px', border: '1px solid #0f172a' }}>Log out</button>
         </div>
 
         <div style={{ marginTop: '100px', textAlign: 'center' }}>
-          <Link to={"startClass"} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link to={"startSchool"} style={{ textDecoration: 'none', color: 'inherit' }}>
             <button style={{ padding: '20px', backgroundColor: '#0f172a', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '7px' }}>
-              <h1 style={{ margin: 0 }}>Start Class <FaArrowRight style={{ marginLeft: '5px' }} /></h1>
+              <h1 style={{ margin: 0 }}>Start School <FaArrowRight style={{ marginLeft: '5px' }} /></h1>
+            </button>
+          </Link>
+          <Link to={"absentScl"} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <button style={{ padding: '20px', backgroundColor: '#0f172a', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '7px' ,marginLeft:'10px'}}>
+              <h1 style={{ margin: 0 }}>Absent Students <FaArrowRight style={{ marginLeft: '5px' }} /></h1>
             </button>
           </Link>
         </div>
@@ -158,4 +163,4 @@ const HomeSubAdmin = () => {
   )
 }
 
-export default HomeSubAdmin
+export default HomeSclAdmin

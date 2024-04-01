@@ -13,6 +13,8 @@ const TestAuth = ({ userRole }) => {
       return "/";
     } else if (uRole === "SUB_ADMIN") {
       return "/subadminhome";
+    }else{
+      return "/scladminhome";
     }
   };
 

@@ -13,7 +13,7 @@ export const useLogin = () => {
 
     try {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/superAdmin/login",
+        "https://edu-project-backend.onrender.com/api/superAdmin/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -51,7 +51,7 @@ export const useLogin = () => {
 
     try {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/superAdmin/verifylogin",
+        "https://edu-project-backend.onrender.com/api/superAdmin/verifylogin",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

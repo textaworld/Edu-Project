@@ -21,7 +21,7 @@ const SuperAdminResetPassword = () => {
 
     try {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/superAdmin/resetpassword",
+        "https://edu-project-backend.onrender.com/api/superAdmin/resetpassword",
         {
           method: "POST",
           headers: {

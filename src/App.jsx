@@ -30,6 +30,7 @@ import StudentProfile from "./pages/StudentProfile.jsx";
 import AbsentStudents from "./pages/AbsentStudents.jsx";
 import StartClass from "./pages/StartClass.jsx";
 import StudentPayment from "./pages/StudentPayments.jsx";
+import TeachersIncome from "./pages/TeachersIncome.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import SuperAdminDashboardAdmins from "./pages/SuperAdminDashboardAdmins.jsx";
@@ -38,10 +39,16 @@ import NavBar from "./components/NavBar/NavBar.jsx";
 import UpdateStudent from "./pages/UpdateStudent.jsx";
 import SuperAdminForgotPassword from "./pages/SuperAdminForgotPassword.jsx";
 import SuperAdminResetPassword from "./pages/SuperAdminResetPassword.jsx";
+import InstituteIncome from "./pages/InstituteIncome.jsx";
 
 // Styling imports
 import "./components/NavBar/NavBar.css";
+import UpdateClass from "./pages/UpdateClass.jsx";
 
+import HomeSclAdmin from "./pages/HomeSclAdmin.jsx";
+import StartSchool from "./pages/StartSchool.jsx";
+import BrodcastMsg from "./pages/BrodcastMsg.jsx";
+import AbsentSclStds from "./pages/AbsentSclStds.jsx";
 
 function App() {
   const { user } = useAuthContext();
@@ -67,6 +74,18 @@ function App() {
               }
             />
 
+            {/* <Route
+              path="/adminlogin"
+              element={
+                checkUserRole("ADMIN") ? (
+                  <Navigate to="/" />
+                ) : checkUserRole("SUB_ADMIN") ? (
+                  <Navigate to="/subadminhome" />
+                ) : (
+                  <AdminLogin />
+                )
+              }
+            /> */}
             <Route
               path="/adminlogin"
               element={
@@ -74,6 +93,8 @@ function App() {
                   <Navigate to="/" />
                 ) : checkUserRole("SUB_ADMIN") ? (
                   <Navigate to="/subadminhome" />
+                ) : checkUserRole("SCL_ADMIN") ? (
+                  <Navigate to="/scladminhome" />
                 ) : (
                   <AdminLogin />
                 )
@@ -133,12 +154,14 @@ function App() {
                       <TuteContextProvider>
                         <PaymentsContextProvider>
                           <EmailContextProvider>
-                            {/* <React.Fragment> */}
-                            <div className="navbar-wrapper">
-                              <NavBar />
-                            </div>
-                            <UserRoleAuth userRole={"ADMIN"} />
-                            {/* </React.Fragment> */}
+                            
+                              {/* <React.Fragment> */}
+                              <div className="navbar-wrapper">
+                                <NavBar />
+                              </div>
+                              <UserRoleAuth userRole={"ADMIN"} />
+                              {/* </React.Fragment> */}
+                            
                           </EmailContextProvider>
                         </PaymentsContextProvider>
                       </TuteContextProvider>
@@ -151,10 +174,7 @@ function App() {
               <Route path="/students" element={<Student />} />
               <Route path="/payments" element={<StudentPayment />} />
               <Route path="/createSTD" element={<CreateStudent />} />
-              <Route
-                path="/startClass/qrScanner/:id"
-                element={<QrScn />}
-              />
+              <Route path="/startClass/qrScanner/:id" element={<QrScn />} />
               <Route
                 path="/startClass/absent/:id"
                 element={<AbsentStudents />}
@@ -162,15 +182,21 @@ function App() {
               <Route path="/payment/:id" element={<CreatePayment />} />
               <Route path="/classes" element={<Class />} />
               <Route path="/attendences" element={<Attendance />} />
+              <Route path="/brodcastMsg" element={<BrodcastMsg/>} /> 
               {/* <Route path="/createClass" element={<CreateClass />} /> */}
               <Route
                 path="/studentprofile/:studentId"
                 element={<StudentProfile />}
               />
               <Route path="/updateStd/:id" element={<UpdateStudent />} />
+              <Route path="/updateClz/:id" element={<UpdateClass />} />
+              <Route path="/teacherIncome/:id" element={<TeachersIncome />}/>
+              <Route path="/instituteIncome" element={<InstituteIncome />} />
 
               <Route path="/absent" element={<AbsentStudents />} />
+              <Route path="/absentScl" element={<AbsentSclStds />} />
               <Route path="/startClass" element={<StartClass />} />
+              <Route path="/startSchool" element={<StartSchool/>}/>
             </Route>
 
             {/* ---------  ----------  ---------*/}
@@ -206,8 +232,33 @@ function App() {
                 path="/subadminhome/startClass/absent/:id"
                 element={<AbsentStudents />}
               />
+              
             </Route>
             {/* --------- -------  ------- ---------*/}
+
+            {/*----------- school admin------------- */}
+            <Route
+              path="/scladminhome"
+              element={
+                <StudentContextProvider>
+                  <ClassContextProvider>
+                    <AttendanceContextProvider>
+                      <EmailContextProvider>
+                        <UserRoleAuth userRole={"SCL_ADMIN"} />
+                      </EmailContextProvider>
+                    </AttendanceContextProvider>
+                  </ClassContextProvider>
+                </StudentContextProvider>
+              }
+            > 
+            
+            <Route path="/scladminhome" element={<HomeSclAdmin />} />
+            <Route path="/scladminhome/startSchool" element={<StartSchool />} />
+            <Route
+                path="/scladminhome/absentScl"
+                element={<AbsentSclStds />}
+              />
+            </Route>
           </Routes>
         </div>
       </BrowserRouter>

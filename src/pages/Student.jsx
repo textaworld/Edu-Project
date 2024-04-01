@@ -7,6 +7,7 @@ import { useClassContext } from "../hooks/useClassContext";
 import "../styles/instituteDetails.css";
 import "../styles/superAdminDashboard.css";
 import { FaUser, FaMoneyBill, FaEdit, FaTrash } from "react-icons/fa";
+import * as XLSX from "xlsx";
 
 const Students = () => {
   const { id } = useParams();
@@ -22,11 +23,29 @@ const Students = () => {
   const [newPackageStatus, setNewPackageStatus] = useState("");
   const navigate = useNavigate();
 
+
+
+  const generateExcel = () => {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(filteredStudents.map(student => ({
+      "Student ID": student.std_ID,
+      "Name": student.name,
+      "Email": student.email,
+      "Age": student.age,
+      "Address": student.address,
+      "Phone": student.phone,
+      "Classes": student.classs ? student.classs.map(cls => cls.subject).join(", ") : ""
+    })));
+
+    XLSX.utils.book_append_sheet(wb, ws, "Students");
+    XLSX.writeFile(wb, "students.xlsx");
+  };
+
   //// new changes
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -73,7 +92,7 @@ const Students = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -149,7 +168,7 @@ const Students = () => {
 
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/students/deleteStudent/${studentId}`,
+        `https://edu-project-backend.onrender.com/api/students/deleteStudent/${studentId}`,
         {
           method: "DELETE",
           headers: {
@@ -175,7 +194,7 @@ const Students = () => {
     const fetchStudents = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/students/getAllStudentsByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/students/getAllStudentsByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -195,20 +214,21 @@ const Students = () => {
     }
   }, [dispatch, user]);
 
-  const filteredStudents = students.filter(
+
+  const filteredStudents = Array.isArray(students) ? students.filter(
     (student) =>
       student.std_ID.toLowerCase().includes(searchQuery.toLowerCase()) &&
       (ageFilter === "" || student.age.toString() === ageFilter) &&
       (classFilter === "" ||
         (student.classs &&
           student.classs.some((cls) => cls._id === classFilter)))
-  );
+  ) : [];
 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -237,7 +257,7 @@ const Students = () => {
       <div className="superAdminDashboardContainer">
         {packageStatus !== "Yes" ? (
         <div>
-          <h1>You need to pay</h1>
+          <h1>Processing...!</h1>
         </div>
       ) : (
         <div className="instituteTableContainer">
@@ -249,6 +269,8 @@ const Students = () => {
             >
               Add New Student
             </button>
+            <button onClick={generateExcel}>Generate Excel</button> {/* Button to generate Excel */}
+
           </div>
           <div className="filter-container">
             <input
@@ -266,8 +288,17 @@ const Students = () => {
                 onChange={(e) => setAgeFilter(e.target.value)}
               >
                 <option value="">All</option>
-                <option value="22">22</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
                 <option value="19">19</option>
+                <option value="20">20</option>
                 {/* Add more age options as needed */}
               </select>
             </div>
@@ -298,7 +329,6 @@ const Students = () => {
                 <th>Address</th>
                 <th>Phone</th>
                 <th>Classes</th>
-
                 <th>Profile</th>
                 <th>Payment</th>
                 <th>Edit</th>

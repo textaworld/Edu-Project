@@ -21,7 +21,7 @@ const ResetPassword = () => {
 
     try {
       const response = await fetch(
-        "https://edcuation-app.onrender.com/api/site/resetpassword",
+        "https://edu-project-backend.onrender.com/api/site/resetpassword",
         {
           method: "POST",
           headers: {

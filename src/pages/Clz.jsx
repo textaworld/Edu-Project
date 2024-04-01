@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useClassContext } from "../hooks/useClassContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash , FaEdit , FaMoneyBill} from "react-icons/fa";
 import CreateClass from "../components/CreateClass";
 
 const Clz = () => {
@@ -12,13 +12,20 @@ const Clz = () => {
   const { user } = useAuthContext();
   const { sitedetail, dispatch: sitedispatch } = useSiteDetailsContext();
   const [clzs, setClz] = useState([]);
-
+  const [searchQuery, setSearchQuery] = useState("");
+ 
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
   const navigate = useNavigate();
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [isSubmissionSuccessful, setSubmissionSuccessful] = useState(false);
+
+  const filteredClasses = classs.filter(
+    (clz) =>
+      clz.class_ID.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      clz.subject.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const openModal = () => {
     setModalOpen(true);
@@ -37,7 +44,7 @@ const Clz = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edcuation-app.onrender.com/api/site/getone/${user.instituteId}`,
+      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
         headers: { Authorization: `Bearer ${user.token}` },
       }
@@ -80,7 +87,7 @@ const Clz = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/institute/update/${user.instituteId}`,
+        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
         {
           method: "PATCH",
           headers: {
@@ -154,7 +161,7 @@ const Clz = () => {
     const fetchClasses = async () => {
       try {
         const response = await fetch(
-          `https://edcuation-app.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -184,7 +191,7 @@ const Clz = () => {
 
     try {
       const response = await fetch(
-        `https://edcuation-app.onrender.com/api/class/deleteClass/${classId}`,
+        `https://edu-project-backend.onrender.com/api/class/deleteClass/${classId}`,
         {
           method: "DELETE",
           headers: {
@@ -205,8 +212,11 @@ const Clz = () => {
       
     }
   };
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
 
-  return (
+  return(
     <div>
       {isModalOpen && (
         <CreateClass onClose={closeModal} onSuccess={handleSubmissionSuccess} />
@@ -214,13 +224,20 @@ const Clz = () => {
       <div className="superAdminDashboardContainer">
         {packageStatus !== "Yes" ? (
           <div>
-            <h1>You need to pay</h1>
+            <h1>Processing ...!</h1>
           </div>
         ) : (
           <div className="instituteTableContainer">
             <div className="instituteAddButtonContainer">
               <button onClick={openModal}>Add New Class</button>
             </div>
+
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearch}
+              placeholder="Search by Class ID or Name"
+            />
 
             <table className="instituteTable">
               <thead>
@@ -232,12 +249,14 @@ const Clz = () => {
                   <th>Email</th>
                   <th>Phone</th>
                   <th>Fees</th>
+                  <th>Income</th>
+                  <th>Edit</th>
                   <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
-                {classs.length > 0 ? (
-                  classs.map((clz, index) => (
+                {filteredClasses.length > 0 ? (
+                  filteredClasses.map((clz, index) => (
                     <tr key={index}>
                       <td>{clz.class_ID}</td>
                       <td>{clz.subject}</td>
@@ -246,6 +265,20 @@ const Clz = () => {
                       <td>{clz.teacherEmail}</td>
                       <td>{clz.teacherPhone}</td>
                       <td>{clz.classFees}</td>
+                      <td><Link
+                        to={`/teacherIncome/${clz._id}`}
+                        className="btn btn-success"
+                      >
+                        <FaMoneyBill />
+                      </Link></td>
+                      <td>
+                      <Link
+                        to={`/updateClz/${clz._id}`}
+                        className="btn btn-success"
+                      >
+                        <FaEdit />
+                      </Link>
+                    </td>
                       <td>
                         <Link
                           to="#"
