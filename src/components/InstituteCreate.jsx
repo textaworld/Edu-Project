@@ -65,7 +65,7 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
       stdCardcardStatus
     };
 
-    const response = await fetch("http://localhost:3018/api/institute/create", {
+    const response = await fetch("https://edu-project-backend.onrender.com/api/institute/create", {
       method: "POST",
       body: JSON.stringify(institute),
       headers: {
