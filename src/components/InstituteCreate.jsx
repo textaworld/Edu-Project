@@ -232,3 +232,4 @@ const InstituteCreate = ({ onClose, onSuccess }) => {
 };
 
 export default InstituteCreate;
+//
