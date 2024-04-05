@@ -415,36 +415,39 @@ const CreateStudent = () => {
               </div>
 
               <div className="id-card-details">
-                <input
-                  type="text"
-                  value={std_ID}
-                  disabled
-                  style={{ width: "250px", height: "25px", fontWeight: "bold" }}
-                />
-                <input
-                  type="text"
-                  value={name}
-                  disabled
-                  style={{ width: "260px", height: "25px" }}
-                />
-                {/* <input
-                  type="text"
-                  value={address}
-                  disabled
-                  style={{ width: "400px", height: "25px" }}
-                /> */}
-
-                <p
-                  style={{
-                    maxWidth: "300px",
-                    height: "25px",
-
-                    wordWrap: "break-word",
-                  }}
-                >
-                  {address}
-                </p>
-              </div>
+  <div>
+    
+    <input
+      type="text"
+      id="std_ID"
+      value={std_ID}
+      disabled
+      style={{ width: "250px", height: "25px", fontWeight: "bold",fontSize:'24px',marginBottom:'5px',marginTop:'20px' }}
+    />
+  </div>
+  <div>
+   
+    <input
+      type="text"
+      id="name"
+      value={name}
+      disabled
+      style={{ width: "260px", height: "25px"}}
+    />
+  </div>
+  <div>
+    
+    <input
+      id="address"
+      value={address}
+      disabled
+      style={{
+        width: "260px",
+        height: "25px",marginTop:'3px'
+      }}
+    />
+  </div>
+</div>
 
               <div className="id-card-logo">
                 <img src={sitedetail.image} alt="Logo" />

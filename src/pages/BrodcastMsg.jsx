@@ -293,12 +293,12 @@ const BrodcastMsg = () => {
     try {
       for (const phoneNumber of phoneNumbers) {
         if (remainingSMSCount >= 10) {
-          setInstNotification((prevNotification) => {
-            if (prevNotification === "Yes") {
+          // setInstNotification((prevNotification) => {
+          //   if (prevNotification === "Yes") {
               sendSMSToParent(phoneNumber);
-            }
-            return prevNotification; // Return the current state
-          });
+          //   }
+          //   return prevNotification; // Return the current state
+          // });
         } else {
           alert("Your SMS account balance is low. Please topUp");
         }
@@ -313,12 +313,12 @@ const BrodcastMsg = () => {
   const sendStudentSmss = async () => {
     try {
       if (remainingSMSCount >= 10) {
-        setInstNotification((prevNotification) => {
-          if (prevNotification === "Yes") {
+        // setInstNotification((prevNotification) => {
+        //   if (prevNotification === "Yes") {
             sendSMSToStudent(stdPhone);
-          }
-          return prevNotification;
-        });
+        //  }
+        //   return prevNotification;
+        // });
       } else {
         alert("Your SMS account balance is low. Please topUp");
       }

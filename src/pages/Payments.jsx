@@ -32,6 +32,7 @@ const CreatePayment = () => {
   const [status, setStatus] = useState("");
   const [error, setError] = useState(null);
   const [submissionSuccess, setSubmissionSuccess] = useState(false); // State for tracking submission success
+  const [paymentStatus, setPaymentStatus] = useState(null); // Assuming paymentStatus is initially null
 
   const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
 
@@ -49,7 +50,7 @@ const CreatePayment = () => {
     setRemainingSMSCount(remSmsCount);
   }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
 
-  console.log(remainingSMSCount)
+  //console.log(remainingSMSCount)
 
   useEffect(() => {
     const currentDate = new Date();
@@ -83,7 +84,7 @@ const CreatePayment = () => {
     }
   }, [user, id, institute]);
 
-  console.log(instNotification)
+  //console.log(instNotification)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,17 +148,14 @@ const CreatePayment = () => {
     
 
     if(remainingSMSCount >= 10){
-      setInstNotification((prevNotification,) => {
-        if (prevNotification === "Yes") {
+      
           // If instNotification is 'Yes', submit the email
           //
           // sendSMS(studentDetails.phone, studentDetails.name, clzName);
   
                sendSMS(phone , name, amount , className);
   
-        }
-        return prevNotification; // Return the current state
-      });
+        
     }else{
       alert("Your SMS account balance is low. Please Topup")
     }
@@ -288,6 +286,7 @@ const CreatePayment = () => {
           }
         );
         const json = await response.json();
+        //console.log(json)
 
         if (response.ok) {
           setStd_ID(json.std_ID);
@@ -295,6 +294,7 @@ const CreatePayment = () => {
           setEmail(json.email)
           setPhone(json.phone);
           setClz(json.classs)
+          setPaymentStatus(json.lastMonthStatus)
 
           student({ type: "SET_STUDENTS", payload: json });
         }
@@ -309,14 +309,49 @@ const CreatePayment = () => {
     }
   }, [student, user, id]);
 
-  console.log("clz",clzzz)
+  
+
+  useEffect(() => {
+    // Fetch payment status for the student
+    const fetchPaymentStatus = async () => {
+        try {
+            const response = await fetch(`https://edu-project-backend.onrender.com/api/payments/getAllPaymentStatusBystdId/${std_ID}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                setPaymentStatus(data[0]);
+                
+            } else {
+                throw new Error('Failed to fetch payment status');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    fetchPaymentStatus();
+}, [std_ID]);
+
+
+  console.log("paymentStatus", paymentStatus);
+
+
+
 
   return (
     <div className="container">
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
           <h2>Make Payments</h2>
-
+          <div >
+            <strong>Last Month Payment Status:</strong> <span style={{ color: "red" }}>{paymentStatus || 'Not paid'}</span>
+          </div>
       
           <div className="form-group">
             <label htmlFor="std_ID">Student ID</label>

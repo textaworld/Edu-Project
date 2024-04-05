@@ -199,9 +199,9 @@ const StudentProfile = () => {
               </span>
             ))}
           </div>
-          <div >
+          {/* <div >
             <strong>Last Month Payment Status:</strong> <span style={{ color: "red" }}>{paymentStatus || 'Not paid'}</span>
-          </div>
+          </div> */}
         </div>
         <div style={{ flex: 1 , marginBottom:'20px'}}>
           <h4  >Student Attendences</h4>
