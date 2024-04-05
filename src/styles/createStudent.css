@@ -139,7 +139,7 @@
   
   .id-card {
     z-index: 1;
-    height: 40px;
+    height: 30px;
     /* border-radius: 0px 0px 10px 10px; */
     position: absolute;
     background: #1e90ff;
@@ -154,6 +154,9 @@
   font-size: 18px;
   color: #0f172a;
   
+  }
+  .id-card p{
+    padding-bottom: 11px;
   }
   
 .id-card-qr {

@@ -447,7 +447,7 @@ const CreateStudent = () => {
       id="std_ID"
       value={std_ID}
       disabled
-      style={{ width: "250px", height: "25px", fontWeight: "bold",fontSize:'22px',marginBottom:'5px',marginTop:'20px' }}
+      style={{ width: "250px", height: "25px", fontWeight: "bold",fontSize:'22px',marginBottom:'5px',marginTop:'8px' }}
     />
   </div>
   <div>
@@ -457,7 +457,7 @@ const CreateStudent = () => {
       id="name"
       value={name}
       disabled
-      style={{ width: "260px", height: "25px"}}
+      style={{ width: "260px", height: "25px",fontSize:'20px'}}
     />
   </div>
   <div>
@@ -467,8 +467,8 @@ const CreateStudent = () => {
       value={address}
       disabled
       style={{
-        width: "260px",
-        height: "25px",marginTop:'3px'
+        width: "360px",
+        height: "25px",marginTop:'0px',fontSize:'15px'
       }}
     />
   </div>
