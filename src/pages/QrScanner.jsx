@@ -148,8 +148,8 @@ const QrScn = () => {
         if (status === "not") {
           // Ask for user confirmation
           const userConfirmation = window.confirm(
-            "Do you want to give a attendance for this student?"
-          );
+            ` Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Payment Status: ${paymentStatus} \n Do you want to give a attendance for this student?`
+            );
 
           if (userConfirmation) {
             submitAttendance(data.student, id, clzName);
@@ -168,7 +168,7 @@ const QrScn = () => {
         if (tuteStatus === "not") {
           // Ask for user confirmation
           const userConfirmation = window.confirm(
-            "Do you want to give a tute for this student?"
+            `Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Tute Status: ${tuteStatus} \n  Do you want to give a tute for this student?`
           );
 
           if (userConfirmation) {
@@ -256,7 +256,7 @@ const QrScn = () => {
       timeZone: "Asia/Colombo",
     });
 
-    const message = `Dear parent , \n your child:${stdName} was attend to the ${clzName} class at ${colomboTime} `;
+    const message = `Dear parent , \n your child:${stdName} attended the ${clzName} class on ${colomboTime} `;
 
     const emailDetails = { to, message,instID };
     console.log(instID)
