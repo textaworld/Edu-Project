@@ -10,6 +10,7 @@ import { FaDownload, FaCheck } from "react-icons/fa";
 import { validateAgeInput } from "../validation/validationUtils";
 
 import "../styles/createStudent.css";
+//import { backgroundImage } from "html2canvas/dist/types/css/property-descriptors/background-image";
 
 const CreateStudent = () => {
   const { dispatch } = useStudentContext();
@@ -30,6 +31,7 @@ const CreateStudent = () => {
   const [qrImage, setQrImage] = useState("");
   const [stdClass, setStdClass] = useState([]);
   const [image, setImage] = useState(null);
+  const [bgImage , setBgImage] = useState(null);
   const [stdCount, setStdCount] = useState("");
   const [classStates, setClassStates] = useState({});
   const [isDownload, setIsDownload] = useState(false);
@@ -48,6 +50,11 @@ const CreateStudent = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(URL.createObjectURL(file));
+  };
+
+  const handleBGImageChange = (e) => {
+    const file = e.target.files[0];
+    setBgImage(URL.createObjectURL(file));
   };
 
   useEffect(() => {
@@ -350,6 +357,17 @@ const CreateStudent = () => {
               </label>
 
               <label>
+                Background Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  
+                  onChange={handleBGImageChange}
+                  required
+                />
+              </label>
+
+              <label>
                 Image
                 <input
                   type="file"
@@ -359,6 +377,8 @@ const CreateStudent = () => {
                   required
                 />
               </label>
+
+              
 
               <label>
                 Select Classes
@@ -410,8 +430,12 @@ const CreateStudent = () => {
                 {qrImage && <QrCode qrImage={qrImage} />}
               </div>
 
+              <div className="id-card-Bgimage">
+                <img src={bgImage}  />
+              </div>
+
               <div className="id-card-image">
-                <img src={image} alt="ID Card2" />
+                <img src={image}  />
               </div>
 
               <div className="id-card-details">
@@ -449,13 +473,14 @@ const CreateStudent = () => {
   </div>
 </div>
 
+
               <div className="id-card-logo">
                 <img src={sitedetail.image} alt="Logo" />
               </div>
 
-              <div className="id-card">
+              {/* <div className="id-card">
                 <p>{sitedetail.name}</p>
-              </div>
+              </div> */}
             </div>
 
             <div className="createStudentIdCardContanerButton">
