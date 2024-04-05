@@ -148,8 +148,9 @@ const QrScn = () => {
         if (status === "not") {
           // Ask for user confirmation
           const userConfirmation = window.confirm(
-            ` Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Payment Status: ${paymentStatus} \n Do you want to give a attendance for this student?`
-            );
+            " Do you want to give attend for this student?"
+          // ` Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Payment Status: ${paymentStatus} \n Do you want to give a attendance for this student?`
+          );
 
           if (userConfirmation) {
             submitAttendance(data.student, id, clzName);
@@ -168,9 +169,9 @@ const QrScn = () => {
         if (tuteStatus === "not") {
           // Ask for user confirmation
           const userConfirmation = window.confirm(
-            `Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Tute Status: ${tuteStatus} \n  Do you want to give a tute for this student?`
+            "Do you want to give a tute for this student?"
+            // `Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Tute Status: ${tuteStatus} \n  Do you want to give a tute for this student?`
           );
-
           if (userConfirmation) {
             createTute(data.student, id);
             alert(`Tute gave for student: ${data.student.name}`);
@@ -479,16 +480,15 @@ const QrScn = () => {
       <div>
         <p><span style={{color:'red' , fontWeight:'bold'}}>Student ID:</span> {studentDetails.std_ID}</p>
         <p><span style={{color:'red' , fontWeight:'bold'}}>Student Name:</span> {studentDetails.name}</p>
-        <p><span style={{color:'red' , fontWeight:'bold'}}>Email:</span> {studentDetails.email}</p>
+        <p ><span style={{color:'red' , fontWeight:'bold'}}>Payment Status:</span> {paymentStatus}</p>
+        <p><span style={{color:'red' , fontWeight:'bold'}}>Tute Status:</span>{tuteStatus}</p>
+     
         <p><span style={{color:'red' , fontWeight:'bold'}}>Age:</span> {studentDetails.age}</p>
-        <p><span style={{color:'red' , fontWeight:'bold'}}>Address:</span> {studentDetails.address}</p>
-        <p><span style={{color:'red' , fontWeight:'bold'}}>Phone:</span> {studentDetails.phone}</p>
         <p> <span style={{color:'red' , fontWeight:'bold'}}>Classes:</span>
           {" "}
           {studentDetails.classs.map((cls) => cls.subject).join(", ")}
         </p>
-        <p ><span style={{color:'red' , fontWeight:'bold'}}>Payment Status:</span> {paymentStatus}</p>
-        <p><span style={{color:'red' , fontWeight:'bold'}}>Tute Status:</span>{tuteStatus}</p>
+       
       </div>
     ) : (
       <p>Unable to parse student details from QR code</p>
