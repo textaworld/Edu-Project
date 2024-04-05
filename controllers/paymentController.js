@@ -118,7 +118,7 @@ const getAllPaymentStatusBystdId = async (req, res) => {
         responses.push({ std_ID: id, previousMonthName, previousMonthStatus: 'not found' });
       } else {
         const previousMonthStatus = previousMonthPayment.status;
-        responses.push({ std_ID: id, previousMonthName, previousMonthStatus });
+        responses.push(previousMonthStatus);
       }
     }
 
