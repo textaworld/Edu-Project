@@ -138,10 +138,11 @@
   }
   
   .id-card {
-    
+    z-index: 1;
     height: 40px;
     /* border-radius: 0px 0px 10px 10px; */
     position: absolute;
+    background: #1e90ff;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -151,7 +152,7 @@
   font-family: Times;
   font-weight: bold;
   font-size: 18px;
-  color: #fff;
+  color: #0f172a;
   
   }
   
@@ -195,14 +196,14 @@
     
   position: absolute;
   top: 90px;
-  left: 100px;
+  left: 95px;
   transform: translate(-50%, -50%);
-    width: 130px;
-    height: 130px;
+    width: 140px;
+    height: 140px;
     
   }
   .id-card-image img{
-  width: 90px;
+  width: 100px;
   max-height: 100%;
   }
   
@@ -221,12 +222,12 @@
     height: 310px;
     /* border-radius: 0px 0px 10px 10px; */
   }
-  
+
 
   .id-card-logo{
    
     position: absolute;
-   bottom: 5px;
+   bottom: 20px;
     right: 20px;
   }
 

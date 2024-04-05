@@ -38,7 +38,7 @@ const CreateStudent = () => {
   const [error, setError] = useState(null);
   const idCardRef = useRef(null);
   const cardStatus = sitedetail.stdCardcardStatus;
-
+  const [isBgImageSelected, setIsBgImageSelected] = useState(false);
   console.log(cardStatus)
 
   const isAnyCheckboxChecked = () => {
@@ -52,11 +52,12 @@ const CreateStudent = () => {
     setImage(URL.createObjectURL(file));
   };
 
+  
   const handleBGImageChange = (e) => {
     const file = e.target.files[0];
     setBgImage(URL.createObjectURL(file));
+    setIsBgImageSelected(true); // Set flag when background image is selected
   };
-
   useEffect(() => {
     const fetchSiteDetails = async () => {
       const response = await fetch(
@@ -356,7 +357,7 @@ const CreateStudent = () => {
                 />
               </label>
 
-              <label>
+              {/* <label>
                 Background Image
                 <input
                   type="file"
@@ -365,7 +366,7 @@ const CreateStudent = () => {
                   onChange={handleBGImageChange}
                   required
                 />
-              </label>
+              </label> */}
 
               <label>
                 Image
@@ -446,7 +447,7 @@ const CreateStudent = () => {
       id="std_ID"
       value={std_ID}
       disabled
-      style={{ width: "250px", height: "25px", fontWeight: "bold",fontSize:'24px',marginBottom:'5px',marginTop:'20px' }}
+      style={{ width: "250px", height: "25px", fontWeight: "bold",fontSize:'22px',marginBottom:'5px',marginTop:'20px' }}
     />
   </div>
   <div>
@@ -478,9 +479,25 @@ const CreateStudent = () => {
                 <img src={sitedetail.image} alt="Logo" />
               </div>
 
-              {/* <div className="id-card">
-                <p>{sitedetail.name}</p>
-              </div> */}
+              {!isBgImageSelected && (
+            <div className="id-card">
+              <p>{sitedetail.name}</p>
+            </div>
+          )}
+
+            </div>
+
+            <div>
+            <label>
+                Background Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  
+                  onChange={handleBGImageChange}
+                  required
+                />
+              </label>
             </div>
 
             <div className="createStudentIdCardContanerButton">
