@@ -15,6 +15,7 @@ router.get('/calculateDailyIncome', paymentController.calculateDailyIncome);
 router.get('/calculateMonthlyIncomeByInstID', paymentController.calculateMonthlyIncomeByInstID);
 router.get('/calculateDailyIncomeByInstID', paymentController.calculateDateIncomeByInstID);
 router.get('/calculateIncomeByDate', paymentController.calculateIncomeByDate);
+router.delete("/deletePayment/:id", paymentController.deletePayment);
 
 
 

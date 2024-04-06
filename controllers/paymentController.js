@@ -272,6 +272,23 @@ const calculateIncomeByDate = async (req, res) => {
 };
 ;
 
+const deletePayment = (req, res) => {
+  const id = req.params.id; // Use 'id' instead of '_id' here
+  console.log("id", id);
+  
+  PaymentModel.findByIdAndDelete(id)
+    .then((deletedPayment) => {
+      if (!deletedPayment) {
+        return res.status(404).json({ error: "Payment not found" });
+      }
+      res.json({ message: "Payment deleted successfully" });
+    })
+    .catch((err) => {
+      console.error("Error deleting payment:", err);
+      res.status(500).json({ error: "Failed to delete payment" });
+    });
+};
+
 
 
 
@@ -286,5 +303,6 @@ module.exports = {
   calculateDailyIncome,
   calculateMonthlyIncomeByInstID,
   calculateDateIncomeByInstID,
-  calculateIncomeByDate
+  calculateIncomeByDate,
+  deletePayment
 };
