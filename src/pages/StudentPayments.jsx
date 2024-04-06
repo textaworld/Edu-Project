@@ -258,8 +258,35 @@ useEffect(() => {
 }, []);
 
       
-console.log(lastMonth)      
-  
+const handleDelete = async (paymentID) => {
+  if (!window.confirm("Are you sure you want to delete this student?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://edu-project-backend.onrender.com/api/payments/deletePayment/${paymentID}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+
+    if (response.ok) {
+      // Remove the deleted student from the state
+      //dispatch({ type: "DELETE_PAYMENT", payload: paymentID }); // Assuming "DELETE_PAYMENT" is the action type to delete a payment
+      setPayments(paymentss.filter(payment => payment._id !== paymentID)); // Update local state
+    } else {
+      // Handle error
+    }
+  } catch (error) {
+    // Handle error
+  }
+};
+
+
 
   return (
     <div>
@@ -313,6 +340,7 @@ console.log(lastMonth)
                   <th>Date</th>
                   <th>Status</th>
                   <th>LastMonth Status</th>
+                  <th>Delete</th>
                 </tr>
               </thead>
               <tbody>
@@ -332,7 +360,15 @@ console.log(lastMonth)
                         <td>{colomboTime}</td>
                         <td>{payment.status}</td>
                         <td>{payment.month.toLowerCase() === lastMonth.toLowerCase() ? payment.status : "not paid"}</td>
-
+                        <td>
+                      <Link
+                        to="#"
+                        className="btn btn-danger"
+                        onClick={() => handleDelete(payment._id)}
+                      >
+                        <FaTrash />
+                      </Link>
+                    </td>
                       </tr>
                     );
                   })
