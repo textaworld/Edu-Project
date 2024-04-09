@@ -350,7 +350,7 @@ const CreatePayment = () => {
         <form onSubmit={handleSubmit}>
           <h2>Make Payments</h2>
           <div >
-            <strong>Last Month Payment Status:</strong> <span style={{ color: "red" }}>{paymentStatus || 'Not paid'}</span>
+          <strong>Last Month Payment Status:</strong> <span style={{ color: "red" }}>{paymentStatus && paymentStatus.previousMonthStatus ? paymentStatus.previousMonthStatus : 'Not paid'}</span>
           </div>
       
           <div className="form-group">
