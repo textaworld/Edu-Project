@@ -294,7 +294,7 @@ const CreatePayment = () => {
           setEmail(json.email)
           setPhone(json.phone);
           setClz(json.classs)
-          setPaymentStatus(json.lastMonthStatus)
+          //setPaymentStatus(json.lastMonthStatus)
 
           student({ type: "SET_STUDENTS", payload: json });
         }
@@ -325,7 +325,12 @@ const CreatePayment = () => {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
-                setPaymentStatus(data[0]);
+                if (data.length > 0) {
+                  setPaymentStatus(data[0]);
+              } else {
+                  // No payment status found for the student
+                  setPaymentStatus({ previousMonthStatus: 'Not paid' });
+              }
                 
             } else {
                 throw new Error('Failed to fetch payment status');
@@ -349,9 +354,9 @@ const CreatePayment = () => {
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
           <h2>Make Payments</h2>
-          <div >
-          <strong>Last Month Payment Status:</strong> <span style={{ color: "red" }}>{paymentStatus && paymentStatus.previousMonthStatus ? paymentStatus.previousMonthStatus : 'Not paid'}</span>
-          </div>
+          <strong>Last Month Payment Status:</strong> <span style={{ color: "red" }}>{paymentStatus || 'Not paid'}</span>
+
+
       
           <div className="form-group">
             <label htmlFor="std_ID">Student ID</label>
