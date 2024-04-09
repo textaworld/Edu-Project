@@ -115,7 +115,7 @@ const getAllPaymentStatusBystdId = async (req, res) => {
       const previousMonthPayment = await PaymentModel.findOne({ std_ID: id, month: previousMonthName });
 
       if (!previousMonthPayment) {
-        responses.push({ std_ID: id, previousMonthName, previousMonthStatus: 'not found' });
+        responses.push(previousMonthStatus);
       } else {
         const previousMonthStatus = previousMonthPayment.status;
         responses.push(previousMonthStatus);
