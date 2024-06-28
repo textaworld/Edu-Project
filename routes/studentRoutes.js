@@ -32,6 +32,9 @@ router.get('/getAllStudentsBySubject/:id/subject', studentController.getAllStude
 
 router.get('/searchStudentByStd_ID', studentController.searchStudentByStd_ID);
 
+router.get('/getAllStudentIds', studentController.getStudentIds);
+
+
 module.exports = router;
 
 

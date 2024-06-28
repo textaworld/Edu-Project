@@ -1,4 +1,5 @@
 const studentModel = require("../models/student");
+const studentIdModel = require("../models/StudentIdModel");
 
 const createStudent = async (req, res) => {
   try {
@@ -14,16 +15,36 @@ const createStudent = async (req, res) => {
       stdCount,
     } = req.body;
 
+    // Check if std_ID exists in studentIdModel
+    const existingStudentId = await studentIdModel.findOne({ std_ID,inst_ID });
+    if (existingStudentId) {
+      return res.status(400).json({ error: "Student ID is already taken" });
+    }
+
+    // Check if a student with the same std_ID exists in studentModel
+    // const existingStudent = await studentModel.findOne({ inst_ID, std_ID });
+    // if (existingStudent) {
+    //   return res.status(400).json({ error: "Student ID is already in use" });
+    // }
+
     // Check existing student count
     const existingStudentCount = await studentModel.countDocuments({ inst_ID });
 
     // If the existing count is equal to or greater than stdCount, stop adding new students
     if (existingStudentCount >= stdCount) {
-      return res
-        .status(400)
-        .json({ error: "Student limit reached. Cannot add more students." });
+      return res.status(400).json({ error: "Student limit reached. Cannot add more students." });
     }
 
+    // Create a StudentId object
+    const newStudentId = new studentIdModel({
+      inst_ID,
+      std_ID
+    });
+
+    // Save the StudentId object
+    await newStudentId.save();
+
+    // Create a new student in studentModel
     const newStudent = new studentModel({
       inst_ID,
       std_ID,
@@ -42,6 +63,19 @@ const createStudent = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
+
+const getStudentIds = async (req, res) => {
+  try {
+      const studentIds = await studentIdModel.find(); // Fetch all student IDs from the database
+      res.status(200).json(studentIds); // Return student IDs as JSON response
+  } catch (err) {
+      res.status(500).json({ message: err.message }); // Handle errors
+  }
+};
+
+
 
 const getAllStudents = (req, res) => {
   studentModel
@@ -226,5 +260,6 @@ module.exports = {
   getAllStudentsByClassID,
   getAllStudentsByInsId,
   getAllStudentsBySubject,
-  searchStudentByStd_ID
+  searchStudentByStd_ID,
+  getStudentIds
 };
