@@ -1,14 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useLogout } from "../hooks/useLogout";
 import { useAuthContext } from "../hooks/useAuthContext";
-import { Link } from "react-router-dom";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
+import Students from '../../public/icons/Students.png'
+import ExStudents from '../../public/icons/ExStudents.png'
+import Bell from '../../public/icons/Bell.png'
+import Duration from '../../public/icons/Duration.png'
+import Email from '../../public/icons/Email.png'
+import RMSMS from '../../public/icons/RMSMS.png'
+import RmStds from '../../public/icons/RmStds.png'
+import School from '../../public/icons/School.png'
+import SMS from '../../public/icons/SMS.png'
+import SmSCount from '../../public/icons/SmSCount.png'
+import Topup from '../../public/icons/Topup.png'
+
 
 
 const Home = () => {
   const { logout } = useLogout();
   const { sitedetail, dispatch } = useSiteDetailsContext();
- 
   const { user } = useAuthContext();
   const [packageStatus, setPackageStatus] = useState("");
   const [newPackageStatus, setNewPackageStatus] = useState("");
@@ -17,7 +27,6 @@ const Home = () => {
   const [remainingCount, setRemainingCount] = useState(0); 
   const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
   const [smsCount, setSmsCount] = useState(0);
-  // Initialize remaining count state
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -35,7 +44,7 @@ const Home = () => {
           dispatch({ type: "SET_STUDENTS", payload: json.data });
         }
       } catch (error) {
-        
+        // Handle error
       }
     };
 
@@ -44,26 +53,6 @@ const Home = () => {
       fetchStudents();
     }
   }, [dispatch, user]);
-
-  console.log(packageStatus)
-
-  // useEffect(() => {
-  //   const fetchSmsCount = async () => {
-  //     try {
-  //       const response = await fetch('https://edu-project-backend.onrender.com/api/sms/count');
-  //       console.log(response.data) // Adjust the URL as per your backend route
-  //       setSmsCount(response.data.count);
-  //     } catch (error) {
-  //       console.error('Error fetching SMS count:', error);
-  //     }
-  //   };
-
-  //   if (user) {
-      
-      
-  //     fetchSmsCount(); // Fetch SMS count when the component mounts
-  //   }
-  // }, [sms , user]);
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
@@ -76,20 +65,14 @@ const Home = () => {
 
     if (response.ok) {
       setNewPackageStatus(json.packageStatus);
-
       dispatch({ type: "SET_SITE_DETAILS", payload: json });
 
-      // Check if expiration check has already been performed
-      const expirationCheckPerformed = localStorage.getItem(
-        "expirationCheckPerformed"
-      );
+      const expirationCheckPerformed = localStorage.getItem("expirationCheckPerformed");
 
       if (!expirationCheckPerformed) {
         const interval = setInterval(() => {
-          // Convert string representations to Date objects
           const currentTime = new Date();
           const expireTime = new Date(json.expireTime);
-          //console.log(expireTime)
           if (currentTime > expireTime) {
             const status = "Deactivate";
             updateDetails({ packageStatus: status });
@@ -100,15 +83,11 @@ const Home = () => {
             setPackageStatus("Yes");
           }
         }, 1000);
-        // Check every second (adjust as needed)
       } else {
-        setPackageStatus("No"); // Set 'No' if expiration check already performed
+        setPackageStatus("No");
       }
     }
   };
-
-
-  
 
   const updateDetails = async (data) => {
     try {
@@ -132,51 +111,29 @@ const Home = () => {
         type: "UPDATE_INSTITUTE",
         payload: { _id: sitedetail._id, data },
       });
-
-      //setInstituteDetails(getInstituteDetails(instituteId));
     } catch (error) {
-      
-      // Handle error (e.g., display an error message)
+      // Handle error
     }
   };
 
   const handleRestartProcess = async () => {
     if (newPackageStatus === "Active") {
-      // Clear the expiration check flag in localStorage
       localStorage.removeItem("expirationCheckPerformed");
-
-      // Update newPackageStatus to 'Deactive' call the API and update
     }
-
-    // Call fetchSiteDetails to restart the process
     await fetchSiteDetails();
   };
 
   useEffect(() => {
-    let expirationCheckPerformed;
-
     if (user) {
       fetchSiteDetails();
     }
-
-    if (expirationCheckPerformed && packageStatus === "No") {
-      // Restart the process if expiration check performed and package status is 'No'
+    if (packageStatus === "No") {
       handleRestartProcess();
     }
-
-    return () => {
-      // Cleanup logic if needed
-    };
   }, [dispatch, user, packageStatus]);
 
   useEffect(() => {
-    // Check if expiration check has already been performed
-    const expirationCheckPerformed = localStorage.getItem(
-      "expirationCheckPerformed"
-    );
-
-    if (expirationCheckPerformed && packageStatus === "No") {
-      // Restart the process if expiration check performed and package status is 'No'
+    if (packageStatus === "No") {
       handleRestartProcess();
     }
   }, [packageStatus]);
@@ -186,69 +143,100 @@ const Home = () => {
   }, [studentCount, sitedetail.count]);
 
   useEffect(() => {
-
-    const TopP = sitedetail.topUpPrice
-    const SMSP = sitedetail.smsPrice
-
-    console.log(TopP)
-    console.log(SMSP)
-
-    console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
-
-    const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
+    const remSmsCount = parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount);
     setRemainingSMSCount(remSmsCount);
-  }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
+  }, [sitedetail.smsPrice, sitedetail.topUpPrice, sitedetail.smsCount]);
 
-  console.log(packageStatus)
+  const gridContainerStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    
+    marginLeft: '110px',
+    marginTop: '50px',
+    marginBottom:'50px'
+  };
+
+  const gridItemStyle = {
+    border: '2px solid black',
+    borderRadius:'5px',
+    padding: '10px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    width:'270px',
+    height:'150px',
+    marginTop:'30px',
+   
+  };
+
+  const iconStyle = {
+    marginBottom: '5px',
+    color: '#007bff',
+    width:'80px',
+     height:'70px',
+    fontSize: '18px'
+  };
+
+  const textStyle = {
+    color: 'red',
+    fontSize: '18px'
+  };
 
   return (
     <div>
       {packageStatus !== "Yes" ? (
         <div>
-          <h1>You need to pay</h1>
+          <h1>Processing...</h1>
         </div>
       ) : (
-        <div>
-          <div style={{marginLeft:'650px' ,marginTop:'50px'}}>
-    {/* Your other JSX here */}
-    <div style={{border: '1px solid black', width:'500px', padding: '5px', marginBottom: '5px' }}>
-        <h2>Institute Name:<span style={{color:'red'}}>{sitedetail.name}</span> </h2>
-    </div>
-    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
-        <h2>Institute Email:<span style={{color:'red'}}>{sitedetail.email}</span> </h2>
-    </div>
-    <div style={{border: '1px solid black', width:'500px',padding: '5px', marginBottom: '5px'}}>
-        <h2>Institute's Student Count: <span style={{color:'red'}}>{sitedetail.count}</span></h2>
-    </div>
-    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
-        <h2>Existing Count:<span style={{color:'red'}}> {studentCount}</span></h2>
-    </div>
-    <div style={{border: '1px solid black', width:'500px',padding: '5px', marginBottom: '5px'}}>
-        <h2>Remaining Count: <span style={{color:'red'}} >{remainingCount}</span></h2>
-    </div>
-    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
-        <h2>Notification Service:<span style={{color:'red'}}> {sitedetail.notification}</span></h2>
-    </div>
-    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
-        <h2>Package Duration: <span style={{color:'red'}}>{sitedetail.instPackage}</span></h2>
-    </div>
-    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
-        <h2>TopUp Price: <span style={{color:'red'}}>{sitedetail.topUpPrice}</span></h2>
-    </div>
-    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
-        <h2>One SMS Price: <span style={{color:'red'}}>{sitedetail.smsPrice}</span></h2>
-    </div>
-    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
-        <h2>Sent SMS Count: <span style={{color:'red'}}>{sitedetail.smsCount}</span></h2>
-    </div>
-    <div style={{border: '1px solid black',width:'500px', padding: '5px', marginBottom: '5px'}}>
-        <h2>Remaining SMS : <span style={{color:'red'}}>{remainingSMSCount}</span></h2>
-    </div>
-   
-</div>
-
+        <div style={gridContainerStyle}>
+          {/* <div style={gridItemStyle}>
+          <img src={School} style={iconStyle} />
+          <h2>Institute Name: <span style={textStyle}>{sitedetail.name}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+          <img src={Email} style={iconStyle} />
+          <h2>Institute Email: <span style={textStyle}>{sitedetail.email}</span></h2>
+          </div> */}
+          <div style={gridItemStyle}>
+            <img src={Students} style={iconStyle} />
+            <h2 style={{fontSize:'18px'}}> Student Count: <span style={textStyle}>{sitedetail.count}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+            <img src={ExStudents}  style={iconStyle} />
+            <h2 style={{fontSize:'18px'}}>Existing Count: <span style={textStyle}>{studentCount}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+          <img src={RmStds} style={iconStyle} />
+          <h2 style={{fontSize:'18px'}}>Remaining Count: <span style={textStyle}>{remainingCount}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+          <img src={Bell} style={iconStyle} />
+          <h2 style={{fontSize:'18px'}}>Notification Service: <span style={textStyle}>{sitedetail.notification}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+          <img src={Duration} style={iconStyle} />
+          <h2 style={{fontSize:'18px'}}>Package Duration: <span style={textStyle}>{sitedetail.instPackage}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+          <img src={Topup} style={iconStyle} />
+          <h2 style={{fontSize:'18px'}}>TopUp Price: <span style={textStyle}>{sitedetail.topUpPrice}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+          <img src={SMS} style={iconStyle} />
+          <h2 style={{fontSize:'18px'}}>One SMS Price: <span style={textStyle}>{sitedetail.smsPrice}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+          <img src={SmSCount} style={iconStyle} />
+          <h2 style={{fontSize:'18px'}}>Sent SMS Count: <span style={textStyle}>{sitedetail.smsCount}</span></h2>
+          </div>
+          <div style={gridItemStyle}>
+          <img src={RMSMS} style={iconStyle} />
+          <h2 style={{fontSize:'18px'}}>Remaining SMS: <span style={textStyle}>{remainingSMSCount}</span></h2>
+          </div>
         </div>
-       )} 
+      )}
     </div>
   );
 };
