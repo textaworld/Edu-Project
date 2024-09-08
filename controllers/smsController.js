@@ -5,15 +5,14 @@ const instituteModel = require('../models/instituteModel');
 const sendSMS = async (req, res) => {
     try {
         const { to, message,instID } = req.body;
-        console.log(message)
+
 
         const user_id = "26730";
         const api_key = "tmGnA2446kmhvuUHjyHl";
         const sender_id = "EDU TEXTA";
        // const _id = id
 
-       console.log("id",instID)
-       console.log("to",to)
+      
 
         // Make sure required fields are present
         if (!user_id || !api_key || !sender_id || !to || !message) {
@@ -21,7 +20,7 @@ const sendSMS = async (req, res) => {
         }
 
         // Construct the URL
-        const url = `https://app.notify.lk/api/v1/send`;
+        const url = https://app.notify.lk/api/v1/send;
 
         // Construct the request payload
         const payload = {
@@ -30,6 +29,7 @@ const sendSMS = async (req, res) => {
             sender_id,
             to,
             message,
+      type: 'unicode', 
         };
 
         // Make the POST request to the API
