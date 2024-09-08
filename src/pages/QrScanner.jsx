@@ -28,6 +28,8 @@ const QrScn = () => {
   const [scanning, setScanning] = useState(false);
   const [qrResult, setQrResult] = useState(null);
   const [clzName, setClassName] = useState("");
+  const [instituteName,setInstituteName] = useState("")
+  
   
 
   const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
@@ -37,30 +39,31 @@ const QrScn = () => {
     const TopP = sitedetail.topUpPrice
     const SMSP = sitedetail.smsPrice
 
-    console.log(TopP)
-    console.log(SMSP)
+    // console.log(TopP)
+    // console.log(SMSP)
 
-    console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
+    // console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
 
     const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
     setRemainingSMSCount(remSmsCount);
   }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
 
-  console.log(remainingSMSCount)
+  //console.log(remainingSMSCount)
 
   useEffect(() => {
     const fetchSiteDetails = async () => {
       try {
         const siteDetailsResponse = await fetch(
-          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+          https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId},
           {
-            headers: { Authorization: `Bearer ${user.token}` },
+            headers: { Authorization: Bearer ${user.token} },
           }
         );
         const siteDetailsJson = await siteDetailsResponse.json();
 
         if (siteDetailsResponse.ok) {
           setInstNotification(siteDetailsJson.notification);
+          setInstituteName(siteDetailsJson.name)
           institute({ type: "SET_SITE_DETAILS", payload: siteDetailsJson });
           fetchClasses(id)
         }
@@ -73,6 +76,7 @@ const QrScn = () => {
       fetchSiteDetails();
     }
   }, [user, id, institute]);
+
 
   useEffect(() => {
     let qrCodeScanner;
@@ -125,10 +129,10 @@ const QrScn = () => {
   const fetchStudentDetails = async (std_ID, id) => {
     try {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/students/getStudentByStd_Id/${std_ID}`,
+        https://edu-project-backend.onrender.com/api/students/getStudentByStd_Id/${std_ID},
         {
           headers: {
-            Authorization: `Bearer ${user.token}`,
+            Authorization: Bearer ${user.token},
           },
         }
       );
@@ -155,7 +159,7 @@ const QrScn = () => {
           if (userConfirmation) {
             submitAttendance(data.student, id, clzName);
 
-            alert(`Gave access for student: ${data.student.name}`);
+            alert(Gave access for student: ${data.student.name});
             // navigate('/qrScanner');
           }
         } else {
@@ -170,11 +174,11 @@ const QrScn = () => {
           // Ask for user confirmation
           const userConfirmation = window.confirm(
             "Do you want to give a tute for this student?"
-            // `Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Tute Status: ${tuteStatus} \n  Do you want to give a tute for this student?`
+            // Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Tute Status: ${tuteStatus} \n  Do you want to give a tute for this student?
           );
           if (userConfirmation) {
             createTute(data.student, id);
-            alert(`Tute gave for student: ${data.student.name}`);
+            alert(Tute gave for student: ${data.student.name});
           }
         }
       });
@@ -229,7 +233,7 @@ const QrScn = () => {
         body: JSON.stringify(stdAttendance),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+          Authorization: Bearer ${user.token},
         },
       }
     );
@@ -240,7 +244,7 @@ const QrScn = () => {
       navigate("/");
     }
     if (response.ok) {
-      alert(`${name}'s Attendance has been recorded!`);
+      alert(${name}'s Attendance has been recorded!);
       setError(null);
       dispatch({ type: "CREATE_ATTENDANCE", payload: json });
     }
@@ -251,23 +255,23 @@ const QrScn = () => {
       return;
     }
 
-    console.log(phone)
+   // console.log(phone)
     const to = phone;
     const colomboTime = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Colombo",
     });
 
-    const message = `Dear parent , \n your child:${stdName} attended the ${clzName} class on ${colomboTime} `;
+    const message = `${instituteName}\n\n Dear parent , \n your child:${stdName} attended the ${clzName} class on ${colomboTime} `;
 
     const emailDetails = { to, message,instID };
-    console.log(instID)
+   // console.log(instID)
 
-    const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
+    const response = await fetch("`https://edu-project-backend.onrender.com/api/sms/send-message", {
       method: "POST",
       body: JSON.stringify(emailDetails),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
+        Authorization: Bearer ${user.token},
       },
     });
     const json = await response.json();
@@ -294,7 +298,7 @@ const QrScn = () => {
       timeZone: "Asia/Colombo",
     });
 
-    const message = `Dear parent , \n your child:${stdName} was attend the ${clzName} class on ${colomboTime} `;
+    const message = `${instituteName}\n\n Dear parent , \n your child:${stdName} was attend the ${clzName} class on ${colomboTime} `;
 
     const emailDetails = { email, subject, message };
 
@@ -303,7 +307,7 @@ const QrScn = () => {
       body: JSON.stringify(emailDetails),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
+        Authorization: Bearer ${user.token},
       },
     });
     const json = await response.json();
@@ -330,9 +334,9 @@ const QrScn = () => {
       const encodedMonth = encodeURIComponent(currentMonth);
 
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/tutes/getTuteStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
+        https://edu-project-backend.onrender.com/api/tutes/getTuteStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth},
         {
-          headers: { Authorization: `Bearer ${user.token}` },
+          headers: { Authorization: Bearer ${user.token} },
         }
       );
       
@@ -367,14 +371,14 @@ const QrScn = () => {
 
       // Append current month to the URL
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
+        https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth},
         {
-          headers: { Authorization: `Bearer ${user.token}` },
+          headers: { Authorization: Bearer ${user.token} },
         }
       );
 
       const data = await response.json();
-      console.log("data",data)
+      //console.log("data",data)
 
       if (!response.ok) {
         
@@ -415,7 +419,7 @@ const QrScn = () => {
       body: JSON.stringify(tute),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
+        Authorization: Bearer ${user.token},
       },
     });
     const json = await response.json();
@@ -425,7 +429,7 @@ const QrScn = () => {
       navigate("/");
     }
     if (response.ok) {
-      alert(`${name}'s Tute has been given!`);
+      alert(${name}'s Tute has been given!);
       setError(null);
       dispatch({ type: "CREATE_TUTE", payload: json });
     }
@@ -434,11 +438,11 @@ const QrScn = () => {
   // useEffect(() => { 
     const fetchClasses = async (id) => {
       try {
-        console.log("cID",id)
+        //console.log("cID",id)
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id}`,
+          https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id},
           {
-            headers: { Authorization: `Bearer ${user.token}` },
+            headers: { Authorization: Bearer ${user.token} },
           }
         );
         const json = await response.json();
@@ -449,7 +453,7 @@ const QrScn = () => {
 
         if (response.ok) {
           //setClz(json.data);
-          console.log(json.classs)
+          //console.log(json.classs)
           dispatch({ type: "SET_CLASS", payload: json.data });
         }
       } catch (error) {
@@ -501,43 +505,3 @@ const QrScn = () => {
 };
 
 export default QrScn;
-
-
-
-
-{/* <div>
-      <div style={{ width: "50%", float: "left" }}>
-        <button onClick={handleButtonClick}>
-          {scanning ? "Stop Scanner" : "Start Scanner"}
-        </button>
-
-        <div id="qr-scanner"></div>
-      </div>
-
-      <div style={{ width: "50%", float: "right" }}>
-        <h2>QR Code Result:</h2>
-        <h2>Class ID : {id}</h2>
-        {qrResult && <p>Std_id : {qrResult} </p>}
-
-        {studentDetails ? (
-          <div>
-            <p>IID: {studentDetails.inst_ID}</p>
-            <p>SID: {studentDetails.std_ID}</p>
-            <p>Name: {studentDetails.name}</p>
-            <p>Email: {studentDetails.email}</p>
-            <p>Age: {studentDetails.age}</p>
-
-            <p>Address: {studentDetails.address}</p>
-            <p>Phone: {studentDetails.phone}</p>
-            <p>
-              Classes:{" "}
-              {studentDetails.classs.map((cls) => cls.subject).join(", ")}
-            </p>
-            <p>Payment Status: {paymentStatus}</p>
-            <p>Tute Status:{tuteStatus}</p>
-          </div>
-        ) : (
-          <p>Unable to parse student details from QR code</p>
-        )}
-      </div>
-    </div> */}
