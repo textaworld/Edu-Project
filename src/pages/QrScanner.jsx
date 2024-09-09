@@ -368,13 +368,13 @@ const QrScn = () => {
       });
       const encodedMonth = encodeURIComponent(currentMonth);
 
+      let requestURL = `https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`;
+      console.log(requestURL);
+
       // Append current month to the URL
-      const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
-        {
-          headers: { Authorization: `Bearer ${user.token}` },
-        }
-      );
+      const response = await fetch(requestURL, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
 
       const data = await response.json();
       //console.log("data",data)
