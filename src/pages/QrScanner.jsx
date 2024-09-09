@@ -53,8 +53,7 @@ const QrScn = () => {
     const fetchSiteDetails = async () => {
       try {
         const siteDetailsResponse = await fetch(
-          "https://edu-project-backend.onrender.com/api/site/getone/" +
-            user.instituteId,
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
           {
             headers: { Authorization: `Bearer ${user.token}` },
           }
@@ -262,7 +261,7 @@ const QrScn = () => {
     // console.log(instID)
 
     const response = await fetch(
-      "`https://edu-project-backend.onrender.com/api/sms/send-message",
+      "https://edu-project-backend.onrender.com/api/sms/send-message",
       {
         method: "POST",
         body: JSON.stringify(emailDetails),
@@ -273,7 +272,6 @@ const QrScn = () => {
       }
     );
     const json = await response.json();
-
     if (!response.ok) {
       setError(json.error);
       navigate("/");
@@ -368,13 +366,13 @@ const QrScn = () => {
       });
       const encodedMonth = encodeURIComponent(currentMonth);
 
-      let requestURL = `https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`;
-      console.log(requestURL);
-
       // Append current month to the URL
-      const response = await fetch(requestURL, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+      const response = await fetch(
+        `https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
+        {
+          headers: { Authorization: `Bearer ${user.token}` },
+        }
+      );
 
       const data = await response.json();
       //console.log("data",data)
@@ -442,7 +440,7 @@ const QrScn = () => {
       const response = await fetch(
         `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id}`,
         {
-          headers: { Authorization: ` Bearer ${user.token}` },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
       const json = await response.json();
