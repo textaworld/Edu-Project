@@ -20,7 +20,7 @@ const sendSMS = async (req, res) => {
         }
 
         // Construct the URL
-        const url = https://app.notify.lk/api/v1/send;
+        const url = "https://app.notify.lk/api/v1/send";
 
         // Construct the request payload
         const payload = {
