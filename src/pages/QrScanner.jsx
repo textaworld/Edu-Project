@@ -6,7 +6,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 import { useStudentContext } from "../hooks/useStudentContext";
 import { useClassContext } from "../hooks/useClassContext";
-import "../styles/qrscanner.css"
+import "../styles/qrscanner.css";
 
 const QrScn = () => {
   const { id } = useParams();
@@ -28,45 +28,46 @@ const QrScn = () => {
   const [scanning, setScanning] = useState(false);
   const [qrResult, setQrResult] = useState(null);
   const [clzName, setClassName] = useState("");
-  
+  const [instituteName, setInstituteName] = useState("");
 
-  const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
+  const [remainingSMSCount, setRemainingSMSCount] = useState(0);
 
   useEffect(() => {
+    const TopP = sitedetail.topUpPrice;
+    const SMSP = sitedetail.smsPrice;
 
-    const TopP = sitedetail.topUpPrice
-    const SMSP = sitedetail.smsPrice
+    // console.log(TopP)
+    // console.log(SMSP)
 
-    console.log(TopP)
-    console.log(SMSP)
+    // console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
 
-    console.log(sitedetail.topUpPrice / sitedetail.smsPrice)
-
-    const remSmsCount =parseInt((sitedetail.topUpPrice / sitedetail.smsPrice) - sitedetail.smsCount)
+    const remSmsCount = parseInt(
+      sitedetail.topUpPrice / sitedetail.smsPrice - sitedetail.smsCount
+    );
     setRemainingSMSCount(remSmsCount);
-  }, [sitedetail.smsPrice, sitedetail.topUpPrice , sitedetail.smsCount]);
+  }, [sitedetail.smsPrice, sitedetail.topUpPrice, sitedetail.smsCount]);
 
-  console.log(remainingSMSCount)
+  //console.log(remainingSMSCount)
 
   useEffect(() => {
     const fetchSiteDetails = async () => {
       try {
         const siteDetailsResponse = await fetch(
-          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+          "https://edu-project-backend.onrender.com/api/site/getone/" +
+            user.instituteId,
           {
-            headers: { Authorization: Bearer ${user.token} },
+            headers: { Authorization: `Bearer ${user.token}` },
           }
         );
         const siteDetailsJson = await siteDetailsResponse.json();
 
         if (siteDetailsResponse.ok) {
           setInstNotification(siteDetailsJson.notification);
+          setInstituteName(siteDetailsJson.name);
           institute({ type: "SET_SITE_DETAILS", payload: siteDetailsJson });
-          fetchClasses(id)
+          fetchClasses(id);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
 
     if (user) {
@@ -93,7 +94,6 @@ const QrScn = () => {
         qrCodeScanner.stop();
         setScanning(false);
       } catch (error) {
-        
         setScanning(false);
       }
     };
@@ -112,7 +112,7 @@ const QrScn = () => {
   useEffect(() => {
     if (qrResult !== null) {
       fetchStudentDetails(qrResult, id, clzName);
-      
+
       setScanning(false); // Stop scanning after fetching details
     }
   }, [qrResult, id]);
@@ -125,10 +125,10 @@ const QrScn = () => {
   const fetchStudentDetails = async (std_ID, id) => {
     try {
       const response = await fetch(
-        https://edu-project-backend.onrender.com/api/students/getStudentByStd_Id/${std_ID},
+        `https://edu-project-backend.onrender.com/api/students/getStudentByStd_Id/${std_ID}`,
         {
           headers: {
-            Authorization: Bearer ${user.token},
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
@@ -149,13 +149,13 @@ const QrScn = () => {
           // Ask for user confirmation
           const userConfirmation = window.confirm(
             " Do you want to give attend for this student?"
-          // ` Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Payment Status: ${paymentStatus} \n Do you want to give a attendance for this student?`
+            // ` Student ID: ${studentDetails.std_ID} \n Student name: ${studentDetails.name} \n Payment Status: ${paymentStatus} \n Do you want to give a attendance for this student?`
           );
 
           if (userConfirmation) {
             submitAttendance(data.student, id, clzName);
 
-            alert(Gave access for student: ${data.student.name});
+            alert(`Gave access for student: ${data.student.name}`);
             // navigate('/qrScanner');
           }
         } else {
@@ -174,7 +174,7 @@ const QrScn = () => {
           );
           if (userConfirmation) {
             createTute(data.student, id);
-            alert(Tute gave for student: ${data.student.name});
+            alert(`Tute gave for student: ${data.student.name}`);
           }
         }
       });
@@ -208,7 +208,7 @@ const QrScn = () => {
       clzName,
     };
 
-    if(remainingSMSCount >= 10){
+    if (remainingSMSCount >= 10) {
       setInstNotification((prevNotification) => {
         if (prevNotification === "Yes") {
           // If instNotification is 'Yes', submit the email
@@ -217,10 +217,9 @@ const QrScn = () => {
         }
         return prevNotification; // Return the current state
       });
-    }else{
-      alert("your SMS Account balance is low. please topup!")
+    } else {
+      alert("your SMS Account balance is low. please topup!");
     }
-    
 
     const response = await fetch(
       "https://edu-project-backend.onrender.com/api/attendance/createAttendance",
@@ -229,7 +228,7 @@ const QrScn = () => {
         body: JSON.stringify(stdAttendance),
         headers: {
           "Content-Type": "application/json",
-          Authorization: Bearer ${user.token},
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );
@@ -240,7 +239,7 @@ const QrScn = () => {
       navigate("/");
     }
     if (response.ok) {
-      alert(${name}'s Attendance has been recorded!);
+      alert(`${name}'s Attendance has been recorded!`);
       setError(null);
       dispatch({ type: "CREATE_ATTENDANCE", payload: json });
     }
@@ -251,25 +250,28 @@ const QrScn = () => {
       return;
     }
 
-    console.log(phone)
+    // console.log(phone)
     const to = phone;
     const colomboTime = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Colombo",
     });
 
-    const message = `Dear parent , \n your child:${stdName} attended the ${clzName} class on ${colomboTime} `;
+    const message = `${instituteName}\n\n Dear parent , \n your child:${stdName} attended the ${clzName} class on ${colomboTime} `;
 
-    const emailDetails = { to, message,instID };
-    console.log(instID)
+    const emailDetails = { to, message, instID };
+    // console.log(instID)
 
-    const response = await fetch("https://edu-project-backend.onrender.com/api/sms/send-message", {
-      method: "POST",
-      body: JSON.stringify(emailDetails),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: Bearer ${user.token},
-      },
-    });
+    const response = await fetch(
+      "`https://edu-project-backend.onrender.com/api/sms/send-message",
+      {
+        method: "POST",
+        body: JSON.stringify(emailDetails),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {
@@ -294,18 +296,21 @@ const QrScn = () => {
       timeZone: "Asia/Colombo",
     });
 
-    const message = `Dear parent , \n your child:${stdName} was attend the ${clzName} class on ${colomboTime} `;
+    const message = `${instituteName}\n\n Dear parent , \n your child:${stdName} was attend the ${clzName} class on ${colomboTime} `;
 
     const emailDetails = { email, subject, message };
 
-    const response = await fetch("https://edu-project-backend.onrender.com/api/emails/sendEmail", {
-      method: "POST",
-      body: JSON.stringify(emailDetails),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: Bearer ${user.token},
-      },
-    });
+    const response = await fetch(
+      "https://edu-project-backend.onrender.com/api/emails/sendEmail",
+      {
+        method: "POST",
+        body: JSON.stringify(emailDetails),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {
@@ -330,16 +335,15 @@ const QrScn = () => {
       const encodedMonth = encodeURIComponent(currentMonth);
 
       const response = await fetch(
-        https://edu-project-backend.onrender.com/api/tutes/getTuteStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth},
+        `https://edu-project-backend.onrender.com/api/tutes/getTuteStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
         {
-          headers: { Authorization: Bearer ${user.token} },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
-      
+
       const data = await response.json();
 
       if (!response.ok) {
-        
         onStatusChange("not");
       } else {
         onStatusChange(data.status); // Set status and trigger the callback
@@ -347,7 +351,6 @@ const QrScn = () => {
 
       return data.status;
     } catch (error) {
-      
       onStatusChange("not gave");
     }
   };
@@ -367,23 +370,21 @@ const QrScn = () => {
 
       // Append current month to the URL
       const response = await fetch(
-        https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth},
+        `https://edu-project-backend.onrender.com/api/payments/getPaymentStatus?std_ID=${encodedStdID}&classID=${encodedClassID}&month=${encodedMonth}`,
         {
-          headers: { Authorization: Bearer ${user.token} },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
 
       const data = await response.json();
-      console.log("data",data)
+      //console.log("data",data)
 
       if (!response.ok) {
-        
         return "not";
       }
 
       return data.status;
     } catch (error) {
-      
       return "not gave";
     }
   };
@@ -410,14 +411,17 @@ const QrScn = () => {
       status,
     };
 
-    const response = await fetch("https://edu-project-backend.onrender.com/api/tutes/createTute", {
-      method: "POST",
-      body: JSON.stringify(tute),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: Bearer ${user.token},
-      },
-    });
+    const response = await fetch(
+      "https://edu-project-backend.onrender.com/api/tutes/createTute",
+      {
+        method: "POST",
+        body: JSON.stringify(tute),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
     const json = await response.json();
 
     if (!response.ok) {
@@ -425,37 +429,35 @@ const QrScn = () => {
       navigate("/");
     }
     if (response.ok) {
-      alert(${name}'s Tute has been given!);
+      alert(`${name}'s Tute has been given!`);
       setError(null);
       dispatch({ type: "CREATE_TUTE", payload: json });
     }
   };
 
-  // useEffect(() => { 
-    const fetchClasses = async (id) => {
-      try {
-        console.log("cID",id)
-        const response = await fetch(
-          https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id},
-          {
-            headers: { Authorization: Bearer ${user.token} },
-          }
-        );
-        const json = await response.json();
-        console.log(json.classs)
-
-        setClassName(json.classs.subject);
-        // Log the API response
-
-        if (response.ok) {
-          //setClz(json.data);
-          console.log(json.classs)
-          dispatch({ type: "SET_CLASS", payload: json.data });
+  // useEffect(() => {
+  const fetchClasses = async (id) => {
+    try {
+      //console.log("cID",id)
+      const response = await fetch(
+        `https://edu-project-backend.onrender.com/api/class/getClassDetailsByClassID/${id}`,
+        {
+          headers: { Authorization: ` Bearer ${user.token}` },
         }
-      } catch (error) {
-        
+      );
+      const json = await response.json();
+      console.log(json.classs);
+
+      setClassName(json.classs.subject);
+      // Log the API response
+
+      if (response.ok) {
+        //setClz(json.data);
+        //console.log(json.classs)
+        dispatch({ type: "SET_CLASS", payload: json.data });
       }
-    };
+    } catch (error) {}
+  };
 
   //   if (user) {
   //     fetchClasses();
@@ -463,81 +465,103 @@ const QrScn = () => {
   // }, [dispatch, user, id]);
 
   return (
-    <div className="qrcontainer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-  <div className="left-section" style={{ width: '100%', maxWidth: '600px', marginBottom: '20px', padding: '20px', backgroundColor: '#f0f0f0' }}>
-    <button onClick={handleButtonClick} style={{ padding: '10px 20px', fontSize: '16px', backgroundColor: '#007bff', color: '#ffffff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-      {scanning ? "Stop Scanner" : "Start Scanner"}
-    </button>
-    <div id="qr-scanner" style={{ width: '100%', height: '300px', marginTop: '20px', border: '1px solid #ccc' }}></div>
-  </div>
-
-  <div className="right-section" style={{ width: '100%', maxWidth: '600px', padding: '20px', backgroundColor: '#ffffff' }}>
-    <h2>QR Code Result:</h2>
-    <h2>Class ID : {clzName}</h2>
-    {/* {qrResult && <p>Std_id : {qrResult} </p>} */}
-
-    {studentDetails ? (
-      <div>
-        <p><span style={{color:'red' , fontWeight:'bold'}}>Student ID:</span> {studentDetails.std_ID}</p>
-        <p><span style={{color:'red' , fontWeight:'bold'}}>Student Name:</span> {studentDetails.name}</p>
-        <p ><span style={{color:'red' , fontWeight:'bold'}}>Payment Status:</span> {paymentStatus}</p>
-        <p><span style={{color:'red' , fontWeight:'bold'}}>Tute Status:</span>{tuteStatus}</p>
-     
-        <p><span style={{color:'red' , fontWeight:'bold'}}>Age:</span> {studentDetails.age}</p>
-        <p> <span style={{color:'red' , fontWeight:'bold'}}>Classes:</span>
-          {" "}
-          {studentDetails.classs.map((cls) => cls.subject).join(", ")}
-        </p>
-       
-      </div>
-    ) : (
-      <p>Unable to parse student details from QR code</p>
-    )}
-  </div>
-</div>
-
-
-  );
-};
-
-export default QrScn;
-
-
-
-
-{/* <div>
-      <div style={{ width: "50%", float: "left" }}>
-        <button onClick={handleButtonClick}>
+    <div
+      className="qrcontainer"
+      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+    >
+      <div
+        className="left-section"
+        style={{
+          width: "100%",
+          maxWidth: "600px",
+          marginBottom: "20px",
+          padding: "20px",
+          backgroundColor: "#f0f0f0",
+        }}
+      >
+        <button
+          onClick={handleButtonClick}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            backgroundColor: "#007bff",
+            color: "#ffffff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+        >
           {scanning ? "Stop Scanner" : "Start Scanner"}
         </button>
-
-        <div id="qr-scanner"></div>
+        <div
+          id="qr-scanner"
+          style={{
+            width: "100%",
+            height: "300px",
+            marginTop: "20px",
+            border: "1px solid #ccc",
+          }}
+        ></div>
       </div>
 
-      <div style={{ width: "50%", float: "right" }}>
+      <div
+        className="right-section"
+        style={{
+          width: "100%",
+          maxWidth: "600px",
+          padding: "20px",
+          backgroundColor: "#ffffff",
+        }}
+      >
         <h2>QR Code Result:</h2>
-        <h2>Class ID : {id}</h2>
-        {qrResult && <p>Std_id : {qrResult} </p>}
+        <h2>Class ID : {clzName}</h2>
+        {/* {qrResult && <p>Std_id : {qrResult} </p>} */}
 
         {studentDetails ? (
           <div>
-            <p>IID: {studentDetails.inst_ID}</p>
-            <p>SID: {studentDetails.std_ID}</p>
-            <p>Name: {studentDetails.name}</p>
-            <p>Email: {studentDetails.email}</p>
-            <p>Age: {studentDetails.age}</p>
-
-            <p>Address: {studentDetails.address}</p>
-            <p>Phone: {studentDetails.phone}</p>
             <p>
-              Classes:{" "}
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                Student ID:
+              </span>{" "}
+              {studentDetails.std_ID}
+            </p>
+            <p>
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                Student Name:
+              </span>{" "}
+              {studentDetails.name}
+            </p>
+            <p>
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                Payment Status:
+              </span>{" "}
+              {paymentStatus}
+            </p>
+            <p>
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                Tute Status:
+              </span>
+              {tuteStatus}
+            </p>
+
+            <p>
+              <span style={{ color: "red", fontWeight: "bold" }}>Age:</span>{" "}
+              {studentDetails.age}
+            </p>
+            <p>
+              {" "}
+              <span style={{ color: "red", fontWeight: "bold" }}>
+                Classes:
+              </span>{" "}
               {studentDetails.classs.map((cls) => cls.subject).join(", ")}
             </p>
-            <p>Payment Status: {paymentStatus}</p>
-            <p>Tute Status:{tuteStatus}</p>
           </div>
         ) : (
           <p>Unable to parse student details from QR code</p>
         )}
       </div>
-    </div> */}
+    </div>
+  );
+};
+
+export default QrScn;
