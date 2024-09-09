@@ -52,7 +52,7 @@ const QrScn = () => {
     const fetchSiteDetails = async () => {
       try {
         const siteDetailsResponse = await fetch(
-          https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId},
+          `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
           {
             headers: { Authorization: Bearer ${user.token} },
           }
