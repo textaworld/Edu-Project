@@ -4,7 +4,7 @@ import { useAuthContext } from "../hooks/useAuthContext";
 import { usePaymentContext } from "../hooks/usePaymentContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 import { FaTrash } from "react-icons/fa";
-
+import * as XLSX from "xlsx";
 const Payments = () => {
   const { id } = useParams();
   const { payments, dispatch } = usePaymentContext();
@@ -89,7 +89,6 @@ const Payments = () => {
 
       //setInstituteDetails(getInstituteDetails(instituteId));
     } catch (error) {
-      
       // Handle error (e.g., display an error message)
     }
   };
@@ -153,9 +152,7 @@ const Payments = () => {
           //setClz(json.data);
           dispatch({ type: "SET_PAYMENTS", payload: json.data });
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
 
     if (user) {
@@ -178,7 +175,9 @@ const Payments = () => {
   const filteredPayments = paymentss.filter((payment) => {
     return (
       payment.std_ID.includes(searchTermID) &&
-      payment.className.toLowerCase().includes(searchTermClassName.toLowerCase()) &&
+      payment.className
+        .toLowerCase()
+        .includes(searchTermClassName.toLowerCase()) &&
       payment.month.toLowerCase().includes(searchTermMonth.toLowerCase())
     );
   });
@@ -199,94 +198,122 @@ const Payments = () => {
     window.scrollTo(0, scrollPosition); // Restore scroll position on component mount
   }, []);
 
+  //   useEffect(() => {
+  //     filteredPayments.forEach(async (payment) => { // Iterate over filteredPayments
+  //       try {
+  //         const response = await fetch(`https://edu-project-backend.onrender.com/api/payments/getAllPaymentStatusBystdId/${payment.std_ID}`, {
+  //           method: 'GET',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             'Authorization': `Bearer ${user.token}`
+  //           }
+  //         });
+  //         if (response.ok) {
+  //   const data = await response.json();
+  //   console.log("status", data);
+  //   // Update lastPayments array with previousMonthStatus for each payment
+  //   setLastPayments(prev => [...prev, data.previousMonthStatus]);
+  // } else {
+  //   throw new Error('Failed to fetch payment status');
+  // }
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     });
+  //   }, [filteredPayments, user.token]); // Add filteredPayments and user.token as dependencies
 
+  // useEffect(() => {
+  //   const currentDate = new Date();
+  //   const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
+  //   const monthName = previousMonthDate.toLocaleString("en-US", { month: "long" });
+  //   //console.log(monthName);
+  //   setLastMonth(monthName);
+  // }, []);
+  // Get month name in "January", "February" forma
 
-//   useEffect(() => {
-//     filteredPayments.forEach(async (payment) => { // Iterate over filteredPayments
-//       try {
-//         const response = await fetch(`https://edu-project-backend.onrender.com/api/payments/getAllPaymentStatusBystdId/${payment.std_ID}`, {
-//           method: 'GET',
-//           headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Bearer ${user.token}`
-//           }
-//         });
-//         if (response.ok) {
-//   const data = await response.json();
-//   console.log("status", data);
-//   // Update lastPayments array with previousMonthStatus for each payment
-//   setLastPayments(prev => [...prev, data.previousMonthStatus]);
-// } else {
-//   throw new Error('Failed to fetch payment status');
-// }
-//       } catch (error) {
-//         console.error(error);
-//       }
-//     });
-//   }, [filteredPayments, user.token]); // Add filteredPayments and user.token as dependencies
+  const getLastMonthPayments = () => {
+    if (payments.length === 0) return [];
 
-
-// useEffect(() => {
-//   const currentDate = new Date();
-//   const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
-//   const monthName = previousMonthDate.toLocaleString("en-US", { month: "long" });
-//   //console.log(monthName);
-//   setLastMonth(monthName);
-// }, []);
-// Get month name in "January", "February" forma
-
-const getLastMonthPayments = () => {
-  if (payments.length === 0) return [];
-
-  return payments.filter(payment => payment.month.toLowerCase() === lastMonth.toLowerCase());
-};
-
-useEffect(() => {
-  if (paymentss.length > 0) {
-    // Filter payments for last month
-    const lastMonthPayments = getLastMonthPayments();
-    // Update paymentss state with filtered payments for last month
-    setPayments(lastMonthPayments);
-  }
-}, [lastMonth, payments]);
-
-useEffect(() => {
-  const currentDate = new Date();
-  const previousMonthDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
-  const monthName = previousMonthDate.toLocaleString("en-US", { month: "long" });
-  setLastMonth(monthName);
-}, []);
-
-      
-const handleDelete = async (paymentID) => {
-  if (!window.confirm("Are you sure you want to delete this student?")) {
-    return;
-  }
-
-  try {
-    const response = await fetch(
-      `https://edu-project-backend.onrender.com/api/payments/deletePayment/${paymentID}`,
-      {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
+    return payments.filter(
+      (payment) => payment.month.toLowerCase() === lastMonth.toLowerCase()
     );
+  };
 
-    if (response.ok) {
-      // Remove the deleted student from the state
-      //dispatch({ type: "DELETE_PAYMENT", payload: paymentID }); // Assuming "DELETE_PAYMENT" is the action type to delete a payment
-      setPayments(paymentss.filter(payment => payment._id !== paymentID)); // Update local state
-    } else {
+  useEffect(() => {
+    if (paymentss.length > 0) {
+      // Filter payments for last month
+      const lastMonthPayments = getLastMonthPayments();
+      // Update paymentss state with filtered payments for last month
+      setPayments(lastMonthPayments);
+    }
+  }, [lastMonth, payments]);
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const previousMonthDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - 1
+    );
+    const monthName = previousMonthDate.toLocaleString("en-US", {
+      month: "long",
+    });
+    setLastMonth(monthName);
+  }, []);
+
+  const handleDelete = async (paymentID) => {
+    if (!window.confirm("Are you sure you want to delete this student?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://edu-project-backend.onrender.com/api/payments/deletePayment/${paymentID}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        // Remove the deleted student from the state
+        //dispatch({ type: "DELETE_PAYMENT", payload: paymentID }); // Assuming "DELETE_PAYMENT" is the action type to delete a payment
+        setPayments(paymentss.filter((payment) => payment._id !== paymentID)); // Update local state
+      } else {
+        // Handle error
+      }
+    } catch (error) {
       // Handle error
     }
-  } catch (error) {
-    // Handle error
-  }
-};
+  };
 
+  const generateExcel = () => {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(
+      filteredPayments.map((student) => ({
+        "Student ID": student.std_ID,
+        Name: student.name,
+        Amount: student.amount,
+        Month: student.month,
+        "Class Name": student.className,
+        Date: student.date,
+        Status: student.status,
+        "Last Month Status":
+          student.month.toLowerCase() === lastMonth.toLowerCase()
+            ? student.status
+            : "not paid",
+        time: new Date(student.date).toLocaleString("en-US", {
+          timeZone: "Asia/Colombo",
+        }),
 
+        // Add more fields as needed
+      }))
+    );
+
+    XLSX.utils.book_append_sheet(wb, ws, "Students");
+    XLSX.writeFile(wb, "studentPayments.xlsx");
+  };
 
   return (
     <div>
@@ -306,14 +333,14 @@ const handleDelete = async (paymentID) => {
                 placeholder="Search by Student ID"
                 value={searchTermID}
                 onChange={(e) => setSearchTermID(e.target.value)}
-                style={{marginRight:'10px'}}
+                style={{ marginRight: "10px" }}
               />
               <input
                 type="text"
                 placeholder="Search by Month"
                 value={searchTermMonth}
                 onChange={(e) => setSearchTermMonth(e.target.value)}
-                style={{marginRight:'10px'}}
+                style={{ marginRight: "10px" }}
               />
               <input
                 type="text"
@@ -327,7 +354,8 @@ const handleDelete = async (paymentID) => {
               <Link to="/instituteIncome">
                 <button>Go to Institute Income</button>
               </Link>
-            </div> 
+            </div>
+            <button onClick={generateExcel}>Generate Excel</button>
 
             <table className="instituteTable">
               <thead>
@@ -359,16 +387,21 @@ const handleDelete = async (paymentID) => {
                         <td>{payment.className}</td>
                         <td>{colomboTime}</td>
                         <td>{payment.status}</td>
-                        <td>{payment.month.toLowerCase() === lastMonth.toLowerCase() ? payment.status : "not paid"}</td>
                         <td>
-                      <Link
-                        to="#"
-                        className="btn btn-danger"
-                        onClick={() => handleDelete(payment._id)}
-                      >
-                        <FaTrash />
-                      </Link>
-                    </td>
+                          {payment.month.toLowerCase() ===
+                          lastMonth.toLowerCase()
+                            ? payment.status
+                            : "not paid"}
+                        </td>
+                        <td>
+                          <Link
+                            to="#"
+                            className="btn btn-danger"
+                            onClick={() => handleDelete(payment._id)}
+                          >
+                            <FaTrash />
+                          </Link>
+                        </td>
                       </tr>
                     );
                   })
@@ -380,7 +413,7 @@ const handleDelete = async (paymentID) => {
               </tbody>
             </table>
           </div>
-         )} 
+        )}
       </div>
     </div>
   );
