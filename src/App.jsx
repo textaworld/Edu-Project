@@ -49,6 +49,9 @@ import HomeSclAdmin from "./pages/HomeSclAdmin.jsx";
 import StartSchool from "./pages/StartSchool.jsx";
 import BrodcastMsg from "./pages/BrodcastMsg.jsx";
 import AbsentSclStds from "./pages/AbsentSclStds.jsx";
+import SwimAdminHome from "./pages/SwimAdminHome.jsx";
+import SwminInQrScanner from "./pages/SwminInQrScanner.jsx";
+import SwimOutQrScanner from "./pages/SwimOutQrScanner.jsx";
 
 function App() {
   const { user } = useAuthContext();
@@ -86,20 +89,23 @@ function App() {
                 )
               }
             /> */}
-            <Route
-              path="/adminlogin"
-              element={
-                checkUserRole("ADMIN") ? (
-                  <Navigate to="/" />
-                ) : checkUserRole("SUB_ADMIN") ? (
-                  <Navigate to="/subadminhome" />
-                ) : checkUserRole("SCL_ADMIN") ? (
-                  <Navigate to="/scladminhome" />
-                ) : (
-                  <AdminLogin />
-                )
-              }
-            />
+            <Route 
+  path="/adminlogin"
+  element={
+    checkUserRole("ADMIN") ? (
+      <Navigate to="/" />
+    ) : checkUserRole("SUB_ADMIN") ? (
+      <Navigate to="/subadminhome" />
+    ) : checkUserRole("SCL_ADMIN") ? (
+      <Navigate to="/scladminhome" />
+    ) : checkUserRole("SWIM_ADMIN") ? (
+      <Navigate to="/swimadminhome" />
+    ) : (
+      <AdminLogin />
+    )
+  }
+/>
+
 
             <Route path="/forgotpass" element={<ForgotPassword />} />
 
@@ -258,6 +264,28 @@ function App() {
                 path="/scladminhome/absentScl"
                 element={<AbsentSclStds />}
               />
+            </Route>
+
+
+            {/* -----------Swim ADMIN----------------- */}
+            <Route
+              path="/swimadminhome"
+              element={
+                <StudentContextProvider>
+                  <ClassContextProvider>
+                    <AttendanceContextProvider>
+                      <EmailContextProvider>
+                        <UserRoleAuth userRole={"SWIM_ADMIN"} />
+                      </EmailContextProvider>
+                    </AttendanceContextProvider>
+                  </ClassContextProvider>
+                </StudentContextProvider>
+              }
+            > 
+            
+            <Route path="/swimadminhome" element={<SwimAdminHome />} />
+            <Route path="/swimadminhome/swimInQr/:id" element={<SwminInQrScanner />} />
+            <Route path="/swimadminhome/swimOutQr" element={<SwimOutQrScanner />} />
             </Route>
           </Routes>
         </div>

@@ -26,8 +26,8 @@ const UpdateStudent = () => {
   const navigate = useNavigate();
   const [stdClass, setStdClass] = useState([]);
   const [classStates, setClassStates] = useState({});
-
-  const [error, setError] = useState(null);
+  const [swimHours,setSwimHours] = useState(0)
+    const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -81,10 +81,10 @@ const UpdateStudent = () => {
           setStdClass(subjectsArray);
           clz({ type: "SET_CLASS", payload: json.data });
         } else {
-          
+          //
         }
       } catch (error) {
-        
+        //
       }
     };
 
@@ -98,7 +98,7 @@ const UpdateStudent = () => {
       const selectedClasses = Object.keys(classStates).filter(
         (_id) => classStates[_id]?.isChecked
       );
-
+      
       const response = await fetch(
         `https://edu-project-backend.onrender.com/api/students/updateStudent/${id}`,
         {
@@ -114,6 +114,7 @@ const UpdateStudent = () => {
             age,
             address,
             phone,
+            swimHours,
             classs: selectedClasses.map((classId) => ({
               _id: classId,
               subject: classStates[classId]?.subject,
@@ -255,6 +256,17 @@ const UpdateStudent = () => {
               }
             })}
           </div>
+        </div>
+        <div className="form-input">
+          <label htmlFor="" className="form-label">
+            Swim Hours
+          </label>
+          <input
+            value={swimHours}
+            type="number"
+            className="form-control"
+            onChange={(e) => setSwimHours(e.target.value)}
+          />
         </div>
         <button type="submit" className="form-button">
           Submit

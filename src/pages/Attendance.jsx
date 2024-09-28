@@ -151,7 +151,7 @@ const Attendence = () => {
           }
         );
         const json = await response.json();
-
+        console.log("json",json)
         // Log the API response
 
         if (response.ok) {
@@ -160,7 +160,7 @@ const Attendence = () => {
           dispatch({ type: "SET_ATTENDENCE", payload: json.data });
         }
       } catch (error) {
-        
+        //
       }
     };
 
@@ -254,7 +254,8 @@ const downloadExcel = () => {
   URL.revokeObjectURL(url);
 };
 
-
+const hasInTime = attendance.some((attendanc) => attendanc.inTime);
+const hasOutTime = attendance.some((attendanc) => attendanc.outTime);
 
   return (
     <div>
@@ -290,6 +291,8 @@ const downloadExcel = () => {
                   <th>Name</th>
                   <th>Date</th>
                   <th>Class</th>
+                  {hasInTime && <th>In Time</th>}
+                  {hasOutTime && <th>Out Time</th>}
                   <th>Status</th>
                 </tr>
               </thead>
@@ -308,6 +311,8 @@ const downloadExcel = () => {
                         <td>{attendanc.name}</td>
                         <td>{colomboTime}</td> {/* Display Colombo time */}
                         <td>{attendanc.clzName}</td>
+                        {hasInTime && <td>{attendanc.inTime || "-"}</td>}
+                        {hasOutTime && <td>{attendanc.outTime || "-"}</td>}
                         <td>{attendanc.attendance}</td>
                       </tr>
                     );

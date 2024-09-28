@@ -1,58 +1,122 @@
 /* Container for the two main sections */
 .qrcontainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  /* Left section */
-  .left-section {
-    width: 100%;
-    padding: 10px;
-  }
-  
-  /* Right section */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Left section */
+.left-section {
+  width: 100%;
+  padding: 10px;
+}
+
+/* Right section */
+.right-section {
+  width: 100%;
+  padding: 10px;
+}
+
+/* Styling for the button */
+button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Styling for QR scanner container */
+#qr-scanner {
+  border: 2px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  max-width: 100%;
+}
+
+/* Styling for QR Code Result section */
+h2 {
+  margin-bottom: 10px;
+}
+
+p {
+  margin-bottom: 5px;
+}
+
+/* Media query for mobile phones */
+@media only screen and (max-width: 600px) {
   .right-section {
-    width: 100%;
-    padding: 10px;
+    padding-top: 20px;
   }
-  
-  /* Styling for the button */
-  button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Styling for QR scanner container */
-  #qr-scanner {
-    border: 2px solid #ccc;
-    padding: 20px;
-    margin-bottom: 20px;
-    max-width: 100%;
-  }
-  
-  /* Styling for QR Code Result section */
-  h2 {
-    margin-bottom: 10px;
-  }
-  
-  p {
-    margin-bottom: 5px;
-  }
-  
-  /* Media query for mobile phones */
-  @media only screen and (max-width: 600px) {
-    .right-section {
-      padding-top: 20px;
-    }
-  }
-  
+}
+.qrcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.scanner-section {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.scanner-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.scanner-button:hover {
+  background-color: #0056b3;
+}
+
+.qr-scanner {
+  width: 100%;
+  height: 300px;
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.result-section {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.result-title {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.student-details {
+  margin-left: 10px;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+}

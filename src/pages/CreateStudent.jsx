@@ -39,7 +39,8 @@ const CreateStudent = () => {
   const idCardRef = useRef(null);
   const cardStatus = sitedetail.stdCardcardStatus;
   const [isBgImageSelected, setIsBgImageSelected] = useState(false);
-  console.log(cardStatus)
+  const [swimHours,setSwimHours] = useState(0)
+  // console.log(cardStatus)
 
   const isAnyCheckboxChecked = () => {
     return Object.values(classStates).some(
@@ -147,7 +148,7 @@ const CreateStudent = () => {
       (_id) => classStates[_id]?.isChecked
     );
 
-
+    // const swimHours = 10;
     const student = {
       inst_ID: instID,
       std_ID,
@@ -155,6 +156,7 @@ const CreateStudent = () => {
       email,
       age,
       address,
+      swimHours,
       phone,
       classs: selectedClasses.map((classId) => ({
         _id: classId,
@@ -194,6 +196,7 @@ const CreateStudent = () => {
       setAddress("");
       setPhone("");
       setClass("");
+      setSwimHours("")
       setStdCount("");
       setIsDownload(false);
       uncheckAll();
@@ -408,6 +411,19 @@ const CreateStudent = () => {
                   })}
                 </div>
               </label>
+
+              <label>
+                SwimHours
+                <input
+                  value={swimHours}
+                  type="number"
+                  placeholder="Only for swimming class students "
+                  onChange={(e) => setSwimHours(e.target.value)}
+                  required
+
+                />
+              </label>
+
               <div className="errorContainer">
             {error && <div className="error">{error}</div>}
           </div>
