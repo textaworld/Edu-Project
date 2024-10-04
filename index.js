@@ -17,6 +17,8 @@ const TuteRouter = require("./routes/tuteRoutes");
 const ClassRouter = require("./routes/classRoutes");
 const EmailRouter = require("./routes/emailRoute");
 const SmsRouter = require("./routes/smsRoutes");
+const swimInRoute = require("./routes/swimInRoute")
+const swimOutRoute = require("./routes/swimOutRoutes")
 
 
 
@@ -50,6 +52,9 @@ app.use("/api/tutes",TuteRouter);
 app.use("/api/class",ClassRouter);
 app.use("/api/emails",EmailRouter);
 app.use("/api/sms",SmsRouter);
+app.use("/api/swimIn",swimInRoute);
+app.use("/api/swimOut",swimOutRoute);
+
 
 
 // connect to db

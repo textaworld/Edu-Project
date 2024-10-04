@@ -13,7 +13,11 @@ const createStudent = async (req, res) => {
       phone,
       classs,
       stdCount,
+      swimHours,
+      attendence
     } = req.body;
+
+    console.log("swimH",swimHours)
 
     // Check if std_ID exists in studentIdModel
     const existingStudentId = await studentIdModel.findOne({ std_ID,inst_ID });
@@ -55,9 +59,12 @@ const createStudent = async (req, res) => {
       phone,
       classs,
       stdCount,
+      swimHours,
+      attendence
     });
 
     const savedStudent = await newStudent.save();
+    console.log("swimStd",savedStudent)
     res.json(savedStudent);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -93,6 +100,7 @@ const getStudentById = (req, res) => {
       if (!student) {
         return res.status(404).json({ error: "Student not found" });
       }
+      console.log("studentById",student)
       res.json(student);
     })
     .catch((err) => res.json({ error: err.message }));
@@ -100,7 +108,7 @@ const getStudentById = (req, res) => {
 
 const updateStudent = (req, res) => {
   const studentId = req.params.id;
-  const { std_ID, name, email, age, address, phone, classs } = req.body;
+  const { std_ID, name, email, age, address, phone, classs,swimHours,attendence } = req.body;
 
   studentModel
     .findByIdAndUpdate(
@@ -112,6 +120,8 @@ const updateStudent = (req, res) => {
         age,
         address,
         phone,
+        swimHours,
+        attendence,
         classs: classs, // Corrected here
       },
       { new: true }
@@ -250,6 +260,69 @@ const searchStudentByStd_ID = async (req, res) => {
   }
 };
 
+
+
+const updateSwimInTime = async (req, res) => {
+  const { std_ID } = req.params; 
+  const { swimInTime,attendence } = req.body; 
+
+  console.log("attendence",attendence)
+  try {
+      // Find the student by std_ID
+      const student = await studentModel.findOne({ std_ID });
+
+      console.log("student",student)
+
+      if (!student) {
+          return res.status(404).json({ message: 'Student not found' });
+      }
+
+      // Update swimInTime
+      student.swimInTime = swimInTime;
+      student.attendence = attendence;
+      await student.save(); // Save the updated student record
+
+      console.log("savedAttStd",await student.save())
+        
+
+      return res.status(200).json({ message: 'swimInTime updated successfully', student });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+const updateSwimHoursbyStdID = async (req, res) => {
+  const { std_ID } = req.params; 
+  const { swimHours,swimInTime } = req.body; 
+  
+  console.log("std_ID",std_ID)
+  console.log("swimHours",swimHours)
+  try {
+      // Find the student by std_ID
+      const student = await studentModel.findOne({ std_ID });
+
+      console.log("student",student)
+
+      if (!student) {
+          return res.status(404).json({ message: 'Student not found' });
+      }
+
+      // Update swimInTime
+      student.swimHours = swimHours;
+      student.swimInTime = swimInTime;
+      await student.save(); // Save the updated student record
+      const savedStd = await student.save(); 
+      console.log("saved Std",savedStd)
+
+      return res.status(200).json({ message: 'swimHours updated successfully', student });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+
 module.exports = {
   createStudent,
   getAllStudents,
@@ -261,5 +334,7 @@ module.exports = {
   getAllStudentsByInsId,
   getAllStudentsBySubject,
   searchStudentByStd_ID,
-  getStudentIds
+  getStudentIds,
+  updateSwimHoursbyStdID,
+  updateSwimInTime
 };

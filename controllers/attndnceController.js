@@ -1,7 +1,8 @@
 const AttendanceModel = require("../models/attendance");
 
 const createAttendance = (req, res) => {
-  const { inst_ID, std_ID, name, date, classID, attendance, clzName } =
+  const { inst_ID, std_ID, name, date, classID, attendance, clzName, inTime,
+    outTime } =
     req.body;
 
   const newAttendance = new AttendanceModel({
@@ -12,6 +13,8 @@ const createAttendance = (req, res) => {
     classID,
     attendance,
     clzName,
+    inTime,
+    outTime,
   });
 
   newAttendance
@@ -132,6 +135,61 @@ const getAttendanceCountByStartDateAndEndDate = async (req, res) => {
   }
 };
 
+const updateSwimOutTime = async (req, res) => {
+  const { std_ID } = req.params; 
+  const { outTime } = req.body; 
+
+  try {
+      // Find the student by std_ID
+      const attendence = await AttendanceModel.findOne({ std_ID });
+
+      console.log("attendence",attendence)
+
+      if (!attendence) {
+          return res.status(404).json({ message: 'attendence not found' });
+      }
+
+      // Update swimInTime
+      attendence.outTime = outTime;
+      await attendence.save(); // Save the updated student record
+
+      console.log("savedAttendence",await attendence.save())
+
+      return res.status(200).json({ message: 'swimOUtTime updated successfully', attendence });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+const updateSwimOutTimeByID = async (req, res) => {
+  const { id } = req.params; 
+  const { outTime } = req.body; 
+
+  console.log("attenID",id)
+
+  try {
+      // Find the student by std_ID
+      const attendence = await AttendanceModel.findOne({ _id:id });
+
+      console.log("attendence found",attendence)
+
+      if (!attendence) {
+          return res.status(404).json({ message: 'attendence not found' });
+      }
+
+      // Update swimInTime
+      attendence.outTime = outTime;
+      await attendence.save(); // Save the updated student record
+
+      console.log("savedAttendence",await attendence.save())
+
+      return res.status(200).json({ message: 'swimOUtTime updated successfully', attendence });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
 
 
 
@@ -140,5 +198,7 @@ module.exports = {
   getAllAttendances,
   getAllAttendancesByInsId,
   getAttendanceCountsByMonth,
-  getAttendanceCountByStartDateAndEndDate
+  getAttendanceCountByStartDateAndEndDate,
+  updateSwimOutTime,
+  updateSwimOutTimeByID
 };

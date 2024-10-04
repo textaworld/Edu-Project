@@ -43,8 +43,18 @@ const StudentSchema = new mongoose.Schema({
       
     stdCount:{
         type:Number,
-    }
-    
+    },
+    swimHours: {
+        type: Number,
+      },
+    swimInTime: {
+        type: String,
+      },
+    attendence:{
+      type:String
+  }
+
+      
 });
 
 const studentModel = mongoose.model("Students", StudentSchema);

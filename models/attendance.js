@@ -22,8 +22,13 @@ const AttendanceSchema = new mongoose.Schema({
     },
     clzName:{
         type:String
-    }
-
+    }, inTime:{
+        type:String
+    },
+    outTime:{
+        type:String
+    },
+    
 });
 
 const AttendanceModel = mongoose.model("Attendance", AttendanceSchema);

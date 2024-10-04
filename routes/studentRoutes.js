@@ -34,6 +34,10 @@ router.get('/searchStudentByStd_ID', studentController.searchStudentByStd_ID);
 
 router.get('/getAllStudentIds', studentController.getStudentIds);
 
+router.put("/updateSwimHoursbyStdID/:std_ID", studentController.updateSwimHoursbyStdID);
+
+router.put("/updateSwimInTime/:std_ID", studentController.updateSwimInTime); 
+
 
 module.exports = router;
 

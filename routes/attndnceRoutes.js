@@ -15,6 +15,8 @@ router.get(
 
 router.get("/getAttendanceCountsByMonth",attendanceController.getAttendanceCountsByMonth);
 router.get("/getAttendanceCounth",attendanceController.getAttendanceCountByStartDateAndEndDate);
+router.put("/updateSwimOutTime/:std_ID", attendanceController.updateSwimOutTime); 
+router.put("/updateSwimOutTimeByID/:id", attendanceController.updateSwimOutTimeByID); 
 
 
 module.exports = router;
