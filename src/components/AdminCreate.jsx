@@ -120,5 +120,5 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
     </div>
   );
 };
-
+ 
 export default AdminCreate;

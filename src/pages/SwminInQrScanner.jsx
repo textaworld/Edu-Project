@@ -11,7 +11,7 @@ import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
 // import { useClassContext } from "../hooks/useClassContext";
 import "../styles/qrscanner.css";
 
-const SwminInQrScanner = () => {
+const SwminInQrScanner = () => { 
   const { id } = useParams();
   const { dispatch } = useAttendanceContext();
   const { user } = useAuthContext();

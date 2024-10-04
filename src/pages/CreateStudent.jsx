@@ -425,7 +425,7 @@ const CreateStudent = () => {
               </label>
 
               <div className="errorContainer">
-            {error && <div className="error">{error}</div>}
+            {error && <div className="error">{error}</div>} 
           </div>
 
               

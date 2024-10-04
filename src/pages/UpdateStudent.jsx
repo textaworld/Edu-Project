@@ -245,7 +245,7 @@ const UpdateStudent = () => {
                         }))
                       }
                     />
-                    <label htmlFor={`class_${index}`}>
+                    <label htmlFor={`class_${index}`}> 
                       {selectedClass.subject}
                     </label>
                   </div>
