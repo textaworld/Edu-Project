@@ -100,7 +100,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
               <option value="ADMIN">Admin</option>
               <option value="SUB_ADMIN">SubAdmin</option>
               <option value="SCL_ADMIN">School Admin</option>
-              <option value="SWIM_ADMIN">Swim Admin</option>
+              <option value="SWIM_ADMIN">Swim Admin</option>  
             </select>
           </label>
 
