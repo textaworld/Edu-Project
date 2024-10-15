@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useAdminContext } from "../hooks/useAdminContext";
@@ -30,7 +31,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
       body: JSON.stringify(admin),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
+        Authorization: Bearer ${user.token},
       },
     });
 
@@ -100,7 +101,8 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
               <option value="ADMIN">Admin</option>
               <option value="SUB_ADMIN">SubAdmin</option>
               <option value="SCL_ADMIN">School Admin</option>
-            </select>
+              <option value="SWIM_ADMIN">Swim Admin</option>  
+            </select>  
           </label>
 
           <div className="errorContainer">
@@ -119,5 +121,5 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
     </div>
   );
 };
-
+ 
 export default AdminCreate;
