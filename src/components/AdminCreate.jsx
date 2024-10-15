@@ -108,7 +108,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
             {error && <div className="error">{error}</div>}
           </div>
           <div className="buttonContainer">
-            <button className="addButton" type="submit">
+            <button className="addButton" type="submit"> 
               Add Admin
             </button>
             <button className="cancelButton" type="button" onClick={onClose}>

@@ -267,7 +267,7 @@ const UpdateStudent = () => {
             className="form-control"
             onChange={(e) => setSwimHours(e.target.value)}
           />
-        </div>
+        </div> 
         <button type="submit" className="form-button">
           Submit
         </button>

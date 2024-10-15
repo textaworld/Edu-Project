@@ -315,7 +315,7 @@ const hasOutTime = attendance.some((attendanc) => attendanc.outTime);
                         {hasOutTime && <td>{attendanc.outTime || "-"}</td>}
                         <td>{attendanc.attendance}</td>
                       </tr>
-                    );
+                    ); 
                   })
                 ) : (
                   <tr>

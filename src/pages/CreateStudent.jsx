@@ -235,7 +235,7 @@ const CreateStudent = () => {
 
       const data = await response.text();
       setQrImage(data);
-    } catch (error) {
+    } catch (error) { 
       
       // Handle error appropriately
     }
