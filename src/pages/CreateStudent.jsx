@@ -39,7 +39,8 @@ const CreateStudent = () => {
   const idCardRef = useRef(null);
   const cardStatus = sitedetail.stdCardcardStatus;
   const [isBgImageSelected, setIsBgImageSelected] = useState(false);
-  console.log(cardStatus)
+  const [swimHours,setSwimHours] = useState(0)
+  // console.log(cardStatus)
 
   const isAnyCheckboxChecked = () => {
     return Object.values(classStates).some(
@@ -61,9 +62,9 @@ const CreateStudent = () => {
   useEffect(() => {
     const fetchSiteDetails = async () => {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+        https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId},
         {
-          headers: { Authorization: `Bearer ${user.token}` },
+          headers: { Authorization: Bearer ${user.token} },
         }
       );
       const json = await response.json();
@@ -83,9 +84,9 @@ const CreateStudent = () => {
     const fetchClassesBySite = async () => {
       try {
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id},
           {
-            headers: { Authorization: `Bearer ${user.token}` },
+            headers: { Authorization: Bearer ${user.token} },
           }
         );
         const json = await response.json();
@@ -147,7 +148,7 @@ const CreateStudent = () => {
       (_id) => classStates[_id]?.isChecked
     );
 
-
+    // const swimHours = 10;
     const student = {
       inst_ID: instID,
       std_ID,
@@ -155,6 +156,7 @@ const CreateStudent = () => {
       email,
       age,
       address,
+      swimHours,
       phone,
       classs: selectedClasses.map((classId) => ({
         _id: classId,
@@ -171,7 +173,7 @@ const CreateStudent = () => {
         body: JSON.stringify(student),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+          Authorization: Bearer ${user.token},
         },
       }
     );
@@ -182,7 +184,7 @@ const CreateStudent = () => {
       setError(json.error);
 
       // Display error message in an alert
-      alert(`Error: ${json.error}`);
+      alert(Error: ${json.error});
     }
 
     if (response.ok) {
@@ -194,6 +196,7 @@ const CreateStudent = () => {
       setAddress("");
       setPhone("");
       setClass("");
+      setSwimHours("")
       setStdCount("");
       setIsDownload(false);
       uncheckAll();
@@ -219,7 +222,7 @@ const CreateStudent = () => {
         body: JSON.stringify(student),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
+          Authorization: Bearer ${user.token},
         },
       });
 
@@ -249,7 +252,7 @@ const CreateStudent = () => {
       // Convert canvas to data URL with JPEG MIME type and maximum quality
       link.href = canvas.toDataURL("image/jpeg", 1.0);
 
-      link.download = `${std_ID}.jpg`;
+      link.download = ${std_ID}.jpg;
       link.click();
       setIsDownload(true);
     });
@@ -391,10 +394,10 @@ const CreateStudent = () => {
 
                     return selectedClass ? (
                       <div className="checkbox-row" key={index}>
-                        <label htmlFor={`class_${index}`}>
+                        <label htmlFor={class_${index}}>
                           <input
                             type="checkbox"
-                            id={`class_${index}`}
+                            id={class_${index}}
                             value={classId}
                             checked={classStates[classId]?.isChecked || false}
                             onChange={() => {
@@ -408,8 +411,21 @@ const CreateStudent = () => {
                   })}
                 </div>
               </label>
+
+              <label>
+                SwimHours
+                <input
+                  value={swimHours}
+                  type="number"
+                  placeholder="Only for swimming class students "
+                  onChange={(e) => setSwimHours(e.target.value)}
+                  required
+
+                />
+              </label>
+
               <div className="errorContainer">
-            {error && <div className="error">{error}</div>}
+            {error && <div className="error">{error}</div>} 
           </div>
 
               
@@ -658,7 +674,7 @@ export default CreateStudent;
         <div key={index}>
           <input
             type="checkbox"
-            id={`class_${index}`}
+            id={class_${index}}
             value={classId}
             checked={classStates[classId]?.isChecked || false}
             onChange={() =>
@@ -672,7 +688,7 @@ export default CreateStudent;
               }))
             }
           />
-          <label htmlFor={`class_${index}`}>
+          <label htmlFor={class_${index}}>
             {selectedClass.subject}
           </label>
         </div>
