@@ -26,8 +26,8 @@ const UpdateStudent = () => {
   const navigate = useNavigate();
   const [stdClass, setStdClass] = useState([]);
   const [classStates, setClassStates] = useState({});
-
-  const [error, setError] = useState(null);
+  const [swimHours,setSwimHours] = useState(0)
+    const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -35,7 +35,7 @@ const UpdateStudent = () => {
         const response = await fetch(
           "https://edu-project-backend.onrender.com/api/students/getStudentById/" + id,
           {
-            headers: { Authorization: `Bearer ${user.token}` },
+            headers: { Authorization: Bearer ${user.token} },
           }
         );
         const json = await response.json();
@@ -69,9 +69,9 @@ const UpdateStudent = () => {
     const fetchClassesBySite = async () => {
       try {
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
+          https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id},
           {
-            headers: { Authorization: `Bearer ${user.token}` },
+            headers: { Authorization: Bearer ${user.token} },
           }
         );
         const json = await response.json();
@@ -81,10 +81,10 @@ const UpdateStudent = () => {
           setStdClass(subjectsArray);
           clz({ type: "SET_CLASS", payload: json.data });
         } else {
-          
+          //
         }
       } catch (error) {
-        
+        //
       }
     };
 
@@ -98,14 +98,14 @@ const UpdateStudent = () => {
       const selectedClasses = Object.keys(classStates).filter(
         (_id) => classStates[_id]?.isChecked
       );
-
+      
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/students/updateStudent/${id}`,
+        https://edu-project-backend.onrender.com/api/students/updateStudent/${id},
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
+            Authorization: Bearer ${user.token},
           },
           body: JSON.stringify({
             std_ID,
@@ -114,6 +114,7 @@ const UpdateStudent = () => {
             age,
             address,
             phone,
+            swimHours,
             classs: selectedClasses.map((classId) => ({
               _id: classId,
               subject: classStates[classId]?.subject,
@@ -230,7 +231,7 @@ const UpdateStudent = () => {
                   <div key={index}>
                     <input
                       type="checkbox"
-                      id={`class_${index}`}
+                      id={class_${index}}
                       value={classId}
                       checked={classStates[classId]?.isChecked || false}
                       onChange={() =>
@@ -244,7 +245,7 @@ const UpdateStudent = () => {
                         }))
                       }
                     />
-                    <label htmlFor={`class_${index}`}>
+                    <label htmlFor={class_${index}}> 
                       {selectedClass.subject}
                     </label>
                   </div>
@@ -255,6 +256,17 @@ const UpdateStudent = () => {
               }
             })}
           </div>
+        </div>
+        <div className="form-input">
+          <label htmlFor="" className="form-label">
+            Swim Hours
+          </label>
+          <input
+            value={swimHours}
+            type="number"
+            className="form-control"
+            onChange={(e) => setSwimHours(e.target.value)}
+          />
         </div>
         <button type="submit" className="form-button">
           Submit
