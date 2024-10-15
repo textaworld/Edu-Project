@@ -62,9 +62,9 @@ const CreateStudent = () => {
   useEffect(() => {
     const fetchSiteDetails = async () => {
       const response = await fetch(
-        https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId},
+        `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
         {
-          headers: { Authorization: Bearer ${user.token} },
+          headers: { Authorization: Bearer `${user.token}` },
         }
       );
       const json = await response.json();
@@ -84,9 +84,9 @@ const CreateStudent = () => {
     const fetchClassesBySite = async () => {
       try {
         const response = await fetch(
-          https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id},
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
-            headers: { Authorization: Bearer ${user.token} },
+            headers: { Authorization: Bearer `${user.token}` },
           }
         );
         const json = await response.json();
@@ -173,7 +173,7 @@ const CreateStudent = () => {
         body: JSON.stringify(student),
         headers: {
           "Content-Type": "application/json",
-          Authorization: Bearer ${user.token},
+          Authorization: Bearer `${user.token}`,
         },
       }
     );
@@ -184,7 +184,7 @@ const CreateStudent = () => {
       setError(json.error);
 
       // Display error message in an alert
-      alert(Error: ${json.error});
+      alert(`Error: ${json.error}`);
     }
 
     if (response.ok) {
@@ -222,7 +222,7 @@ const CreateStudent = () => {
         body: JSON.stringify(student),
         headers: {
           "Content-Type": "application/json",
-          Authorization: Bearer ${user.token},
+          Authorization: Bearer `${user.token}`,
         },
       });
 
@@ -252,7 +252,7 @@ const CreateStudent = () => {
       // Convert canvas to data URL with JPEG MIME type and maximum quality
       link.href = canvas.toDataURL("image/jpeg", 1.0);
 
-      link.download = ${std_ID}.jpg;
+      link.download = `${std_ID}.jpg`;
       link.click();
       setIsDownload(true);
     });
@@ -394,10 +394,10 @@ const CreateStudent = () => {
 
                     return selectedClass ? (
                       <div className="checkbox-row" key={index}>
-                        <label htmlFor={class_${index}}>
+                        <label htmlFor={`class_${index}`}>
                           <input
                             type="checkbox"
-                            id={class_${index}}
+                            id={`class_${index}`}
                             value={classId}
                             checked={classStates[classId]?.isChecked || false}
                             onChange={() => {
