@@ -26,8 +26,8 @@ const UpdateStudent = () => {
   const navigate = useNavigate();
   const [stdClass, setStdClass] = useState([]);
   const [classStates, setClassStates] = useState({});
-  const [swimHours,setSwimHours] = useState(0)
-    const [error, setError] = useState(null);
+  const [swimHours, setSwimHours] = useState(0)
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -35,7 +35,7 @@ const UpdateStudent = () => {
         const response = await fetch(
           "https://edu-project-backend.onrender.com/api/students/getStudentById/" + id,
           {
-            headers: { Authorization: Bearer ${user.token} },
+            headers: { Authorization: Bearer`${user.token}` },
           }
         );
         const json = await response.json();
@@ -51,7 +51,7 @@ const UpdateStudent = () => {
           dispatch({ type: "SET_STUDENTS", payload: json });
         }
       } catch (error) {
-        
+
         // Handle the error as needed
       }
     };
@@ -69,9 +69,9 @@ const UpdateStudent = () => {
     const fetchClassesBySite = async () => {
       try {
         const response = await fetch(
-          https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id},
+          `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
-            headers: { Authorization: Bearer ${user.token} },
+            headers: { Authorization: `Bearer ${user.token}` },
           }
         );
         const json = await response.json();
@@ -98,14 +98,14 @@ const UpdateStudent = () => {
       const selectedClasses = Object.keys(classStates).filter(
         (_id) => classStates[_id]?.isChecked
       );
-      
+
       const response = await fetch(
-        https://edu-project-backend.onrender.com/api/students/updateStudent/${id},
+        `https://edu-project-backend.onrender.com/api/students/updateStudent/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: Bearer ${user.token},
+            Authorization: `Bearer ${user.token}`,
           },
           body: JSON.stringify({
             std_ID,
@@ -128,11 +128,11 @@ const UpdateStudent = () => {
       if (response.ok) {
         navigate("/students"); // Redirect to the students page after successful update
       } else {
-        
+
         setError(json.error); // Set the error state
       }
     } catch (error) {
-      
+
     }
   };
 
@@ -140,28 +140,28 @@ const UpdateStudent = () => {
     <div className="form-container">
       <form
         onSubmit={(e) => {
-          e.preventDefault(); // Prevent the default form submission behavior
+          e.preventDefault();
           updateStudent();
         }}
       >
         <h2 className="form-title">Update Student</h2>
+  
         <div className="form-input">
-          <label htmlFor="" className="form-label">
-            std_ID
-          </label>
+          <label htmlFor="std_ID" className="form-label">Student ID</label>
           <input
+            id="std_ID"
             value={std_ID}
             type="text"
-            placeholder="Enter Name"
+            placeholder="Enter Student ID"
             className="form-control"
             onChange={(e) => setStd_ID(e.target.value)}
           />
-        </div>{" "}
+        </div>
+  
         <div className="form-input">
-          <label htmlFor="" className="form-label">
-            Name
-          </label>
+          <label htmlFor="name" className="form-label">Name</label>
           <input
+            id="name"
             value={name}
             type="text"
             placeholder="Enter Name"
@@ -169,69 +169,66 @@ const UpdateStudent = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
+  
         <div className="form-input">
-          <label htmlFor="" className="form-label">
-            Email
-          </label>
+          <label htmlFor="email" className="form-label">Email</label>
           <input
+            id="email"
             value={email}
-            type="text"
-            placeholder="Enter Name"
+            type="email"
+            placeholder="Enter Email"
             className="form-control"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+  
         <div className="form-input">
-          <label htmlFor="" className="form-label">
-            Age
-          </label>
+          <label htmlFor="age" className="form-label">Age</label>
           <input
+            id="age"
             value={age}
-            type="text"
-            placeholder="Enter Name"
+            type="number"
+            placeholder="Enter Age"
             className="form-control"
             onChange={(e) => setAge(e.target.value)}
           />
         </div>
+  
         <div className="form-input">
-          <label htmlFor="" className="form-label">
-            Address
-          </label>
+          <label htmlFor="address" className="form-label">Address</label>
           <input
+            id="address"
             value={address}
             type="text"
-            placeholder="Enter Name"
+            placeholder="Enter Address"
             className="form-control"
             onChange={(e) => setAddress(e.target.value)}
           />
         </div>
+  
         <div className="form-input">
-          <label htmlFor="" className="form-label">
-            Phone
-          </label>
+          <label htmlFor="phone" className="form-label">Phone</label>
           <input
+            id="phone"
             value={phone}
             type="number"
-            placeholder="Enter Name"
+            placeholder="Enter Phone"
             className="form-control"
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
+  
         <div className="form-input">
           <label className="form-label">Select Classes</label>
           <div>
             {stdClass.map((classId, index) => {
-              // Find the class object based on the ID
-              const selectedClass = classs.find(
-                (classObj) => classObj._id === classId
-              );
-
+              const selectedClass = classs.find((classObj) => classObj._id === classId);
               if (selectedClass) {
                 return (
                   <div key={index}>
                     <input
                       type="checkbox"
-                      id={class_${index}}
+                      id={`class_${index}`}
                       value={classId}
                       checked={classStates[classId]?.isChecked || false}
                       onChange={() =>
@@ -245,36 +242,33 @@ const UpdateStudent = () => {
                         }))
                       }
                     />
-                    <label htmlFor={class_${index}}> 
-                      {selectedClass.subject}
-                    </label>
+                    <label htmlFor={`class_${index}`}>{selectedClass.subject}</label>
                   </div>
                 );
               } else {
-                // Handle case where class details are not found
                 return null;
               }
             })}
           </div>
         </div>
+  
         <div className="form-input">
-          <label htmlFor="" className="form-label">
-            Swim Hours
-          </label>
+          <label htmlFor="swimHours" className="form-label">Swim Hours</label>
           <input
+            id="swimHours"
             value={swimHours}
             type="number"
+            placeholder="Enter Swim Hours"
             className="form-control"
             onChange={(e) => setSwimHours(e.target.value)}
           />
         </div>
-        <button type="submit" className="form-button">
-          Submit
-        </button>
+  
+        <button type="submit" className="form-button">Submit</button>
         {error && <div className="error">{error}</div>}
       </form>
     </div>
-  );
+  );  
 };
 
 export default UpdateStudent;
