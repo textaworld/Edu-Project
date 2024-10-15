@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useAuthContext } from "../hooks/useAuthContext";
+import React, { useState } from "react";
 import { useAdminContext } from "../hooks/useAdminContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import "../styles/instituteCreate.css"; // Import the CSS file
 import Spinner from "./Spinner";
 
@@ -30,7 +30,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
       body: JSON.stringify(admin),
       headers: {
         "Content-Type": "application/json",
-        Authorization: Bearer ${user.token},
+        Authorization: Bearer `${user.token}`,
       },
     });
 
