@@ -28,9 +28,9 @@ const Attendence = () => {
 
   const fetchSiteDetails = async () => {
     const response = await fetch(
-      `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
+      https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId},
       {
-        headers: { Authorization: `Bearer ${user.token}` },
+        headers: { Authorization: Bearer ${user.token} },
       }
     );
     const json = await response.json();
@@ -71,19 +71,19 @@ const Attendence = () => {
   const updateDetails = async (data) => {
     try {
       const response = await fetch(
-        `https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId}`,
+        https://edu-project-backend.onrender.com/api/institute/update/${user.instituteId},
         {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
+            Authorization: Bearer ${user.token},
           },
           body: JSON.stringify(data),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Failed to update details: ${response.status}`);
+        throw new Error(Failed to update details: ${response.status});
       }
 
       dispatch({
@@ -145,13 +145,13 @@ const Attendence = () => {
     const fetchAttendences = async () => {
       try {
         const response = await fetch(
-          `https://edu-project-backend.onrender.com/api/attendance/getAllAttendancesByInsId/${sitedetail._id}`,
+          https://edu-project-backend.onrender.com/api/attendance/getAllAttendancesByInsId/${sitedetail._id},
           {
-            headers: { Authorization: `Bearer ${user.token}` },
+            headers: { Authorization: Bearer ${user.token} },
           }
         );
         const json = await response.json();
-
+        console.log("json",json)
         // Log the API response
 
         if (response.ok) {
@@ -160,7 +160,7 @@ const Attendence = () => {
           dispatch({ type: "SET_ATTENDENCE", payload: json.data });
         }
       } catch (error) {
-        
+        //
       }
     };
 
@@ -254,7 +254,8 @@ const downloadExcel = () => {
   URL.revokeObjectURL(url);
 };
 
-
+const hasInTime = attendance.some((attendanc) => attendanc.inTime);
+const hasOutTime = attendance.some((attendanc) => attendanc.outTime);
 
   return (
     <div>
@@ -290,6 +291,8 @@ const downloadExcel = () => {
                   <th>Name</th>
                   <th>Date</th>
                   <th>Class</th>
+                  {hasInTime && <th>In Time</th>}
+                  {hasOutTime && <th>Out Time</th>}
                   <th>Status</th>
                 </tr>
               </thead>
@@ -308,6 +311,8 @@ const downloadExcel = () => {
                         <td>{attendanc.name}</td>
                         <td>{colomboTime}</td> {/* Display Colombo time */}
                         <td>{attendanc.clzName}</td>
+                        {hasInTime && <td>{attendanc.inTime || "-"}</td>}
+                        {hasOutTime && <td>{attendanc.outTime || "-"}</td>}
                         <td>{attendanc.attendance}</td>
                       </tr>
                     );
@@ -315,7 +320,7 @@ const downloadExcel = () => {
                 ) : (
                   <tr>
                     <td colSpan="8">No Attendences found</td>
-                  </tr>
+                  </tr> 
                 )}
               </tbody>
             </table>
