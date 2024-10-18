@@ -236,7 +236,7 @@ const UpdateStudent = () => {
                       checked={classStates[classId]?.isChecked || false}
                       onChange={() =>
                         setClassStates((prevStates) => ({
-                          ...prevStates,
+                          ...prevStates, 
                           [classId]: {
                             ...prevStates[classId],
                             isChecked: !prevStates[classId]?.isChecked,

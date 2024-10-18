@@ -23,7 +23,7 @@ const SwminInQrScanner = () => {
   const [name, setName] = useState(null);
   const [instNotification, setInstNotification] = useState("");
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [scanning, setScanning] = useState(false);
   const [qrResult, setQrResult] = useState(null);

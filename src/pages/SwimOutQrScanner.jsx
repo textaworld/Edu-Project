@@ -30,7 +30,7 @@ const SwimOutQrScanner = () => {
  const [attentID,setStdAttendID] = useState("")
   const [instituteName, setInstituteName] = useState("");
 
-  const [remainingSMSCount, setRemainingSMSCount] = useState(0);
+  const [remainingSMSCount, setRemainingSMSCount] = useState(0); 
 
   useEffect(() => {
     const TopP = sitedetail.topUpPrice;

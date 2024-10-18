@@ -316,7 +316,7 @@ const hasOutTime = attendance.some((attendanc) => attendanc.outTime);
                         <td>{attendanc.attendance}</td>
                       </tr>
                     ); 
-                  })
+                  })  
                 ) : (
                   <tr>
                     <td colSpan="8">No Attendences found</td>

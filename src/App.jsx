@@ -89,23 +89,22 @@ function App() {
                 )
               }
             /> */}
-            <Route 
-  path="/adminlogin"
-  element={
-    checkUserRole("ADMIN") ? (
-      <Navigate to="/" />
-    ) : checkUserRole("SUB_ADMIN") ? (
-      <Navigate to="/subadminhome" />
-    ) : checkUserRole("SCL_ADMIN") ? (
-      <Navigate to="/scladminhome" />
-    ) : checkUserRole("SWIM_ADMIN") ? (
-      <Navigate to="/swimadminhome" />
-    ) : (
-      <AdminLogin />
-    )
-  }
-/>
-
+            <Route
+              path="/adminlogin"
+              element={
+                checkUserRole("ADMIN") ? (
+                  <Navigate to="/" />
+                ) : checkUserRole("SUB_ADMIN") ? (
+                  <Navigate to="/subadminhome" />
+                ) : checkUserRole("SCL_ADMIN") ? (
+                  <Navigate to="/scladminhome" />
+                ) : checkUserRole("SWIM_ADMIN") ? (
+                  <Navigate to="/swimadminhome" />
+                ) : (
+                  <AdminLogin />
+                )
+              }
+            />
 
             <Route path="/forgotpass" element={<ForgotPassword />} />
 
@@ -160,14 +159,12 @@ function App() {
                       <TuteContextProvider>
                         <PaymentsContextProvider>
                           <EmailContextProvider>
-                            
-                              {/* <React.Fragment> */}
-                              <div className="navbar-wrapper">
-                                <NavBar />
-                              </div>
-                              <UserRoleAuth userRole={"ADMIN"} />
-                              {/* </React.Fragment> */}
-                            
+                            {/* <React.Fragment> */}
+                            <div className="navbar-wrapper">
+                              <NavBar />
+                            </div>
+                            <UserRoleAuth userRole={"ADMIN"} />
+                            {/* </React.Fragment> */}
                           </EmailContextProvider>
                         </PaymentsContextProvider>
                       </TuteContextProvider>
@@ -188,7 +185,7 @@ function App() {
               <Route path="/payment/:id" element={<CreatePayment />} />
               <Route path="/classes" element={<Class />} />
               <Route path="/attendences" element={<Attendance />} />
-              <Route path="/brodcastMsg" element={<BrodcastMsg/>} /> 
+              <Route path="/brodcastMsg" element={<BrodcastMsg />} />
               {/* <Route path="/createClass" element={<CreateClass />} /> */}
               <Route
                 path="/studentprofile/:studentId"
@@ -196,13 +193,13 @@ function App() {
               />
               <Route path="/updateStd/:id" element={<UpdateStudent />} />
               <Route path="/updateClz/:id" element={<UpdateClass />} />
-              <Route path="/teacherIncome/:id" element={<TeachersIncome />}/>
+              <Route path="/teacherIncome/:id" element={<TeachersIncome />} />
               <Route path="/instituteIncome" element={<InstituteIncome />} />
 
               <Route path="/absent" element={<AbsentStudents />} />
               <Route path="/absentScl" element={<AbsentSclStds />} />
               <Route path="/startClass" element={<StartClass />} />
-              <Route path="/startSchool" element={<StartSchool/>}/>
+              <Route path="/startSchool" element={<StartSchool />} />
             </Route>
 
             {/* ---------  ----------  ---------*/}
@@ -238,7 +235,6 @@ function App() {
                 path="/subadminhome/startClass/absent/:id"
                 element={<AbsentStudents />}
               />
-              
             </Route>
             {/* --------- -------  ------- ---------*/}
 
@@ -256,16 +252,17 @@ function App() {
                   </ClassContextProvider>
                 </StudentContextProvider>
               }
-            > 
-            
-            <Route path="/scladminhome" element={<HomeSclAdmin />} />
-            <Route path="/scladminhome/startSchool" element={<StartSchool />} />
-            <Route
+            >
+              <Route path="/scladminhome" element={<HomeSclAdmin />} />
+              <Route
+                path="/scladminhome/startSchool"
+                element={<StartSchool />}
+              />
+              <Route
                 path="/scladminhome/absentScl"
                 element={<AbsentSclStds />}
               />
             </Route>
-
 
             {/* -----------Swim ADMIN----------------- */}
             <Route
@@ -281,11 +278,16 @@ function App() {
                   </ClassContextProvider>
                 </StudentContextProvider>
               }
-            > 
-            
-            <Route path="/swimadminhome" element={<SwimAdminHome />} />
-            <Route path="/swimadminhome/swimInQr/:id" element={<SwminInQrScanner />} />
-            <Route path="/swimadminhome/swimOutQr" element={<SwimOutQrScanner />} />
+            >
+              <Route path="/swimadminhome" element={<SwimAdminHome />} />
+              <Route
+                path="/swimadminhome/swimInQr/:id"
+                element={<SwminInQrScanner />}
+              />
+              <Route
+                path="/swimadminhome/swimOutQr"
+                element={<SwimOutQrScanner />}
+              />
             </Route>
           </Routes>
         </div>

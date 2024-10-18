@@ -22,7 +22,7 @@ const SwimAdminHome = () => {
         const response = await fetch(
           `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${user.instituteId}`, 
           {
-            headers: { Authorization: `Bearer ${user.token}` },
+            headers: { Authorization: `Bearer ${user.token}` }, 
           }
         );
 
