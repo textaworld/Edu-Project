@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import html2canvas from "html2canvas";
+import React, { useEffect, useRef, useState } from "react";
+import { FaCheck, FaDownload } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import QrCode from "../components/qrGenerator";
-import { useStudentContext } from "../hooks/useStudentContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useClassContext } from "../hooks/useClassContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
-import { FaDownload, FaCheck } from "react-icons/fa";
-import { validateAgeInput } from "../validation/validationUtils";
+import { useStudentContext } from "../hooks/useStudentContext";
 
 import "../styles/createStudent.css";
 //import { backgroundImage } from "html2canvas/dist/types/css/property-descriptors/background-image";
@@ -18,7 +17,7 @@ const CreateStudent = () => {
   const { classs, dispatch: clz } = useClassContext();
   const { sitedetail, dispatch: institute } = useSiteDetailsContext();
   const navigate = useNavigate();
-  
+
   const instID = user.instituteId;
   const [inst_ID, setInst_ID] = useState("");
   const [name, setName] = useState("");
@@ -31,7 +30,7 @@ const CreateStudent = () => {
   const [qrImage, setQrImage] = useState("");
   const [stdClass, setStdClass] = useState([]);
   const [image, setImage] = useState(null);
-  const [bgImage , setBgImage] = useState(null);
+  const [bgImage, setBgImage] = useState(null);
   const [stdCount, setStdCount] = useState("");
   const [classStates, setClassStates] = useState({});
   const [isDownload, setIsDownload] = useState(false);
@@ -39,7 +38,7 @@ const CreateStudent = () => {
   const idCardRef = useRef(null);
   const cardStatus = sitedetail.stdCardcardStatus;
   const [isBgImageSelected, setIsBgImageSelected] = useState(false);
-  const [swimHours,setSwimHours] = useState(0)
+  const [swimHours, setSwimHours] = useState(0);
   // console.log(cardStatus)
 
   const isAnyCheckboxChecked = () => {
@@ -53,7 +52,6 @@ const CreateStudent = () => {
     setImage(URL.createObjectURL(file));
   };
 
-  
   const handleBGImageChange = (e) => {
     const file = e.target.files[0];
     setBgImage(URL.createObjectURL(file));
@@ -64,7 +62,7 @@ const CreateStudent = () => {
       const response = await fetch(
         `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
         {
-          headers: { Authorization: Bearer `${user.token}` },
+          headers: { Authorization: `Bearer ${user.token}` },
         }
       );
       const json = await response.json();
@@ -86,7 +84,7 @@ const CreateStudent = () => {
         const response = await fetch(
           `https://edu-project-backend.onrender.com/api/class/getAllClassesByInsId/${sitedetail._id}`,
           {
-            headers: { Authorization: Bearer `${user.token}` },
+            headers: { Authorization: `Bearer ${user.token}` },
           }
         );
         const json = await response.json();
@@ -96,11 +94,8 @@ const CreateStudent = () => {
           setStdClass(subjectsArray);
           clz({ type: "SET_CLASS", payload: json.data });
         } else {
-          
         }
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     };
 
     const generateStudentID = () => {
@@ -135,7 +130,6 @@ const CreateStudent = () => {
     }
   }, [clz, user, sitedetail]);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -165,7 +159,6 @@ const CreateStudent = () => {
       stdCount: sitedetail.count,
     };
 
-
     const response = await fetch(
       "https://edu-project-backend.onrender.com/api/students/createStudent",
       {
@@ -173,7 +166,7 @@ const CreateStudent = () => {
         body: JSON.stringify(student),
         headers: {
           "Content-Type": "application/json",
-          Authorization: Bearer `${user.token}`,
+          Authorization: `Bearer ${user.token}`,
         },
       }
     );
@@ -189,14 +182,14 @@ const CreateStudent = () => {
 
     if (response.ok) {
       setInst_ID("");
-      setStd_ID("");      
+      setStd_ID("");
       setName("");
       setEmail("");
       setAge("");
       setAddress("");
       setPhone("");
       setClass("");
-      setSwimHours("")
+      setSwimHours("");
       setStdCount("");
       setIsDownload(false);
       uncheckAll();
@@ -213,30 +206,30 @@ const CreateStudent = () => {
   const generateQrCode = async () => {
     try {
       // Check if any of the required fields are null or empty
-      
 
       const student = { std_ID };
 
-      const response = await fetch("https://edu-project-backend.onrender.com/api/qr/qrGenerator", {
-        method: "POST",
-        body: JSON.stringify(student),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: Bearer `${user.token}`,
-        },
-      });
+      const response = await fetch(
+        "https://edu-project-backend.onrender.com/api/qr/qrGenerator",
+        {
+          method: "POST",
+          body: JSON.stringify(student),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
-        
         // Handle error appropriately
-        
+
         return;
       }
 
       const data = await response.text();
       setQrImage(data);
     } catch (error) {
-      
       // Handle error appropriately
     }
   };
@@ -294,7 +287,13 @@ const CreateStudent = () => {
 
               <label>
                 Student ID
-                <input value={std_ID} type="text" placeholder="Enter Student ID" required onChange={(e)=> setStd_ID(e.target.value)} />
+                <input
+                  value={std_ID}
+                  type="text"
+                  placeholder="Enter Student ID"
+                  required
+                  onChange={(e) => setStd_ID(e.target.value)}
+                />
               </label>
 
               <label>
@@ -304,7 +303,6 @@ const CreateStudent = () => {
                   type="text"
                   placeholder="Enter Name"
                   required
-                  
                   title="Name must contain only alphabets"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -376,13 +374,10 @@ const CreateStudent = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  
                   onChange={handleImageChange}
                   required
                 />
               </label>
-
-              
 
               <label>
                 Select Classes
@@ -420,24 +415,16 @@ const CreateStudent = () => {
                   placeholder="Only for swimming class students "
                   onChange={(e) => setSwimHours(e.target.value)}
                   required
-
                 />
               </label>
 
               <div className="errorContainer">
-            {error && <div className="error">{error}</div>} 
-          </div>
+                {error && <div className="error">{error}</div>}
+              </div>
 
-              
-                 
-                    <button type="submit" className="createstudentsubmitButton">Submit</button>
-                   
-                 
-              
-
-             
-
-             
+              <button type="submit" className="createstudentsubmitButton">
+                Submit
+              </button>
             </form>
           </div>
           <div className="createStudentIdCardContaner">
@@ -448,68 +435,71 @@ const CreateStudent = () => {
               </div>
 
               <div className="id-card-Bgimage">
-                <img src={bgImage}  />
+                <img src={bgImage} />
               </div>
 
               <div className="id-card-image">
-                <img src={image}  />
+                <img src={image} />
               </div>
 
               <div className="id-card-details">
-  <div>
-    
-    <input
-      type="text"
-      id="std_ID"
-      value={std_ID}
-      disabled
-      style={{ width: "250px", height: "25px", fontWeight: "bold",fontSize:'22px',marginBottom:'5px',marginTop:'8px' }}
-    />
-  </div>
-  <div>
-   
-    <input
-      type="text"
-      id="name"
-      value={name}
-      disabled
-      style={{ width: "260px", height: "25px",fontSize:'20px'}}
-    />
-  </div>
-  <div>
-    
-    <input
-      id="address"
-      value={address}
-      disabled
-      style={{
-        width: "360px",
-        height: "25px",marginTop:'0px',fontSize:'15px'
-      }}
-    />
-  </div>
-</div>
-
+                <div>
+                  <input
+                    type="text"
+                    id="std_ID"
+                    value={std_ID}
+                    disabled
+                    style={{
+                      width: "250px",
+                      height: "25px",
+                      fontWeight: "bold",
+                      fontSize: "22px",
+                      marginBottom: "5px",
+                      marginTop: "8px",
+                    }}
+                  />
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    id="name"
+                    value={name}
+                    disabled
+                    style={{ width: "260px", height: "25px", fontSize: "20px" }}
+                  />
+                </div>
+                <div>
+                  <input
+                    id="address"
+                    value={address}
+                    disabled
+                    style={{
+                      width: "360px",
+                      height: "25px",
+                      marginTop: "0px",
+                      fontSize: "15px",
+                    }}
+                  />
+                </div>
+              </div>
 
               <div className="id-card-logo">
                 <img src={sitedetail.image} alt="Logo" />
               </div>
 
               {!isBgImageSelected && (
-            <div className="id-card">
-              <p>{sitedetail.name}</p>
-            </div>
-          )}
-
+                <div className="id-card">
+                  <p>{sitedetail.name}</p>
+                </div>
+              )}
             </div>
 
             <div>
-            <label>
+              <label>
                 Background Image
                 <input
                   type="file"
                   accept="image/*"
-                  
                   onChange={handleBGImageChange}
                   required
                 />
@@ -522,9 +512,7 @@ const CreateStudent = () => {
                 className="stepBox"
                 style={{
                   borderColor:
-                    std_ID &&
-                    
-                    isAnyCheckboxChecked()
+                    std_ID && isAnyCheckboxChecked()
                       ? "rgb(23,  211, 23)"
                       : "#ccc",
                 }}
@@ -533,20 +521,18 @@ const CreateStudent = () => {
                   className="stepTitle"
                   style={{
                     color:
-                      std_ID &&
-                      
-                      isAnyCheckboxChecked()
+                      std_ID && isAnyCheckboxChecked()
                         ? "rgb(23, 211, 23)"
                         : "black",
                   }}
                 >
                   Step 1
                 </h3>
-                
-                  <div className="stepIconGreen">
-                    <FaCheck />
-                  </div>
-                
+
+                <div className="stepIconGreen">
+                  <FaCheck />
+                </div>
+
                 <p className="stepDescription">
                   Please fill all fields. Make sure to provide accurate
                   information.
@@ -570,13 +556,16 @@ const CreateStudent = () => {
                     <FaCheck />
                   </div>
                 ) : null}
-                
-               
-                {cardStatus === 'yes' && (
-    <button type="button" onClick={generateQrCode} className="stepButton">
-      Generate QR Code
-    </button>
-  )}
+
+                {cardStatus === "yes" && (
+                  <button
+                    type="button"
+                    onClick={generateQrCode}
+                    className="stepButton"
+                  >
+                    Generate QR Code
+                  </button>
+                )}
               </div>
 
               {/* Step 3 */}
@@ -593,7 +582,7 @@ const CreateStudent = () => {
                   Step 3
                 </h3>
                 <p className="stepDescription">Download ID Card</p>
-                {qrImage && std_ID  ? (
+                {qrImage && std_ID ? (
                   <button
                     type="button"
                     onClick={handleDownload}
@@ -617,7 +606,6 @@ const CreateStudent = () => {
                 {isDownload ? (
                   <div>
                     <p style={{ color: "rgb(23, 211, 23)" }}>Ready to submit</p>
-                   
                   </div>
                 ) : null}
               </div>
@@ -654,7 +642,7 @@ export default CreateStudent;
 //       );
 //     });
 //   } catch (error) {
-//     
+//
 //     return null;
 //   }
 // };
