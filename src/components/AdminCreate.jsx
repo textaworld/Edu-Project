@@ -9,7 +9,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
   const { dispatch } = useAdminContext();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState(""); 
   const [emptyFields, setEmptyFields] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -100,15 +100,15 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
               <option value="ADMIN">Admin</option>
               <option value="SUB_ADMIN">SubAdmin</option>
               <option value="SCL_ADMIN">School Admin</option>
-              <option value="SWIM_ADMIN">Swim Admin</option>  
-            </select>  
+              <option value="SWIM_ADMIN">Swim Admin</option>
+            </select>
           </label>
 
           <div className="errorContainer">
             {error && <div className="error">{error}</div>}
           </div>
           <div className="buttonContainer">
-            <button className="addButton" type="submit"> 
+            <button className="addButton" type="submit">
               Add Admin
             </button>
             <button className="cancelButton" type="button" onClick={onClose}>
