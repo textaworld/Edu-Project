@@ -31,7 +31,7 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
       body: JSON.stringify(admin),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`, // Correctly formatted
+        Authorization: Bearer `${user.token}`, // Correctly formatted
       },
     });
   
