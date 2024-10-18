@@ -1,9 +1,8 @@
-import React, { useEffect, useState ,useRef  } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../hooks/useAuthContext";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAttendanceContext } from "../hooks/useAttendanceContext";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { useSiteDetailsContext } from "../hooks/useSiteDetailsContext";
-import { FaTrash } from "react-icons/fa";
 // import html2canvas from "html2canvas";
 // import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
@@ -30,7 +29,7 @@ const Attendence = () => {
     const response = await fetch(
       `https://edu-project-backend.onrender.com/api/site/getone/${user.instituteId}`,
       {
-        headers: { Authorization: Bearer`${user.token}` },
+        headers: { Authorization: `Bearer ${user.token}` },
       }
     );
     const json = await response.json();
@@ -76,7 +75,7 @@ const Attendence = () => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: Bearer `${user.token}`,
+            Authorization: `Bearer ${user.token}`,
           },
           body: JSON.stringify(data),
         }
@@ -147,7 +146,7 @@ const Attendence = () => {
         const response = await fetch(
           `https://edu-project-backend.onrender.com/api/attendance/getAllAttendancesByInsId/${sitedetail._id}`,
           {
-            headers: { Authorization: Bearer `${user.token}` },
+            headers: { Authorization: `Bearer ${user.token}` },
           }
         );
         const json = await response.json();
@@ -315,8 +314,8 @@ const hasOutTime = attendance.some((attendanc) => attendanc.outTime);
                         {hasOutTime && <td>{attendanc.outTime || "-"}</td>}
                         <td>{attendanc.attendance}</td>
                       </tr>
-                    );
-                  })
+                    ); 
+                  })  
                 ) : (
                   <tr>
                     <td colSpan="8">No Attendences found</td>
@@ -331,4 +330,4 @@ const hasOutTime = attendance.some((attendanc) => attendanc.outTime);
   );
 };
 
-export default Attendence;
+export default Attendence;
