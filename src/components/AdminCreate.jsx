@@ -17,25 +17,26 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
-    if (!user) {
+  
+    if (!user || !user.token) { // Check if user and token are defined
       setError("You must be logged in");
+      setIsLoading(false); // Ensure loading state is reset
       return;
     }
-
+  
     const admin = { email, password, role, instituteId };
-
+  
     const response = await fetch("https://edu-project-backend.onrender.com/api/admin/register", {
       method: "POST",
       body: JSON.stringify(admin),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`,
+        Authorization: `Bearer ${user.token}`, // Correctly formatted
       },
     });
-
+  
     const json = await response.json();
-
+  
     if (!response.ok) {
       setIsLoading(false);
       setError(json.error);
@@ -48,12 +49,11 @@ const AdminCreate = ({ instituteId, onClose, onSuccess }) => {
       setPassword("");
       setRole("");
       setError(null);
-
       setIsLoading(false);
       onSuccess();
     }
   };
-
+  
   return (
     <div>
       <div className="overlay" onClick={onClose}></div>
